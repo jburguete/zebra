@@ -16,6 +16,8 @@ typedef struct
 	double density;               ///< density.
 	double decay;                 ///< decay coefficient.
 	double infestation;           ///< infestation rate.
+	double grow;                  ///< grow coefficient.
+	double cling;                 ///< cling coefficient.
 } Cell;
 
 #endif
