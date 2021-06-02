@@ -9,7 +9,7 @@
 #include <libxml/parser.h>
 #include <glib.h>
 #include "config.h"
-#include "tool.h"
+#include "tools.h"
 #include "nutrient.h"
 
 Nutrient *nutrient = NULL;      ///< array of nutrient struct data.

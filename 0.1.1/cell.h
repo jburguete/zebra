@@ -13,7 +13,8 @@
  */
 typedef struct
 {
-  double *species_density;      ///< array of species density.
+  double *nutrient_concentration;       ///< array of nutrient concentrations.
+  double *species_concentration;        ///< array of species concentrations.
   double *species_infestation;  ///< array of species infestation rate.
   double position;              ///< position in the pipe.
   double length;                ///< longitudinal length.

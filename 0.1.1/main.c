@@ -11,7 +11,7 @@
 #include <libxml/parser.h>
 #include <glib.h>
 #include "config.h"
-#include "tool.h"
+#include "tools.h"
 #include "nutrient.h"
 #include "species.h"
 #include "point.h"
@@ -41,7 +41,14 @@ main (int argn,                 ///< number of command line arguments.
 {
   int error_code = ERROR_CODE_NONE;
 
+#if DEBUG_MAIN
+  fprintf (stderr, "main: start\n");
+#endif
+
   // init locales and XML parser
+#if DEBUG_MAIN
+  fprintf (stderr, "main: init locales and XML parser\n");
+#endif
   setlocale (LC_ALL, "");
   setlocale (LC_NUMERIC, "C");
   bindtextdomain (PROGRAM_NAME, LOCALES_DIR);
@@ -50,16 +57,23 @@ main (int argn,                 ///< number of command line arguments.
   xmlKeepBlanksDefault (0);
 
   // check arguments
+#if DEBUG_MAIN
+  fprintf (stderr, "main: start\n");
+#endif
   if (argn != 3)
     {
       error_code = ERROR_CODE_ARGUMENTS_NUMBER;
       error_msg
         = (char *) g_strdup (_("The syntax is:\n./zebra "
-                               "nutrients_file species_file"));
+                               "nutrients_file species_file epanet_file "
+                               "inlet_file output_file"));
       goto exit_on_error;
     }
 
   // open nutrients
+#if DEBUG_MAIN
+  fprintf (stderr, "main: open nutrients\n");
+#endif
   if (!nutrient_open_xml (argc[1]))
     {
       error_code = ERROR_CODE_NUTRIENT;
@@ -67,6 +81,9 @@ main (int argn,                 ///< number of command line arguments.
     }
 
   // open species
+#if DEBUG_MAIN
+  fprintf (stderr, "main: open species\n");
+#endif
   if (!species_open_xml (argc[2]))
     {
       error_code = ERROR_CODE_SPECIES;
@@ -82,9 +99,15 @@ exit_on_error:
     }
 
   // free memory
+#if DEBUG_MAIN
+  fprintf (stderr, "main: free memory\n");
+#endif
   species_destroy ();
   nutrient_destroy ();
 
   // end
+#if DEBUG_MAIN
+  fprintf (stderr, "main: end\n");
+#endif
   return error_code;
 }

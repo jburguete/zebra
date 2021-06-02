@@ -9,7 +9,7 @@
 #include <libxml/parser.h>
 #include <glib.h>
 #include "config.h"
-#include "tool.h"
+#include "tools.h"
 #include "species.h"
 
 Species *species = NULL;        ///< array of species struct data.
