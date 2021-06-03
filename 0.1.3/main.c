@@ -66,8 +66,7 @@ main (int argn,                 ///< number of command line arguments.
       error_code = ERROR_CODE_ARGUMENTS_NUMBER;
       error_msg
         = (char *) g_strdup (_("The syntax is:\n./zebra "
-                               "nutrients_file species_file epanet_file "
-                               "inlet_file output_file"));
+                               "nutrients_file species_file config_file"));
       goto exit_on_error;
     }
 

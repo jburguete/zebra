@@ -21,6 +21,20 @@
 #define LOCALES_DIR "locales"   ///< locale strings directory.
 #define PROGRAM_NAME "zebra"    ///< program name.
 
+// Epanet labels
+#define EPANET_COORDINATES      "[COORDINATES]"
+///< [COORDINATES] Epanet label.
+#define EPANET_END              "[END]"
+///< [END] Epanet label.
+#define EPANET_JUNCTIONS        "[JUNCTIONS]"
+///< [JUNCTIONS] Epanet label.
+#define EPANET_PIPES            "[PIPES]"
+///< [PIPES] Epanet label.
+#define EPANET_RESERVOIRS       "[RESERVOIRS]"
+///< [RESERVOIRS] Epanet label.
+#define EPANET_TITLE            "[TITLE]"
+///< [TITLE] Epanet label.
+
 // XML labels
 
 #define XML_CLING               (const xmlChar *) "cling"
@@ -33,6 +47,8 @@
 ///< discharge XML label.
 #define XML_EAT                 (const xmlChar *) "eat"
 ///< eat XML label.
+#define XML_EPANET              (const xmlChar *) "epanet"
+///< epanet XML label.
 #define XML_GROW                (const xmlChar *) "grow"
 ///< grow XML label.
 #define XML_INLET               (const xmlChar *) "inlet"
