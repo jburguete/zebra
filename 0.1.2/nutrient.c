@@ -18,10 +18,10 @@ unsigned int nnutrients = 0;    ///< number of nutrients.
 /**
  * function to set an error message opening a nutrients input file.
  */
-static void
+static inline void
 nutrient_error (const char *msg)        ///< error message.
 {
-  error_msg = (char *) g_strconcat (_("Nutrient"), ":\n", msg, NULL);
+  error_message (_("Nutrient"), (char *) g_strdup (msg));
 }
 
 /**
@@ -55,7 +55,7 @@ nutrient_open_xml (char *file_name)     ///< input file name.
   Nutrient *n;
   xmlDoc *doc;
   xmlNode *node;
-  int error_code = 0;
+  const char *m;
   unsigned int i;
 
   // start
@@ -67,7 +67,7 @@ nutrient_open_xml (char *file_name)     ///< input file name.
   doc = xmlParseFile (file_name);
   if (!doc)
     {
-      nutrient_error (_("Bad input file"));
+      m = _("Bad input file");
       goto exit_on_error;
     }
 
@@ -75,12 +75,12 @@ nutrient_open_xml (char *file_name)     ///< input file name.
   node = xmlDocGetRootElement (doc);
   if (!node)
     {
-      nutrient_error (_("No root XML node"));
+      m = _("No root XML node");
       goto exit_on_error;
     }
   if (xmlStrcmp (node->name, XML_NUTRIENT))
     {
-      nutrient_error (_("Bad root XML node"));
+      m = _("Bad root XML node");
       goto exit_on_error;
     }
 
@@ -89,7 +89,7 @@ nutrient_open_xml (char *file_name)     ///< input file name.
     {
       if (xmlStrcmp (node->name, XML_NUTRIENT))
         {
-          nutrient_error (_("Bad XML node"));
+          m = _("Bad XML node");
           goto exit_on_error;
         }
       i = nnutrients;
@@ -100,29 +100,56 @@ nutrient_open_xml (char *file_name)     ///< input file name.
       n->name = (char *) xmlGetProp (node, XML_NAME);
       if (!n->name)
         {
-          nutrient_error (_("Bad name"));
+          m = _("Bad name");
           goto exit_on_error;
         }
     }
 
   if (!nnutrients)
     {
-      nutrient_error (_("No nutrients"));
+      m = _("No nutrients");
       goto exit_on_error;
     }
 
-  // success
-  error_code = 1;
+  // exit on success
+#if DEBUG_NUTRIENT
+  fprintf (stderr, "nutrient_open_xml: end\n");
+#endif
+  return 1;
 
+  // exit on error
 exit_on_error:
 
-  // free memory on error
-  if (!error_code)
-    nutrient_destroy ();
+  // set error message
+  nutrient_error (m);
+
+  // free memory
+  nutrient_destroy ();
 
   // end
 #if DEBUG_NUTRIENT
   fprintf (stderr, "nutrient_open_xml: end\n");
 #endif
-  return error_code;
+  return 0;
+}
+
+/**
+ * function to find the index of a nutrient on the nutrients array.
+ *
+ * \return nutrient index on success, nnutrients on error.
+ */
+unsigned int
+nutrient_index (const char *name)       ///< nutrient name.
+{
+  unsigned int i;
+#if DEBUG_NUTRIENT
+  fprintf (stderr, "nutrient_index: start\n");
+#endif
+  for (i = 0; i < nnutrients; ++i)
+    if (!strcmp (nutrient[i].name, name))
+      break;
+#if DEBUG_NUTRIENT
+  fprintf (stderr, "nutrient_index: end\n");
+#endif
+  return i;
 }

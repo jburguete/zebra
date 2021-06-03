@@ -21,13 +21,12 @@ typedef struct
   ///< array of pointers to array of species concentrations.
   double **species_time;
   ///< array of pointers to array of species times.
-  unsigned int node;            ///< node identifier.
+  unsigned int *nnutrient_times;        ///< array of numbers of nutrient times.
+  unsigned int *nspecies_times; ///< array of numbers of species times.
+  unsigned int id;              ///< identifier.
 } Inlet;
 
-extern Inlet *inlet;
-extern unsigned int ninlets;
-
-void inlet_destroy ();
-int inlet_open_xml (char *file_name);
+void inlet_destroy (Inlet * inlet);
+int inlet_open_xml (Inlet * inlet, xmlNode * node);
 
 #endif

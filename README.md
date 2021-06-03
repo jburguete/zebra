@@ -1,5 +1,5 @@
-Zebra (0.1.0 version)
-=======================
+Zebra (0.1.2 english version)
+=============================
 
 :uk:[english](README.md) :es:[español](README.es.md)
 
@@ -9,13 +9,13 @@ AUTHORS
 -------
 
 * Javier Burguete Tolosa (jburguete@eead.csic.es)
-* Borja Latorre Garcés (borja.latorre@csic.es)
 
 FILES
 -----
 
-* README.md: this file
+* README.md: basic help file
 * license.md: license file
-* \*.h: header files
-* \*.c: source files
-* Doxyfile: configuration file to generate doxygen documentation
+* 0.1.2/\*.h: header files
+* 0.1.2/\*.c: source files
+* 0.1.2/Makefile: configuration file to generate the executable
+* 0.1.2/Doxyfile: configuration file to generate doxygen documentation

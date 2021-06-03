@@ -14,16 +14,18 @@
 typedef struct
 {
   const char *name;             ///< name.
-  double decay;                 ///< decay coefficient.
-  double grow;                  ///< grow coefficient.
   double cling;                 ///< cling coefficient.
+  double eat;                   ///< eat coefficient.
+  double grow;                  ///< grow coefficient.
+  double decay;                 ///< decay coefficient.
   double maximum_velocity;      ///< maximum velocity to cling.
 } Species;
 
-extern Species *species;        ///< array of species struct data.
-extern unsigned int nspecies;   ///< number of species.
+extern Species *species;
+extern unsigned int nspecies;
 
 void species_destroy ();
 int species_open_xml (char *file_name);
+unsigned int species_index (const char *name);
 
 #endif

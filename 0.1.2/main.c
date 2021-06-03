@@ -18,6 +18,9 @@
 #include "cell.h"
 #include "pipe.h"
 #include "junction.h"
+#include "inlet.h"
+#include "outlet.h"
+#include "network.h"
 
 ///> enum to define the error code.
 enum ErrorCode
@@ -27,8 +30,6 @@ enum ErrorCode
   ERROR_CODE_NUTRIENT,          ///< bad nutrients input file.
   ERROR_CODE_SPECIES,           ///< bad species input file.
 };
-
-char *error_msg = NULL;         ///< error message string.
 
 /**
  * main function.

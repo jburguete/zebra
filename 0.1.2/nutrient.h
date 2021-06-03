@@ -16,10 +16,11 @@ typedef struct
   const char *name;             ///< name.
 } Nutrient;
 
-extern Nutrient *nutrient;      ///< array of nutrient struct data.
-extern unsigned int nnutrients; ///< number of nutrients.
+extern Nutrient *nutrient;
+extern unsigned int nnutrients;
 
 void nutrient_destroy ();
 int nutrient_open_xml (char *file_name);
+unsigned int nutrient_index (const char *name);
 
 #endif

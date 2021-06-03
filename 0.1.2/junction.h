@@ -7,6 +7,10 @@
 #ifndef JUNCTION__H
 #define JUNCTION__H 1
 
+/**
+ * \struct Junction
+ * \brief struct to define the junctions.
+ */
 typedef struct
 {
   Pipe **inlet;                 ///< array of inlet pipe pointers.

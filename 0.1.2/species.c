@@ -18,10 +18,10 @@ unsigned int nspecies = 0;      ///< number of species.
 /**
  * function to set an error message opening a species input file.
  */
-static void
+static inline void
 species_error (const char *msg) ///< error message.
 {
-  error_msg = (char *) g_strconcat (_("Species"), ":\n", msg, NULL);
+  error_message (_("Species"), (char *) g_strdup (msg));
 }
 
 /**
@@ -55,7 +55,8 @@ species_open_xml (char *file_name)      ///< input file name.
   Species *s;
   xmlDoc *doc;
   xmlNode *node;
-  int error_code = 0;
+  const char *m;
+  int k;
   unsigned int i;
 
   // start
@@ -67,7 +68,7 @@ species_open_xml (char *file_name)      ///< input file name.
   doc = xmlParseFile (file_name);
   if (!doc)
     {
-      species_error (_("Bad input file"));
+      m = _("Bad input file");
       goto exit_on_error;
     }
 
@@ -75,12 +76,12 @@ species_open_xml (char *file_name)      ///< input file name.
   node = xmlDocGetRootElement (doc);
   if (!node)
     {
-      species_error (_("No root XML node"));
+      m = _("No root XML node");
       goto exit_on_error;
     }
   if (xmlStrcmp (node->name, XML_SPECIES))
     {
-      species_error (_("Bad root XML node"));
+      m = _("Bad root XML node");
       goto exit_on_error;
     }
 
@@ -89,7 +90,7 @@ species_open_xml (char *file_name)      ///< input file name.
     {
       if (xmlStrcmp (node->name, XML_SPECIES))
         {
-          species_error (_("Bad XML node"));
+          m = _("Bad XML node");
           goto exit_on_error;
         }
       i = nspecies;
@@ -99,29 +100,87 @@ species_open_xml (char *file_name)      ///< input file name.
       s->name = (char *) xmlGetProp (node, XML_NAME);
       if (!s->name)
         {
-          species_error (_("Bad name"));
+          m = _("Bad name");
+          goto exit_on_error;
+        }
+      s->decay = xml_node_get_float_with_default (node, XML_DECAY, &k, 0.);
+      if (!k)
+        {
+          m = _("Bad decay coefficient");
+          goto exit_on_error;
+        }
+      s->grow = xml_node_get_float_with_default (node, XML_GROW, &k, 0.);
+      if (!k)
+        {
+          m = _("Bad grow coefficient");
+          goto exit_on_error;
+        }
+      s->cling = xml_node_get_float_with_default (node, XML_CLING, &k, 0.);
+      if (!k)
+        {
+          m = _("Bad cling coefficient");
+          goto exit_on_error;
+        }
+      s->eat = xml_node_get_float_with_default (node, XML_EAT, &k, 0.);
+      if (!k)
+        {
+          m = _("Bad eat coefficient");
+          goto exit_on_error;
+        }
+      s->maximum_velocity
+        = xml_node_get_float_with_default (node, XML_MAXIMUM_VELOCITY, &k, 0.);
+      if (!k)
+        {
+          m = _("Bad maximum velocity");
           goto exit_on_error;
         }
     }
 
   if (!nspecies)
     {
-      species_error (_("No species"));
+      m = _("No species");
       goto exit_on_error;
     }
 
-  // success
-  error_code = 1;
+  // exit on success
+#if DEBUG_SPECIES
+  fprintf (stderr, "species_open_xml: end\n");
+#endif
+  return 1;
 
+  // exit on error
 exit_on_error:
 
+  // set error message
+  species_error (m);
+
   // free memory on error
-  if (!error_code)
-    species_destroy ();
+  species_destroy ();
 
   // end
 #if DEBUG_SPECIES
   fprintf (stderr, "species_open_xml: end\n");
 #endif
-  return error_code;
+  return 0;
+}
+
+/**
+ * function to find the index of a species on the species array.
+ *
+ * \return species index on success, nspecies on error.
+ */
+unsigned int
+species_index (const char *name)        ///< species name.
+{
+  unsigned int i;
+#if DEBUG_SPECIES
+  fprintf (stderr, "species_index: start\n");
+#endif
+  for (i = 0; i < nspecies; ++i)
+    if (!strcmp (species[i].name, name))
+      break;
+#if DEBUG_SPECIES
+  fprintf (stderr, "species_index: end\n");
+#endif
+  return i;
 }

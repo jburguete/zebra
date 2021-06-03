@@ -13,15 +13,17 @@
  */
 typedef struct
 {
-  Point inlet;                  ///< inlet point.
-  Point outlet;                 ///< outlet point.
+  Point *inlet;                 ///< pointer to the inlet point.
+  Point *outlet;                ///< pointer to the outlet point.
   Cell *cell;                   ///< array of node cells.
   double length;                ///< length.
+  double diameter;              ///< diameter.
   double area;                  ///< cross sectional area.
-  double discharge;             ///< discharge.
-  double velocity;              ///< flow velocity.
+  double perimeter;             ///< cross sectional perimeter.
+  double roughness;             ///< roughness length.
+  double discharge;             ///< current discharge.
+  double velocity;              ///< current flow velocity.
   unsigned int ncells;          ///< number of node cells.
-  unsigned int npoints;         ///< number of points.
   unsigned int id;              ///< identifier.
 } Pipe;
 
