@@ -18,5 +18,7 @@ double xml_node_get_float (xmlNode * node, const xmlChar * prop, int *error);
 double xml_node_get_float_with_default (xmlNode * node, const xmlChar * prop,
                                         int *error, double def);
 double xml_node_get_time (xmlNode * node, const xmlChar * prop, int *error);
+double distance (double x1, double y1, double z1, double x2, double y2,
+                 double z2);
 
 #endif

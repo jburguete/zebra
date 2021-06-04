@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <time.h>
 #include <libintl.h>
+#include <math.h>
 #include <libxml/parser.h>
 #include <glib.h>
 #include "config.h"
@@ -133,4 +134,23 @@ xml_node_get_time (xmlNode * node,      ///< XML node struct.
         *error = 0;
     }
   return sec;
+}
+
+/**
+ * function to calculate the distance between 2 points.
+ *
+ * \return distance.
+ */
+double
+distance (double x1,            ///< x-coordinate from 1st point.
+          double y1,            ///< y-coordinate from 1st point.
+          double z1,            ///< z-coordinate from 1st point.
+          double x2,            ///< x-coordinate from 2nd point.
+          double y2,            ///< y-coordinate from 2nd point.
+          double z2)            ///< z-coordinate from 2nd point.
+{
+  x2 -= x1;
+  y2 -= y1;
+  z2 -= z1;
+  return sqrt (x2 * x2 + y2 * y2 + z2 * z2);
 }
