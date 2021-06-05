@@ -5,6 +5,7 @@
  * \copyright Copyright 2021, Javier Burguete Tolosa.
  */
 #include <stdio.h>
+#include <stdlib.h>
 #include <libintl.h>
 #include <libxml/parser.h>
 #include <glib.h>
@@ -103,6 +104,8 @@ nutrient_open_xml (char *file_name)     ///< input file name.
           m = _("Bad name");
           goto exit_on_error;
         }
+      if (nnutrients == MAX_NUTRIENTS)
+        break;
     }
 
   if (!nnutrients)

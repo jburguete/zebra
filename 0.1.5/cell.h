@@ -13,16 +13,25 @@
  */
 typedef struct
 {
-  double *nutrient_concentration;       ///< array of nutrient concentrations.
-  double *species_concentration;        ///< array of species concentrations.
-  double *species_infestation;  ///< array of species infestation rate.
-  double position;              ///< position in the pipe.
-  double length;                ///< longitudinal length.
+  double nutrient_concentration[MAX_NUTRIENTS];
+  ///< array of nutrient concentrations.
+  double species_concentration[MAX_SPECIES];
+  ///< array of species concentrations.
+  double species_infestation[MAX_SPECIES];
+  ///< array of species infestation rate.
+  double position;              ///< longitudinal position in the pipe.
+  double size;                  ///< longitudinal size.
+  double distance;              ///< longitudinal distance to the next cell.
   double area;                  ///< cross sectional area.
   double velocity;              ///< flow velocity.
+  double discharge;             ///< flow discharge.
   double dispersion;            ///< water dispersion coefficient.
   double roughness;             ///< roughness length.
   double friction;              ///< friction factor.
 } Cell;
+
+extern double time_step;
+
+void cell_init (Cell * cell);
 
 #endif

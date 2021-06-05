@@ -70,12 +70,11 @@ typedef struct
   Pipe *pipe;                   ///< array of pipes.
   Junction *junction;           ///< array of junctions.
   Inlet *inlet;                 ///< array of inlets.
-  Outlet *outlet;               ///< array of outlets.
+  double cell_size;             ///< cell size.
   unsigned int npoints;         ///< number of points.
   unsigned int npipes;          ///< number of pipes.
   unsigned int njunctions;      ///< number of junctions.
   unsigned int ninlets;         ///< number of inlets.
-  unsigned int noutlets;        ///< number of outlets.
   unsigned int pipe_length;     ///< type of pipe length model.
 } Network;
 

@@ -5,6 +5,7 @@
  * \copyright Copyright 2021, Javier Burguete Tolosa.
  */
 #include <stdio.h>
+#include <stdlib.h>
 #include <string.h>
 #include <libintl.h>
 #include <libxml/parser.h>
@@ -18,7 +19,6 @@
 #include "pipe.h"
 #include "junction.h"
 #include "inlet.h"
-#include "outlet.h"
 #include "network.h"
 
 /**
@@ -39,9 +39,12 @@ network_null (Network * network)        ///< pointer to the network struct data.
 #if DEBUG_NETWORK
   fprintf (stderr, "network_null: start\n");
 #endif
+  network->point = NULL;
+  network->pipe = NULL;
+  network->junction = NULL;
   network->inlet = NULL;
-  network->outlet = NULL;
-  network->ninlets = network->noutlets = 0;
+  network->npoints = network->npipes = network->njunctions = network->ninlets
+    = 0;
 #if DEBUG_NETWORK
   fprintf (stderr, "network_null: end\n");
 #endif
@@ -57,12 +60,14 @@ network_destroy (Network * network)     ///< pointer to the network struct data.
 #if DEBUG_NETWORK
   fprintf (stderr, "network_destroy: start\n");
 #endif
-  for (i = 0; i < network->noutlets; ++i)
-    outlet_destroy (network->outlet + i);
-  free (network->outlet);
   for (i = 0; i < network->ninlets; ++i)
     inlet_destroy (network->inlet + i);
   free (network->inlet);
+  free (network->junction);
+  for (i = 0; i < network->npipes; ++i)
+    pipe_destroy (network->pipe + i);
+  free (network->pipe);
+  free (network->point);
   network_null (network);
 #if DEBUG_NETWORK
   fprintf (stderr, "network_destroy: end\n");
@@ -119,6 +124,7 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
   NetJunction *junction;
   NetPipe *pipe;
   NetReservoir *reservoir;
+  Junction *pj;
   Point **pp;
   Point *p1, *p2;
 #if PIPE_LENGTHS_SAVE
@@ -130,7 +136,7 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
   size_t n;
   ssize_t r;
   int e, error_code = 0;
-  unsigned int i, id, maxid, nnodes, njunctions, npipes, nreservoirs;
+  unsigned int i, j, id, maxid, nnodes, njunctions, npipes, nreservoirs;
 
 #if DEBUG_NETWORK
   fprintf (stderr, "network_open_inp: start\n");
@@ -143,6 +149,7 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
   reservoir = NULL;
   pp = NULL;
   se = NULL;
+  pj = NULL;
 
   // reading title lines
   buffer = NULL, n = 0;
@@ -326,10 +333,12 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
 #endif
   pp = (Point **) malloc (maxid * sizeof (Point *));
   se = (int *) malloc (maxid * sizeof (int));
+  pj = (Junction *) malloc (maxid * sizeof (Junction));
   for (i = 0; i < maxid; ++i)
     {
       pp[i] = NULL;
       se[i] = 0;
+      junction_null (pj + i);
     }
   network->npoints = nnodes;
   network->point = (Point *) malloc (nnodes * sizeof (Point));
@@ -381,7 +390,9 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
 #endif
   network->npipes = npipes;
   network->pipe = (Pipe *) malloc (npipes * sizeof (Pipe));
-  for (i = 0; i < n; ++i)
+  for (i = 0; i < npipes; ++i)
+    pipe_null (network->pipe + i);
+  for (i = 0; i < npipes; ++i)
     {
       pipe_net_copy (network->pipe + i, pipe + i);
       id = pipe[i].node1;
@@ -396,6 +407,7 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
           goto exit_on_error;
         }
       network->pipe[i].inlet = p1 = pp[id];
+      junction_add_inlet (pj + id, network->pipe + i);
       id = pipe[i].node2;
       if (!pp[id])
         {
@@ -413,6 +425,7 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
           m = _("Same nodes for inlet and outlet");
           goto exit_on_error;
         }
+      junction_add_outlet (pj + id, network->pipe + i);
       switch (network->pipe_length)
         {
         case PIPE_LENGTH_COORDINATES:
@@ -430,9 +443,23 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
       fprintf (file_log, "%lg %lg %u\n", network->pipe[i].length,
                pipe[i].length, pipe[i].id);
 #endif
+      pipe_create_mesh (network->pipe + i, network->cell_size);
     }
+  for (i = 0; i < maxid; ++i)
+    if (pj[i].ninlets + pj[i].noutlets > 1)
+      {
+        j = network->njunctions;
+        ++network->njunctions;
+        network->junction
+          = (Junction *) realloc (network->junction,
+                                  network->njunctions * sizeof (Junction));
+        memcpy (network->junction + j, pj + i, sizeof (Junction));
+      }
 #if PIPE_LENGTHS_SAVE
   fclose (file_log);
+#endif
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_open_inp: njunctions=%u\n", network->njunctions);
 #endif
 
   error_code = 1;
@@ -440,6 +467,7 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
 exit_on_error:
 
   // free buffers memory
+  free (pj);
   free (se);
   free (pp);
   free (reservoir);
@@ -472,10 +500,11 @@ network_open_xml (Network * network,    ///< pointer to the network struct data.
   char name[BUFFER_SIZE];
   xmlDoc *doc;
   xmlNode *node;
-  xmlChar *buffer = NULL;
+  xmlChar *buffer;
   FILE *file;
   const char *m;
   char *directory;
+  int e;
 
   // start
 #if DEBUG_NETWORK
@@ -504,6 +533,13 @@ network_open_xml (Network * network,    ///< pointer to the network struct data.
       goto exit_on_error;
     }
 
+  // setting properties
+  network->cell_size = xml_node_get_float (node, XML_CELL_SIZE, &e);
+  if (!e)
+    {
+      m = _("Bad cell size");
+      goto exit_on_error;
+    }
   // reading Epanet file
   buffer = xmlGetProp (node, XML_PIPE_LENGTH);
   if (!buffer || !xmlStrcmp (buffer, XML_COORDINATES))
@@ -539,7 +575,7 @@ network_open_xml (Network * network,    ///< pointer to the network struct data.
       goto exit_on_error;
     }
 
-  // reading inlets and outlets
+  // reading inlets
   for (node = node->children; node; node = node->next)
     {
       if (!xmlStrcmp (node->name, XML_INLET))
@@ -549,18 +585,6 @@ network_open_xml (Network * network,    ///< pointer to the network struct data.
             = (Inlet *) realloc (network->inlet,
                                  network->ninlets * sizeof (Inlet));
           if (!inlet_open_xml (network->inlet + network->ninlets - 1, node))
-            {
-              m = error_msg;
-              goto exit_on_error;
-            }
-        }
-      else if (!xmlStrcmp (node->name, XML_OUTLET))
-        {
-          ++network->noutlets;
-          network->outlet
-            = (Outlet *) realloc (network->outlet,
-                                  network->noutlets * sizeof (Outlet));
-          if (!outlet_open_xml (network->outlet + network->noutlets - 1, node))
             {
               m = error_msg;
               goto exit_on_error;
@@ -576,11 +600,6 @@ network_open_xml (Network * network,    ///< pointer to the network struct data.
   if (!network->ninlets)
     {
       m = _("No inlets");
-      goto exit_on_error;
-    }
-  if (!network->noutlets)
-    {
-      m = _("No outlets");
       goto exit_on_error;
     }
 

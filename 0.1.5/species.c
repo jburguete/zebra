@@ -5,6 +5,7 @@
  * \copyright Copyright 2021, Javier Burguete Tolosa.
  */
 #include <stdio.h>
+#include <stdlib.h>
 #include <libintl.h>
 #include <libxml/parser.h>
 #include <glib.h>
@@ -134,6 +135,8 @@ species_open_xml (char *file_name)      ///< input file name.
           m = _("Bad maximum velocity");
           goto exit_on_error;
         }
+      if (nspecies == MAX_SPECIES)
+        break;
     }
 
   if (!nspecies)

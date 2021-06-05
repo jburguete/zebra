@@ -5,6 +5,7 @@
  * \copyright Copyright 2021, Javier Burguete Tolosa.
  */
 #include <stdio.h>
+#include <stdlib.h>
 #include <libintl.h>
 #include <libxml/parser.h>
 #include <glib.h>

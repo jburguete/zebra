@@ -1,2 +1,2 @@
 <?xml version="1.0"?>
-<network epanet="template.inp"/>
+<network cell-size="1" epanet="template.inp"/>

@@ -27,4 +27,8 @@ typedef struct
   unsigned int id;              ///< identifier.
 } Pipe;
 
+void pipe_null (Pipe * pipe);
+void pipe_destroy (Pipe * pipe);
+void pipe_create_mesh (Pipe * pipe, double cell_size);
+
 #endif

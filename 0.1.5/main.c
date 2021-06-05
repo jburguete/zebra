@@ -7,7 +7,6 @@
 #include <stdio.h>
 #include <locale.h>
 #include <libintl.h>
-#include <math.h>
 #include <libxml/parser.h>
 #include <glib.h>
 #include "config.h"
@@ -19,7 +18,6 @@
 #include "pipe.h"
 #include "junction.h"
 #include "inlet.h"
-#include "outlet.h"
 #include "network.h"
 
 ///> enum to define the error code.

@@ -9,17 +9,21 @@
 
 // debug macros
 
+#define DEBUG_CELL 1            ///< macro to debug the cell functions.
 #define DEBUG_INLET 1           ///< macro to debug the inlet functions.
+#define DEBUG_JUNCTION 1        ///< macro to debug the junction functions.
 #define DEBUG_MAIN 1            ///< macro to debug the main functions.
 #define DEBUG_NUTRIENT 1        ///< macro to debug the nutrient functions.
 #define DEBUG_NETWORK 1         ///< macro to debug the network functions.
-#define DEBUG_OUTLET 1          ///< macro to debug the outlet functions.
+#define DEBUG_PIPE 1            ///< macro to debug the pipe functions.
 #define DEBUG_SPECIES 1         ///< macro to debug the species functions.
 
 // general macros
 
 #define BUFFER_SIZE 512         ///< size of string buffers.
 #define LOCALES_DIR "locales"   ///< locale strings directory.
+#define MAX_NUTRIENTS 1         ///< maximum number of nutrients.
+#define MAX_SPECIES 1           ///< maximum number of species.
 #define PIPE_LENGTHS_SAVE 1
 ///< macro to save the pipe lengths on a log file.
 #define PIPE_LENGTHS_FILE "pipe-lengths.log"
@@ -42,6 +46,8 @@
 
 // XML labels
 
+#define XML_CELL_SIZE           (const xmlChar *) "cell-size"
+///< cell-size XML label.
 #define XML_CLING               (const xmlChar *) "cling"
 ///< cling XML label.
 #define XML_CONCENTRATION       (const xmlChar *) "concentration"
@@ -50,8 +56,6 @@
 ///< coordinates XML label.
 #define XML_DECAY               (const xmlChar *) "decay"
 ///< decay XML label.
-#define XML_DISCHARGE           (const xmlChar *) "discharge"
-///< discharge XML label.
 #define XML_EAT                 (const xmlChar *) "eat"
 ///< eat XML label.
 #define XML_EPANET              (const xmlChar *) "epanet"
@@ -70,8 +74,6 @@
 ///< network XML label.
 #define XML_NUTRIENT            (const xmlChar *) "nutrient"
 ///< nutrient XML label.
-#define XML_OUTLET              (const xmlChar *) "outlet"
-///< outlet XML label.
 #define XML_PIPE_LENGTH         (const xmlChar *) "pipe-length"
 ///< pipe-length XML label.
 #define XML_SPECIES             (const xmlChar *) "species"
