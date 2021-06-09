@@ -23,6 +23,8 @@ typedef struct
   double size;                  ///< longitudinal size.
   double distance;              ///< longitudinal distance to the next cell.
   double area;                  ///< cross sectional area.
+  double perimeter;             ///< cross sectional perimeter.
+  double volume;                ///< volume.
   double velocity;              ///< flow velocity.
   double discharge;             ///< flow discharge.
   double dispersion;            ///< water dispersion coefficient.
@@ -32,6 +34,8 @@ typedef struct
 
 extern double time_step;
 
-void cell_init (Cell * cell);
+void cell_init (Cell * cell, double position, double distance, double size,
+                double area, double perimeter);
+void cell_set_flow (Cell * cell, double discharge, double velocity);
 
 #endif

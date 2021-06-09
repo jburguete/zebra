@@ -25,10 +25,15 @@ typedef struct
   double velocity;              ///< current flow velocity.
   unsigned int ncells;          ///< number of node cells.
   unsigned int id;              ///< identifier.
+  unsigned int inlet_id;        ///< inlet node identifier.
+  unsigned int outlet_id;       ///< outlet node identifier.
 } Pipe;
 
 void pipe_null (Pipe * pipe);
 void pipe_destroy (Pipe * pipe);
 void pipe_create_mesh (Pipe * pipe, double cell_size);
+void pipe_set_discharge (Pipe * pipe, double discharge);
+void pipe_set_velocity (Pipe * pipe, double velocity);
+Cell *pipe_node_cell (Pipe * pipe, unsigned int id);
 
 #endif

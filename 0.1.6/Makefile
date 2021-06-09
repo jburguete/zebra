@@ -10,7 +10,8 @@ obj = tools.o nutrient.o species.o cell.o pipe.o inlet.o junction.o network.o \
 	main.o
 cfg = tools.h config.h Makefile
 spe = species.h nutrient.h $(cfg)
-net = network.h inlet.h junction.h pipe.h cell.h point.h $(spe)
+pip = pipe.h cell.h point.h $(spe)
+net = network.h inlet.h junction.h $(pip)
 libs = libxml-2.0 glib-2.0
 
 CC = gcc
@@ -34,13 +35,13 @@ species.o: species.c $(spe)
 cell.o: cell.c cell.h point.h $(spe)
 	$(CC) $(CFLAGS) cell.c -o cell.o
 
-pipe.o: pipe.c pipe.h cell.h point.h $(cfg)
+pipe.o: pipe.c $(pip)
 	$(CC) $(CFLAGS) pipe.c -o pipe.o
 
-inlet.o: inlet.c inlet.h $(spe)
+inlet.o: inlet.c inlet.h $(pip)
 	$(CC) $(CFLAGS) inlet.c -o inlet.o
 
-junction.o: junction.c junction.h pipe.h cell.h point.h $(cfg)
+junction.o: junction.c junction.h $(pip)
 	$(CC) $(CFLAGS) junction.c -o junction.o
 
 network.o: network.c $(net)

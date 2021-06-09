@@ -12,6 +12,7 @@
 extern char *error_msg;
 
 void error_message (const char *label, char *msg);
+double read_time (FILE * file, int *error);
 unsigned int xml_node_get_uint (xmlNode * node, const xmlChar * prop,
                                 int *error);
 double xml_node_get_float (xmlNode * node, const xmlChar * prop, int *error);

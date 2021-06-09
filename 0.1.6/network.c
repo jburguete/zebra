@@ -43,6 +43,8 @@ network_null (Network * network)        ///< pointer to the network struct data.
   network->pipe = NULL;
   network->junction = NULL;
   network->inlet = NULL;
+  network->point_from_id = NULL;
+  network->pipe_from_id = NULL;
   network->npoints = network->npipes = network->njunctions = network->ninlets
     = 0;
 #if DEBUG_NETWORK
@@ -60,6 +62,8 @@ network_destroy (Network * network)     ///< pointer to the network struct data.
 #if DEBUG_NETWORK
   fprintf (stderr, "network_destroy: start\n");
 #endif
+  free (network->pipe_from_id);
+  free (network->point_from_id);
   for (i = 0; i < network->ninlets; ++i)
     inlet_destroy (network->inlet + i);
   free (network->inlet);
@@ -104,6 +108,8 @@ pipe_net_copy (Pipe * pipe,     ///< pointer to the pipe struct data.
   fprintf (stderr, "pipe_net_copy: start\n");
 #endif
   pipe->id = net_pipe->id;
+  pipe->inlet_id = net_pipe->node1;
+  pipe->outlet_id = net_pipe->node2;
   pipe->diameter = net_pipe->diameter;
   pipe->roughness = net_pipe->roughness;
 #if DEBUG_NETWORK
@@ -328,13 +334,15 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
   maxid = 0;
   for (i = 0; i < nnodes; ++i)
     maxid = maxid > node[i].id ? maxid : node[i].id;
+  network->max_point_id = maxid;
 #if DEBUG_NETWORK
-  fprintf (stderr, "network_open_inp: maxid=%u\n", maxid);
+  fprintf (stderr, "network_open_inp: max_point_id=%u\n", maxid);
 #endif
-  pp = (Point **) malloc (maxid * sizeof (Point *));
-  se = (int *) malloc (maxid * sizeof (int));
-  pj = (Junction *) malloc (maxid * sizeof (Junction));
-  for (i = 0; i < maxid; ++i)
+  network->point_from_id = pp
+    = (Point **) malloc ((maxid + 1) * sizeof (Point *));
+  se = (int *) malloc ((maxid + 1) * sizeof (int));
+  pj = (Junction *) malloc ((maxid + 1) * sizeof (Junction));
+  for (i = 0; i <= maxid; ++i)
     {
       pp[i] = NULL;
       se[i] = 0;
@@ -445,7 +453,7 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
 #endif
       pipe_create_mesh (network->pipe + i, network->cell_size);
     }
-  for (i = 0; i < maxid; ++i)
+  for (i = 0; i <= maxid; ++i)
     if (pj[i].ninlets + pj[i].noutlets > 1)
       {
         j = network->njunctions;
@@ -462,6 +470,21 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
   fprintf (stderr, "network_open_inp: njunctions=%u\n", network->njunctions);
 #endif
 
+  // building array of pipes from identifiers
+  maxid = 0;
+  for (i = 0; i < npipes; ++i)
+    maxid = maxid > pipe[i].id ? maxid : pipe[i].id;
+  network->max_pipe_id = maxid;
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_open_inp: max_pipe_id=%u\n", maxid);
+#endif
+  network->pipe_from_id = (Pipe **) malloc ((maxid + 1) * sizeof (Pipe *));
+  for (i = 0; i <= maxid; ++i)
+    network->pipe_from_id[i] = NULL;
+  for (i = 0; i < npipes; ++i)
+    network->pipe_from_id[pipe[i].id] = network->pipe + i;
+
+  // success
   error_code = 1;
 
 exit_on_error:
@@ -469,7 +492,6 @@ exit_on_error:
   // free buffers memory
   free (pj);
   free (se);
-  free (pp);
   free (reservoir);
   free (pipe);
   free (junction);
@@ -484,6 +506,56 @@ exit_on_error:
   // end
 #if DEBUG_NETWORK
   fprintf (stderr, "network_open_inp: end\n");
+#endif
+  return error_code;
+}
+
+/**
+ * function to read an Epanet output file to set the pipe discharges.
+ * 
+ * \return 1 on success, 0 on error.
+ */
+static int
+network_open_out (Network * network,    ///< pointer to the network struct data.
+                  FILE * file)  ///< .OUT Epanet file.
+{
+  Pipe *pipe;
+  char *buffer = NULL;
+  double q;
+  size_t n = 0;
+  ssize_t r;
+  int error_code = 0;
+  unsigned int i, id;
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_open_out: start\n");
+#endif
+  do
+    {
+      r = getline (&buffer, &n, file);
+      if (r < 0)
+        goto exit_on_error;
+      if (!strncmp (buffer, PIPE_LINE, PIPE_LENGTH))
+        break;
+    }
+  while (1);
+  if (getline (&buffer, &n, file) < 0)
+    goto exit_on_error;
+  for (i = 0; i < network->npipes; ++i)
+    {
+      if (fscanf (file, "%u%lf%*f%*f%*f", &id, &q) != 2)
+        goto exit_on_error;
+      if (id > network->max_pipe_id)
+        goto exit_on_error;
+      pipe = network->pipe_from_id[id];
+      if (!pipe)
+        goto exit_on_error;
+      pipe_set_discharge (pipe, q);
+    }
+  error_code = 1;
+exit_on_error:
+  free (buffer);
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_open_out: end\n");
 #endif
   return error_code;
 }
@@ -584,7 +656,8 @@ network_open_xml (Network * network,    ///< pointer to the network struct data.
           network->inlet
             = (Inlet *) realloc (network->inlet,
                                  network->ninlets * sizeof (Inlet));
-          if (!inlet_open_xml (network->inlet + network->ninlets - 1, node))
+          if (!inlet_open_xml (network->inlet + network->ninlets - 1, node,
+                               network->pipe, network->npipes))
             {
               m = error_msg;
               goto exit_on_error;

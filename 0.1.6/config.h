@@ -22,8 +22,11 @@
 
 #define BUFFER_SIZE 512         ///< size of string buffers.
 #define LOCALES_DIR "locales"   ///< locale strings directory.
-#define MAX_NUTRIENTS 1         ///< maximum number of nutrients.
+#define MAX_NUTRIENTS 2         ///< maximum number of nutrients.
 #define MAX_SPECIES 1           ///< maximum number of species.
+#define PIPE_LINE "  Link                  L/s       m/s    /1000m          "
+///< pipe line of Epanet output file.
+#define PIPE_LENGTH 57          ///< length of the Epanet output file pipe line.
 #define PIPE_LENGTHS_SAVE 1
 ///< macro to save the pipe lengths on a log file.
 #define PIPE_LENGTHS_FILE "pipe-lengths.log"
@@ -72,6 +75,8 @@
 ///< name XML label.
 #define XML_NETWORK             (const xmlChar *) "network"
 ///< network XML label.
+#define XML_NODE                (const xmlChar *) "node"
+///< node XML label.
 #define XML_NUTRIENT            (const xmlChar *) "nutrient"
 ///< nutrient XML label.
 #define XML_PIPE_LENGTH         (const xmlChar *) "pipe-length"

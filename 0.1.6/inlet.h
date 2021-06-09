@@ -13,6 +13,7 @@
  */
 typedef struct
 {
+  Cell **cell;                  ///< array of pointers to cells.
   double **nutrient_concentration;
   ///< array of pointers to array of nutrient concentrations.
   double **nutrient_time;
@@ -23,10 +24,12 @@ typedef struct
   ///< array of pointers to array of species times.
   unsigned int *nnutrient_times;        ///< array of numbers of nutrient times.
   unsigned int *nspecies_times; ///< array of numbers of species times.
-  unsigned int id;              ///< identifier.
+  unsigned int id;              ///< node identifier.
+  unsigned int ncells;          ///< number of cells.
 } Inlet;
 
 void inlet_destroy (Inlet * inlet);
-int inlet_open_xml (Inlet * inlet, xmlNode * node);
+int inlet_open_xml (Inlet * inlet, xmlNode * node, Pipe * pipe,
+                    unsigned int npipes);
 
 #endif

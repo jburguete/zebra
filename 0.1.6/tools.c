@@ -28,6 +28,39 @@ error_message (const char *label,       ///< error label.
 }
 
 /**
+ * function to get a time in format "year month day hour minute seconds" from a
+ * file.
+ *
+ * \return time in seconds from 1970.
+ */
+double
+read_time (FILE * file,         ///< XML node struct.
+           int *error)          ///< error code (1 on success, 0 on error).
+{
+  struct tm t[1];
+  double sec = 0.;
+  time_t tt;
+  int e;
+  *error = 0;
+  e = fscanf (file, "%d%d%d%d%d%lg", &t->tm_year, &t->tm_mon, &t->tm_mday,
+              &t->tm_hour, &t->tm_min, &sec);
+  if (e == 6)
+    {
+      t->tm_year -= 1900;
+      --t->tm_mon;
+      t->tm_sec = 0;
+      t->tm_isdst = 0;
+      tt = mktime (t);
+      if (tt != -1)
+        {
+          *error = 1;
+          sec += tt;
+        }
+    }
+  return sec;
+}
+
+/**
  * function to get an unsigned integer number from a property of a XML node.
  *
  * \return unsigned integer number value.

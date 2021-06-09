@@ -13,6 +13,9 @@
 #include "tools.h"
 #include "nutrient.h"
 #include "species.h"
+#include "point.h"
+#include "cell.h"
+#include "pipe.h"
 #include "inlet.h"
 
 /**
@@ -33,9 +36,11 @@ inlet_null (Inlet * inlet)      ///< pointer to the inlet struct data.
 #if DEBUG_INLET
   fprintf (stderr, "inlet_null: start\n");
 #endif
+  inlet->cell = NULL;
   inlet->nutrient_concentration = inlet->nutrient_time
     = inlet->species_concentration = inlet->species_time = NULL;
   inlet->nnutrient_times = inlet->nspecies_times = NULL;
+  inlet->ncells = 0;
 #if DEBUG_INLET
   fprintf (stderr, "inlet_null: end\n");
 #endif
@@ -51,6 +56,7 @@ inlet_destroy (Inlet * inlet)   ///< pointer to the inlet struct data.
 #if DEBUG_INLET
   fprintf (stderr, "inlet_destroy: start\n");
 #endif
+  free (inlet->cell);
   if (inlet->nutrient_concentration)
     {
       for (i = 0; i < nnutrients; ++i)
@@ -83,27 +89,106 @@ inlet_destroy (Inlet * inlet)   ///< pointer to the inlet struct data.
 }
 
 /**
+ * function to read the inlet data on a text file.
+ *
+ * \return 1 on success, 0 on error.
+ */
+static int
+inlet_read_file (const char *name,      ///< file name.
+                 double **data, ///< pointer to the array of data.
+                 double **date, ///< pointer to the array of times.
+                 unsigned int *n)       ///< pointer to the number of data.
+{
+  FILE *file;
+  double t, c;
+  size_t size;
+  int e, error_code = 0;
+  unsigned int i;
+#if DEBUG_INLET
+  fprintf (stderr, "inlet_read_file: start\n");
+#endif
+  file = fopen (name, "r");
+  if (!file)
+    goto exit_on_error;
+  *n = 0;
+  do
+    {
+      t = read_time (file, &e);
+      if (!e)
+        break;
+      if (fscanf (file, "%lf", &c) != 1)
+        break;
+      i = *n;
+      if (i && t < *date[i - 1])
+        goto exit_on_error;
+      ++(*n);
+      size = (*n) * sizeof (double);
+      *data = (double *) realloc (*data, size);
+      *date = (double *) realloc (*date, size);
+      *date[i] = t;
+      *data[i] = c;
+    }
+  while (1);
+  if (!*n)
+    goto exit_on_error;
+  error_code = 1;
+exit_on_error:
+  if (file)
+    fclose (file);
+#if DEBUG_INLET
+  fprintf (stderr, "inlet_read_file: end\n");
+#endif
+  return error_code;
+}
+
+/**
  * function to read the inlet data on a XML node.
  *
- * \return 1 on succes, 0 on error.
+ * \return 1 on success, 0 on error.
  */
 int
 inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
-                xmlNode * node) ///< XML node.
+                xmlNode * node, ///< XML node.
+                Pipe * pipe,    ///< array of pointers to pipe struct data.
+                unsigned int npipes)    ///< number of pipes. 
 {
-  xmlNode *child;
+  Cell *cell;
   xmlChar *buffer;
   double **c, **t;
   unsigned int *n;
   const char *m;
   int e;
-  unsigned int i, nn;
+  unsigned int i;
 
   // start
 #if DEBUG_INLET
   fprintf (stderr, "inlet_open_xml: start\n");
 #endif
   inlet_null (inlet);
+
+  // setting up node
+  inlet->id = xml_node_get_uint (node, XML_NODE, &e);
+  if (!e)
+    {
+      m = _("Bad node identifier");
+      goto exit_on_error;
+    }
+  for (i = 0; i < npipes; ++i)
+    {
+      cell = pipe_node_cell (pipe + i, inlet->id);
+      if (cell)
+        {
+          ++inlet->ncells;
+          inlet->cell
+            = (Cell **) realloc (inlet->cell, inlet->ncells * sizeof (Cell *));
+          inlet->cell[inlet->ncells - 1] = cell;
+        }
+    }
+  if (!inlet->ncells)
+    {
+      m = _("The node is not assigned to a pipe");
+      goto exit_on_error;
+    }
 
   // allocating arrays
   inlet->nutrient_concentration = c
@@ -146,37 +231,13 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
               m = _("Unknown nutrient");
               goto exit_on_error;
             }
-          c = inlet->nutrient_concentration + i;
-          t = inlet->nutrient_time + i;
-          n = inlet->nnutrient_times + i;
-          for (child = node->children; child; child = child->next)
+          if (!inlet_read_file ((char *) buffer,
+                                inlet->nutrient_concentration + i,
+                                inlet->nutrient_time + i,
+                                inlet->nnutrient_times + i))
             {
-              if (xmlStrcmp (child->name, XML_NUTRIENT))
-                {
-                  m = _("Bad nutrient node");
-                  goto exit_on_error;
-                }
-              nn = *n;
-              ++(*n);
-              *c = realloc (*c, (*n) * sizeof (double));
-              *t = realloc (*t, (*n) * sizeof (double));
-              (*c)[nn] = xml_node_get_float (child, XML_CONCENTRATION, &e);
-              if (!e)
-                {
-                  m = _("Bad nutrient concentration");
-                  goto exit_on_error;
-                }
-              (*t)[nn] = xml_node_get_time (child, XML_TIME, &e);
-              if (!e)
-                {
-                  m = _("Bad nutrient time");
-                  goto exit_on_error;
-                }
-              if (nn && (*t)[nn] < (*t)[nn - 1])
-                {
-                  m = _("Bad nutrient times order");
-                  goto exit_on_error;
-                }
+              m = _("Bad nutrient input file");
+              goto exit_on_error;
             }
         }
       else if (!xmlStrcmp (node->name, XML_SPECIES))
@@ -194,37 +255,13 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
               m = _("Unknown species");
               goto exit_on_error;
             }
-          c = inlet->species_concentration + i;
-          t = inlet->species_time + i;
-          n = inlet->nspecies_times + i;
-          for (child = node->children; child; child = child->next)
+          if (!inlet_read_file ((char *) buffer,
+                                inlet->species_concentration + i,
+                                inlet->species_time + i,
+                                inlet->nspecies_times + i))
             {
-              if (xmlStrcmp (child->name, XML_SPECIES))
-                {
-                  m = _("Bad species node");
-                  goto exit_on_error;
-                }
-              nn = *n;
-              ++(*n);
-              *c = realloc (*c, (*n) * sizeof (double));
-              *t = realloc (*t, (*n) * sizeof (double));
-              (*c)[nn] = xml_node_get_float (child, XML_CONCENTRATION, &e);
-              if (!e)
-                {
-                  m = _("Bad species concentration");
-                  goto exit_on_error;
-                }
-              (*t)[nn] = xml_node_get_time (child, XML_TIME, &e);
-              if (!e)
-                {
-                  m = _("Bad species time");
-                  goto exit_on_error;
-                }
-              if (nn && (*t)[nn] < (*t)[nn - 1])
-                {
-                  m = _("Bad species times order");
-                  goto exit_on_error;
-                }
+              m = _("Bad species input file");
+              goto exit_on_error;
             }
         }
       else
