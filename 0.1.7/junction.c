@@ -11,6 +11,7 @@
 #include "tools.h"
 #include "point.h"
 #include "cell.h"
+#include "wall.h"
 #include "pipe.h"
 #include "junction.h"
 
@@ -45,8 +46,7 @@ junction_add_inlet (Junction * junction,
 #if DEBUG_JUNCTION
   fprintf (stderr, "junction_add_inlet: start\n");
 #endif
-  n = junction->ninlets;
-  ++junction->ninlets;
+  n = junction->ninlets++;
   junction->inlet
     = (Pipe **) realloc (junction->inlet, junction->ninlets * sizeof (Pipe *));
   junction->inlet[n] = pipe;
@@ -68,8 +68,7 @@ junction_add_outlet (Junction * junction,
 #if DEBUG_JUNCTION
   fprintf (stderr, "junction_add_outlet: start\n");
 #endif
-  n = junction->noutlets;
-  ++junction->noutlets;
+  n = junction->noutlets++;
   junction->outlet
     = (Pipe **) realloc (junction->outlet,
                          junction->noutlets * sizeof (Pipe *));

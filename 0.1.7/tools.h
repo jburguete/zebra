@@ -12,6 +12,8 @@
 extern char *error_msg;
 
 void error_message (const char *label, char *msg);
+unsigned int array_search (double t, double *x, unsigned int n);
+double array_interpolate (double t, double *x, double *y, unsigned int n);
 double read_time (FILE * file, int *error);
 unsigned int xml_node_get_uint (xmlNode * node, const xmlChar * prop,
                                 int *error);

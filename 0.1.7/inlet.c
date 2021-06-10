@@ -15,6 +15,7 @@
 #include "species.h"
 #include "point.h"
 #include "cell.h"
+#include "wall.h"
 #include "pipe.h"
 #include "inlet.h"
 
@@ -100,6 +101,7 @@ inlet_read_file (const char *name,      ///< file name.
                  unsigned int *n)       ///< pointer to the number of data.
 {
   FILE *file;
+  double *tt, *cc;
   double t, c;
   size_t size;
   int e, error_code = 0;
@@ -111,6 +113,7 @@ inlet_read_file (const char *name,      ///< file name.
   if (!file)
     goto exit_on_error;
   *n = 0;
+  tt = cc = NULL;
   do
     {
       t = read_time (file, &e);
@@ -119,16 +122,18 @@ inlet_read_file (const char *name,      ///< file name.
       if (fscanf (file, "%lf", &c) != 1)
         break;
       i = *n;
-      if (i && t < *date[i - 1])
+      if (i && t < tt[i - 1])
         goto exit_on_error;
       ++(*n);
       size = (*n) * sizeof (double);
-      *data = (double *) realloc (*data, size);
-      *date = (double *) realloc (*date, size);
-      *date[i] = t;
-      *data[i] = c;
+      cc = (double *) realloc (cc, size);
+      cc[i] = c;
+      tt = (double *) realloc (tt, size);
+      tt[i] = t;
     }
   while (1);
+  *data = cc;
+  *date = tt;
   if (!*n)
     goto exit_on_error;
   error_code = 1;
@@ -150,15 +155,17 @@ int
 inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
                 xmlNode * node, ///< XML node.
                 Pipe * pipe,    ///< array of pointers to pipe struct data.
-                unsigned int npipes)    ///< number of pipes. 
+                unsigned int npipes,    ///< number of pipes. 
+                char *directory)        ///< directory string.
 {
+  char name[512];
   Cell *cell;
   xmlChar *buffer;
   double **c, **t;
   unsigned int *n;
   const char *m;
   int e;
-  unsigned int i;
+  unsigned int i, j;
 
   // start
 #if DEBUG_INLET
@@ -178,10 +185,10 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
       cell = pipe_node_cell (pipe + i, inlet->id);
       if (cell)
         {
-          ++inlet->ncells;
+          j = inlet->ncells++;
           inlet->cell
             = (Cell **) realloc (inlet->cell, inlet->ncells * sizeof (Cell *));
-          inlet->cell[inlet->ncells - 1] = cell;
+          inlet->cell[j] = cell;
         }
     }
   if (!inlet->ncells)
@@ -231,7 +238,14 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
               m = _("Unknown nutrient");
               goto exit_on_error;
             }
-          if (!inlet_read_file ((char *) buffer,
+          buffer = xmlGetProp (node, XML_FILE);
+          if (!buffer)
+            {
+              m = _("No nutrient file");
+              goto exit_on_error;
+            }
+          snprintf (name, 512, "%s/%s", directory, (char *) buffer);
+          if (!inlet_read_file (name,
                                 inlet->nutrient_concentration + i,
                                 inlet->nutrient_time + i,
                                 inlet->nnutrient_times + i))
@@ -239,6 +253,7 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
               m = _("Bad nutrient input file");
               goto exit_on_error;
             }
+          xmlFree (buffer);
         }
       else if (!xmlStrcmp (node->name, XML_SPECIES))
         {
@@ -255,6 +270,12 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
               m = _("Unknown species");
               goto exit_on_error;
             }
+          buffer = xmlGetProp (node, XML_FILE);
+          if (!buffer)
+            {
+              m = _("No species file");
+              goto exit_on_error;
+            }
           if (!inlet_read_file ((char *) buffer,
                                 inlet->species_concentration + i,
                                 inlet->species_time + i,
@@ -263,6 +284,7 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
               m = _("Bad species input file");
               goto exit_on_error;
             }
+          xmlFree (buffer);
         }
       else
         {

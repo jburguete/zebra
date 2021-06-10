@@ -12,6 +12,7 @@
 #include "tools.h"
 #include "point.h"
 #include "cell.h"
+#include "wall.h"
 #include "pipe.h"
 
 /**
@@ -52,6 +53,7 @@ pipe_create_mesh (Pipe * pipe,  ///< pointer to the pipe struct data.
                   double cell_size)     ///< maximum cell size.
 {
   Cell *cell;
+  Wall *wall;
   double distance, size;
   unsigned int i, n;
 #if DEBUG_PIPE
@@ -61,15 +63,19 @@ pipe_create_mesh (Pipe * pipe,  ///< pointer to the pipe struct data.
   pipe->perimeter = 2. * M_PI * pipe->diameter;
   pipe->ncells = (unsigned int) ceil (pipe->length / cell_size);
   pipe->ncells = (2 > pipe->ncells) ? 2 : pipe->ncells;
-  n = pipe->ncells - 1;
+  pipe->nwalls = n = pipe->ncells - 1;
   distance = pipe->length / n;
   size = 0.5 * distance;
   pipe->cell = cell = (Cell *) malloc (pipe->ncells * sizeof (Cell));
+  pipe->wall = wall = (Wall *) malloc (n * sizeof (Wall));
   cell_init (cell, 0., distance, size, pipe->area, pipe->perimeter);
   for (i = 1; i < pipe->ncells - 1; ++i)
     cell_init (++cell, i * pipe->length / n, distance, distance, pipe->area,
                pipe->perimeter);
   cell_init (++cell, pipe->length, distance, size, pipe->area, pipe->perimeter);
+  cell = pipe->cell;
+  for (i = 0; i < pipe->nwalls; ++i, ++wall, ++cell)
+    wall_init (wall, cell, cell + 1);
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_create_mesh: end\n");
 #endif

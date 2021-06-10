@@ -28,6 +28,56 @@ error_message (const char *label,       ///< error label.
 }
 
 /**
+ * function to get the interval index of a value on an array.
+ *
+ * \return array interval index,
+ */
+unsigned int
+array_search (double t,         ///< value to find.
+              double *x,        ///< array.
+              unsigned int n)   ///< number of array elements.
+{
+  unsigned int i, i1, i2;
+  i1 = 1;
+  i2 = n - 1;
+  if (!i2 || t <= x[i1])
+    return 0;
+  --i2;
+  if (t >= x[i2])
+    return i2;
+  while (i2 - i1 > 1)
+    {
+      i = (i2 + i1) / 2;
+      if (t > x[i])
+        i1 = i;
+      else
+        i2 = i;
+    }
+  return i1;
+}
+
+/**
+ * function to get the interpolated y-coordinate on an array.
+ *
+ * \return interpolated y-coordinate.
+ */
+double
+array_interpolate (double t,    ///< x-coordinate to interpolate.
+                   double *x,   ///< array of x-coordinates.
+                   double *y,   ///< array of y-coordinates.
+                   unsigned int n)      ///< number of array elements.
+{
+  unsigned int i;
+  if (t <= x[0])
+    return y[0];
+  i = n - 1;
+  if (t >= x[i])
+    return y[i];
+  i = array_search (t, x, n);
+  return y[i] + (y[i + 1] - y[i]) * (t - x[i]) / (x[i + 1] - x[i]);
+}
+
+/**
  * function to get a time in format "year month day hour minute seconds" from a
  * file.
  *

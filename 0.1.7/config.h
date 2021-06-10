@@ -17,6 +17,7 @@
 #define DEBUG_NETWORK 1         ///< macro to debug the network functions.
 #define DEBUG_PIPE 1            ///< macro to debug the pipe functions.
 #define DEBUG_SPECIES 1         ///< macro to debug the species functions.
+#define DEBUG_WALL 1            ///< macro to debug the wall functions.
 
 // general macros
 
@@ -24,6 +25,7 @@
 #define LOCALES_DIR "locales"   ///< locale strings directory.
 #define MAX_NUTRIENTS 2         ///< maximum number of nutrients.
 #define MAX_SPECIES 1           ///< maximum number of species.
+#define NUMERICAL_ORDER 1       ///< accurate order of the numerical method.
 #define PIPE_LINE "  Link                  L/s       m/s    /1000m          "
 ///< pipe line of Epanet output file.
 #define PIPE_LENGTH 57          ///< length of the Epanet output file pipe line.
@@ -63,6 +65,8 @@
 ///< eat XML label.
 #define XML_EPANET              (const xmlChar *) "epanet"
 ///< epanet XML label.
+#define XML_FILE                (const xmlChar *) "file"
+///< file XML label.
 #define XML_GROW                (const xmlChar *) "grow"
 ///< grow XML label.
 #define XML_INLET               (const xmlChar *) "inlet"

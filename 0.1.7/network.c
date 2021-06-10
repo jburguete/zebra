@@ -16,6 +16,7 @@
 #include "species.h"
 #include "point.h"
 #include "cell.h"
+#include "wall.h"
 #include "pipe.h"
 #include "junction.h"
 #include "inlet.h"
@@ -199,7 +200,7 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
                   m = _("Bad Epanet coordinates section");
                   goto exit_on_error;
                 }
-              if (r <= 1 || *buffer == ';')
+              if (r <= 2 || *buffer == ';')
                 continue;
               if (*buffer == '[')
                 break;
@@ -228,14 +229,14 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
                   m = _("Bad Epanet junctions section");
                   goto exit_on_error;
                 }
-              if (r <= 1 || *buffer == ';')
+              if (r <= 2 || *buffer == ';')
                 continue;
               if (*buffer == '[')
                 break;
-              i = njunctions;
-              ++njunctions;
+              i = njunctions++;
               junction = (NetJunction *)
                 realloc (junction, njunctions * sizeof (NetJunction));
+              printf ("njunctions=%u r=%ld\n", njunctions, r);
               e = sscanf (buffer, "%u%lf%lf%*s", &junction[i].id,
                           &junction[i].elevation, &junction[i].demand);
               if (e < 3)
@@ -258,7 +259,7 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
                   m = _("Bad Epanet pipes section");
                   goto exit_on_error;
                 }
-              if (r <= 1 || *buffer == ';')
+              if (r <= 2 || *buffer == ';')
                 continue;
               if (*buffer == '[')
                 break;
@@ -288,7 +289,7 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
                   m = _("Bad Epanet reservoirs section");
                   goto exit_on_error;
                 }
-              if (r <= 1 || *buffer == ';')
+              if (r <= 2 || *buffer == ';')
                 continue;
               if (*buffer == '[')
                 break;
@@ -575,7 +576,7 @@ network_open_xml (Network * network,    ///< pointer to the network struct data.
   xmlChar *buffer;
   FILE *file;
   const char *m;
-  char *directory;
+  char *directory = NULL;
   int e;
 
   // start
@@ -633,7 +634,6 @@ network_open_xml (Network * network,    ///< pointer to the network struct data.
     }
   directory = g_path_get_dirname (file_name);
   snprintf (name, BUFFER_SIZE, "%s/%s", directory, (char *) buffer);
-  g_free (directory);
   xmlFree (buffer);
   file = fopen ((char *) name, "r");
   if (!file)
@@ -657,8 +657,9 @@ network_open_xml (Network * network,    ///< pointer to the network struct data.
             = (Inlet *) realloc (network->inlet,
                                  network->ninlets * sizeof (Inlet));
           if (!inlet_open_xml (network->inlet + network->ninlets - 1, node,
-                               network->pipe, network->npipes))
+                               network->pipe, network->npipes, directory))
             {
+              --network->ninlets;
               m = error_msg;
               goto exit_on_error;
             }
@@ -677,6 +678,7 @@ network_open_xml (Network * network,    ///< pointer to the network struct data.
     }
 
   // exit on success
+  g_free (directory);
 #if DEBUG_NETWORK
   fprintf (stderr, "network_open_xml: end\n");
 #endif
@@ -689,6 +691,7 @@ exit_on_error:
   network_error (m);
 
   // free memory on error
+  g_free (directory);
   network_destroy (network);
 
   // end

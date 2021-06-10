@@ -30,6 +30,6 @@ typedef struct
 
 void inlet_destroy (Inlet * inlet);
 int inlet_open_xml (Inlet * inlet, xmlNode * node, Pipe * pipe,
-                    unsigned int npipes);
+                    unsigned int npipes, char *directory);
 
 #endif

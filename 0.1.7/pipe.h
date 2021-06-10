@@ -16,6 +16,7 @@ typedef struct
   Point *inlet;                 ///< pointer to the inlet point.
   Point *outlet;                ///< pointer to the outlet point.
   Cell *cell;                   ///< array of node cells.
+  Wall *wall;                   ///< array of mesh walls.
   double length;                ///< length.
   double diameter;              ///< diameter.
   double area;                  ///< cross sectional area.
@@ -24,6 +25,7 @@ typedef struct
   double discharge;             ///< current discharge.
   double velocity;              ///< current flow velocity.
   unsigned int ncells;          ///< number of node cells.
+  unsigned int nwalls;          ///< number of mesh walls.
   unsigned int id;              ///< identifier.
   unsigned int inlet_id;        ///< inlet node identifier.
   unsigned int outlet_id;       ///< outlet node identifier.

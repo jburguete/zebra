@@ -15,6 +15,7 @@
 #include "species.h"
 #include "point.h"
 #include "cell.h"
+#include "wall.h"
 #include "pipe.h"
 #include "junction.h"
 #include "inlet.h"
