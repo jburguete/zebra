@@ -16,12 +16,14 @@
 #define DEBUG_NUTRIENT 1        ///< macro to debug the nutrient functions.
 #define DEBUG_NETWORK 1         ///< macro to debug the network functions.
 #define DEBUG_PIPE 1            ///< macro to debug the pipe functions.
+#define DEBUG_SIMULATION 1      ///< macro to debug the simulation functions.
 #define DEBUG_SPECIES 1         ///< macro to debug the species functions.
 #define DEBUG_WALL 1            ///< macro to debug the wall functions.
 
 // general macros
 
 #define BUFFER_SIZE 512         ///< size of string buffers.
+#define DEFAULT_CFL 0.9         ///< default CFL value.
 #define LOCALES_DIR "locales"   ///< locale strings directory.
 #define MAX_NUTRIENTS 2         ///< maximum number of nutrients.
 #define MAX_SPECIES 1           ///< maximum number of species.
@@ -53,6 +55,8 @@
 
 #define XML_CELL_SIZE           (const xmlChar *) "cell-size"
 ///< cell-size XML label.
+#define XML_CFL                 (const xmlChar *) "cfl"
+///< cfl XML label.
 #define XML_CLING               (const xmlChar *) "cling"
 ///< cling XML label.
 #define XML_CONCENTRATION       (const xmlChar *) "concentration"
@@ -61,14 +65,20 @@
 ///< coordinates XML label.
 #define XML_DECAY               (const xmlChar *) "decay"
 ///< decay XML label.
+#define XML_DISCHARGES          (const xmlChar *) "discharges"
+///< discharges XML label.
 #define XML_EAT                 (const xmlChar *) "eat"
 ///< eat XML label.
 #define XML_EPANET              (const xmlChar *) "epanet"
 ///< epanet XML label.
 #define XML_FILE                (const xmlChar *) "file"
 ///< file XML label.
+#define XML_FINAL_TIME          (const xmlChar *) "final-time"
+///< final-time XML label.
 #define XML_GROW                (const xmlChar *) "grow"
 ///< grow XML label.
+#define XML_INITIAL_TIME        (const xmlChar *) "initial-time"
+///< initial-time XML label.
 #define XML_INLET               (const xmlChar *) "inlet"
 ///< inlet XML label.
 #define XML_LENGTH              (const xmlChar *) "length"
@@ -83,8 +93,12 @@
 ///< node XML label.
 #define XML_NUTRIENT            (const xmlChar *) "nutrient"
 ///< nutrient XML label.
+#define XML_NUTRIENTS           (const xmlChar *) "nutrients"
+///< nutrient XML label.
 #define XML_PIPE_LENGTH         (const xmlChar *) "pipe-length"
 ///< pipe-length XML label.
+#define XML_SIMULATION          (const xmlChar *) "simulation"
+///< simulation XML label.
 #define XML_SPECIES             (const xmlChar *) "species"
 ///< species XML label.
 #define XML_TIME                (const xmlChar *) "time"

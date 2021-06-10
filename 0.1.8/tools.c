@@ -78,10 +78,10 @@ array_interpolate (double t,    ///< x-coordinate to interpolate.
 }
 
 /**
- * function to get a time in format "year month day hour minute seconds" from a
+ * function to get a time in format "year month day hour minute seconds" since a
  * file.
  *
- * \return time in seconds from 1970.
+ * \return time in seconds since 1970.
  */
 double
 read_time (FILE * file,         ///< XML node struct.
@@ -180,7 +180,7 @@ xml_node_get_float_with_default (xmlNode * node,        ///< XML node struct.
  * function to get a time in format "year month day hour minute seconds" from a
  * property of a XML node.
  *
- * \return time in seconds from 1970.
+ * \return time in seconds since 1970.
  */
 double
 xml_node_get_time (xmlNode * node,      ///< XML node struct.

@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <libintl.h>
+#include <math.h>
 #include <libxml/parser.h>
 #include <glib.h>
 #include "config.h"
@@ -158,7 +159,7 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
                 unsigned int npipes,    ///< number of pipes. 
                 char *directory)        ///< directory string.
 {
-  char name[512];
+  char name[BUFFER_SIZE];
   Cell *cell;
   xmlChar *buffer;
   double **c, **t;
@@ -244,7 +245,7 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
               m = _("No nutrient file");
               goto exit_on_error;
             }
-          snprintf (name, 512, "%s/%s", directory, (char *) buffer);
+          snprintf (name, BUFFER_SIZE, "%s/%s", directory, (char *) buffer);
           if (!inlet_read_file (name,
                                 inlet->nutrient_concentration + i,
                                 inlet->nutrient_time + i,
@@ -276,7 +277,8 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
               m = _("No species file");
               goto exit_on_error;
             }
-          if (!inlet_read_file ((char *) buffer,
+          snprintf (name, BUFFER_SIZE, "%s/%s", directory, (char *) buffer);
+          if (!inlet_read_file (name,
                                 inlet->species_concentration + i,
                                 inlet->species_time + i,
                                 inlet->nspecies_times + i))
@@ -313,4 +315,50 @@ exit_on_error:
   fprintf (stderr, "inlet_open_xml: end\n");
 #endif
   return 0;
+}
+
+/**
+ * function to calculate the maximum time allowed by an inlet.
+ *
+ * \return maximum allowed time in seconds since 1970.
+ */
+double
+inlet_maximum_time (Inlet * inlet,      ///< pointer to the inlet struct data.
+                    double maximum_time)
+                    ///< maximum allowed time in seconds since 1970.
+{
+  double *date;
+  double t;
+  unsigned int j, k, last, n;
+#if DEBUG_INLET
+  fprintf (stderr, "inlet_maximum_time: start\n");
+#endif
+  t = maximum_time;
+  for (j = 0; j < nnutrients; ++j)
+    {
+      date = inlet->nutrient_time[j];
+      n = inlet->nnutrient_times[j];
+      last = n - 1;
+      if (current_time >= date[last])
+        continue;
+      k = array_search (current_time, date, n);
+      if (k < last)
+        t = fmin (t, date[k + 1]);
+    }
+  for (j = 0; j < nspecies; ++j)
+    {
+      date = inlet->species_time[j];
+      n = inlet->nspecies_times[j];
+      last = n - 1;
+      if (current_time >= date[last])
+        continue;
+      k = array_search (current_time, date, n);
+      if (k < last)
+        t = fmin (t, date[k + 1]);
+    }
+#if DEBUG_INLET
+  fprintf (stderr, "inlet_maximum_time: t=%lg\n", t);
+  fprintf (stderr, "inlet_maximum_time: end\n");
+#endif
+  return t;
 }

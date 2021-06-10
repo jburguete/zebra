@@ -32,6 +32,8 @@ typedef struct
   double friction;              ///< friction factor.
 } Cell;
 
+extern double current_time;
+extern double next_time;
 extern double time_step;
 
 void cell_init (Cell * cell, double position, double distance, double size,

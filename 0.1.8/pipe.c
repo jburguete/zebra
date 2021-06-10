@@ -143,3 +143,24 @@ pipe_node_cell (Pipe * pipe,    ///< pointer to the pipe struct data.
 #endif
   return cell;
 }
+
+/**
+ * function to return the maximum next time allowed by a pipe.
+ *
+ * \return maximum time in seconds since 1970.
+ */
+double
+pipe_maximum_time (Pipe * pipe, ///< pointer to the pipe struct data.
+                   double cfl)  ///< CFL number.
+{
+  double t;
+#if DEBUG_PIPE
+  fprintf (stderr, "pipe_maximum_time: start\n");
+#endif
+  t = current_time + cfl * pipe->cell->size / fabs (pipe->velocity);
+#if DEBUG_PIPE
+  fprintf (stderr, "pipe_maximum_time: t=%lg\n", t);
+  fprintf (stderr, "pipe_maximum_time: end\n");
+#endif
+  return t;
+}

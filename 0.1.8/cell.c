@@ -13,6 +13,8 @@
 #include "point.h"
 #include "cell.h"
 
+double current_time;            ///< current time.
+double next_time;               ///< next time.
 double time_step;               ///< time step size.
 
 /**

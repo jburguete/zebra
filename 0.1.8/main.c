@@ -20,15 +20,14 @@
 #include "junction.h"
 #include "inlet.h"
 #include "network.h"
+#include "simulation.h"
 
 ///> enum to define the error code.
 enum ErrorCode
 {
   ERROR_CODE_NONE,              ///< none.
   ERROR_CODE_ARGUMENTS_NUMBER,  ///< bad command line arguments number.
-  ERROR_CODE_NUTRIENT,          ///< bad nutrients input file.
-  ERROR_CODE_SPECIES,           ///< bad species input file.
-  ERROR_CODE_NETWORK,           ///< bad network input file.
+  ERROR_CODE_SIMULATION,        ///< bad simulation input file.
 };
 
 /**
@@ -40,7 +39,7 @@ int
 main (int argn,                 ///< number of command line arguments.
       char **argc)              ///< array of command line argument strings.
 {
-  Network network[1];
+  Simulation simulation[1];
   int error_code = ERROR_CODE_NONE;
 
 #if DEBUG_MAIN
@@ -58,51 +57,28 @@ main (int argn,                 ///< number of command line arguments.
   textdomain (PROGRAM_NAME);
   xmlKeepBlanksDefault (0);
 
-  // init variables
-  network_null (network);
-
   // check arguments
 #if DEBUG_MAIN
   fprintf (stderr, "main: start\n");
 #endif
-  if (argn != 4)
+  if (argn != 2)
     {
       error_code = ERROR_CODE_ARGUMENTS_NUMBER;
       error_msg
-        = (char *) g_strdup (_("The syntax is:\n./zebra "
-                               "nutrients_file species_file network_file"));
+        = (char *) g_strdup (_("The syntax is:\n./zebra simulation_file"));
       goto exit_on_error;
     }
 
-  // open nutrients
+  // open simulation
 #if DEBUG_MAIN
-  fprintf (stderr, "main: open nutrients\n");
+  fprintf (stderr, "main: open simulation\n");
 #endif
-  if (!nutrient_open_xml (argc[1]))
+  if (!simulation_open_xml (simulation, argc[1]))
     {
-      error_code = ERROR_CODE_NUTRIENT;
+      error_code = ERROR_CODE_SIMULATION;
       goto exit_on_error;
     }
-
-  // open species
-#if DEBUG_MAIN
-  fprintf (stderr, "main: open species\n");
-#endif
-  if (!species_open_xml (argc[2]))
-    {
-      error_code = ERROR_CODE_SPECIES;
-      goto exit_on_error;
-    }
-
-  // open network
-#if DEBUG_MAIN
-  fprintf (stderr, "main: open network\n");
-#endif
-  if (!network_open_xml (network, argc[3]))
-    {
-      error_code = ERROR_CODE_NETWORK;
-      goto exit_on_error;
-    }
+  simulation_run (simulation);
 
   // error code
 exit_on_error:
@@ -116,9 +92,7 @@ exit_on_error:
 #if DEBUG_MAIN
   fprintf (stderr, "main: free memory\n");
 #endif
-  network_destroy (network);
-  species_destroy ();
-  nutrient_destroy ();
+  simulation_destroy (simulation);
 
   // end
 #if DEBUG_MAIN

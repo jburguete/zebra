@@ -61,11 +61,23 @@ typedef struct
 } NetReservoir;
 
 /**
+ * \struct NetDischarges
+ * \brief struct to define a set of network discharges.
+ */
+typedef struct
+{
+  Pipe **pipe;                  ///< array of pipe struct data pointers;
+  double *discharge;            ///< array of pipe discharges;
+  double date;                  ///< time in seconds since 1970.
+} NetDischarges;
+
+/**
  * \struct Network
  * \brief struct to define a network.
  */
 typedef struct
 {
+  NetDischarges *discharges;    ///< array of discharges sets.
   Point *point;                 ///< array of points.
   Pipe *pipe;                   ///< array of pipes.
   Junction *junction;           ///< array of junctions.
@@ -73,19 +85,23 @@ typedef struct
   Point **point_from_id;
   ///< array of point pointers from identifiers. 
   Pipe **pipe_from_id;
-  ///< array of pipe pointers from identifiers. 
+  ///< array of pipe pointers from identifiers.
   double cell_size;             ///< cell size.
   unsigned int npoints;         ///< number of points.
   unsigned int npipes;          ///< number of pipes.
   unsigned int njunctions;      ///< number of junctions.
   unsigned int ninlets;         ///< number of inlets.
+  unsigned int ndischarges;     ///< number of discharges sets.
   unsigned int pipe_length;     ///< type of pipe length model.
   unsigned int max_point_id;    ///< maximum point identifier.
   unsigned int max_pipe_id;     ///< maximum pipe identifier.
+  unsigned int current_discharges;      ///< current discharges set index.
 } Network;
 
 void network_null (Network * network);
 void network_destroy (Network * network);
-int network_open_xml (Network * network, char *file_name);
+int network_open_xml (Network * network, char *directory, char *file_name);
+void network_update_discharges (Network * network);
+double network_maximum_time (Network * network, double final_time, double cfl);
 
 #endif

@@ -37,5 +37,6 @@ void pipe_create_mesh (Pipe * pipe, double cell_size);
 void pipe_set_discharge (Pipe * pipe, double discharge);
 void pipe_set_velocity (Pipe * pipe, double velocity);
 Cell *pipe_node_cell (Pipe * pipe, unsigned int id);
+double pipe_maximum_time (Pipe * pipe, double cfl);
 
 #endif
