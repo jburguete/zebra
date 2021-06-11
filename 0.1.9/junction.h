@@ -21,6 +21,7 @@ typedef struct
 } Junction;
 
 void junction_null (Junction * junction);
+void junction_destroy (Junction * junction);
 void junction_add_inlet (Junction * junction, Pipe * pipe);
 void junction_add_outlet (Junction * junction, Pipe * pipe);
 

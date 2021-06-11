@@ -61,6 +61,7 @@ simulation_open_xml (Simulation * simulation,
                      char *file_name)   ///< simulation configuration file name.
 {
   char name[BUFFER_SIZE];
+  Network *network;
   xmlDoc *doc;
   xmlNode *node;
   xmlChar *buffer;
@@ -71,7 +72,10 @@ simulation_open_xml (Simulation * simulation,
 #if DEBUG_SIMULATION
   fprintf (stderr, "simulation_open_xml: start\n");
 #endif
-  network_null (simulation->network);
+
+  // init variables
+  network = simulation->network;
+  network_null (network);
 
   // open file
   directory = g_path_get_dirname (file_name);
@@ -94,6 +98,8 @@ simulation_open_xml (Simulation * simulation,
       m = _("Bad root XML node");
       goto exit_on_error;
     }
+
+  // reading properties
   simulation->initial_time = xml_node_get_time (node, XML_INITIAL_TIME, &e);
   if (!e)
     {
@@ -108,6 +114,12 @@ simulation_open_xml (Simulation * simulation,
     }
   simulation->cfl
     = xml_node_get_float_with_default (node, XML_CFL, &e, DEFAULT_CFL);
+  network->cell_size = xml_node_get_float (node, XML_CELL_SIZE, &e);
+  if (!e)
+    {
+      m = _("Bad cell size");
+      goto exit_on_error;
+    }
 
   // open nutrients
 #if DEBUG_SIMULATION
@@ -155,7 +167,7 @@ simulation_open_xml (Simulation * simulation,
       m = _("No network file");
       goto exit_on_error;
     }
-  if (!network_open_xml (simulation->network, directory, (char *) buffer))
+  if (!network_open_xml (network, directory, (char *) buffer))
     {
       m = error_msg;
       goto exit_on_error;
@@ -164,6 +176,7 @@ simulation_open_xml (Simulation * simulation,
   // free memory
   xmlFree (buffer);
   g_free (directory);
+  xmlFreeDoc (doc);
 
 #if DEBUG_SIMULATION
   fprintf (stderr, "simulation_open_xml: end\n");
@@ -178,6 +191,7 @@ exit_on_error:
   // free memory
   xmlFree (buffer);
   g_free (directory);
+  xmlFreeDoc (doc);
 
 #if DEBUG_SIMULATION
   fprintf (stderr, "simulation_open_xml: end\n");
@@ -199,6 +213,7 @@ simulation_run (Simulation * simulation)
   network = simulation->network;
   final_time = simulation->final_time;
   cfl = simulation->cfl;
+  network_set_discharges (network);
   for (current_time = simulation->initial_time; current_time < final_time;
        current_time = next_time)
     {
@@ -206,9 +221,8 @@ simulation_run (Simulation * simulation)
       next_time = network_maximum_time (network, final_time, cfl);
       time_step = next_time - current_time;
 #if DEBUG_SIMULATION
-      fprintf (stderr,
-               "simulation_run: current_time=%lg next_time=%lg time_step=%lg\n",
-               current_time, next_time, time_step);
+      fprintf (stderr, "simulation_run: current_time=%.14lg next_time=%.14lg "
+               "time_step=%lg\n", current_time, next_time, time_step);
 #endif
     }
 #if DEBUG_SIMULATION

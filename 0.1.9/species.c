@@ -145,6 +145,8 @@ species_open_xml (char *file_name)      ///< input file name.
       goto exit_on_error;
     }
 
+  xmlFreeDoc (doc);
+
   // exit on success
 #if DEBUG_SPECIES
   fprintf (stderr, "species_open_xml: end\n");
@@ -158,6 +160,7 @@ exit_on_error:
   species_error (m);
 
   // free memory on error
+  xmlFreeDoc (doc);
   species_destroy ();
 
   // end

@@ -40,7 +40,7 @@ array_search (double t,         ///< value to find.
   unsigned int i, i1, i2;
   i1 = 1;
   i2 = n - 1;
-  if (!i2 || t <= x[i1])
+  if (!i2 || t < x[i1])
     return 0;
   --i2;
   if (t >= x[i2])

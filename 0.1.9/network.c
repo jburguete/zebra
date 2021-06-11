@@ -24,25 +24,37 @@
 #include "network.h"
 
 /**
- * function to free the memory used by a network discharges struct.
- */
-static inline void
-net_discharges_destroy (NetDischarges * discharges)
-                        ///< pointer to the network discharges struct data.
-{
-  free (discharges->discharge);
-  free (discharges->pipe);
-}
-
-/**
  * function to init the pointers of a network discharges struct.
  */
 static inline void
 net_discharges_null (NetDischarges * discharges)
                      ///< pointer to the network discharges struct data.
 {
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_discharges_null: start\n");
+#endif
   discharges->pipe = NULL;
   discharges->discharge = NULL;
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_discharges_null: end\n");
+#endif
+}
+
+/**
+ * function to free the memory used by a network discharges struct.
+ */
+static inline void
+net_discharges_destroy (NetDischarges * discharges)
+                        ///< pointer to the network discharges struct data.
+{
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_discharges_destroy: start\n");
+#endif
+  free (discharges->discharge);
+  free (discharges->pipe);
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_discharges_destroy: end\n");
+#endif
 }
 
 /**
@@ -95,6 +107,8 @@ network_destroy (Network * network)     ///< pointer to the network struct data.
   for (i = 0; i < network->ninlets; ++i)
     inlet_destroy (network->inlet + i);
   free (network->inlet);
+  for (i = 0; i < network->njunctions; ++i)
+    junction_destroy (network->junction + i);
   free (network->junction);
   for (i = 0; i < network->npipes; ++i)
     pipe_destroy (network->pipe + i);
@@ -170,7 +184,7 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
   size_t n;
   ssize_t r;
   int e, error_code = 0;
-  unsigned int i, j, id, maxid, nnodes, njunctions, npipes, nreservoirs;
+  unsigned int i, j, k, id, maxid, nnodes, njunctions, npipes, nreservoirs;
 
 #if DEBUG_NETWORK
   fprintf (stderr, "network_open_inp: start\n");
@@ -270,6 +284,8 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
                   m = _("Bad Epanet junctions section");
                   goto exit_on_error;
                 }
+              // Epanet demand is in L/s
+              junction[i].demand *= 0.001;
             }
           while (1);
         }
@@ -300,6 +316,8 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
                   m = _("Bad Epanet pipes section");
                   goto exit_on_error;
                 }
+              // Epanet diameter is in mm
+              pipe[i].diameter *= 0.001;
             }
           while (1);
         }
@@ -481,15 +499,20 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
       pipe_create_mesh (network->pipe + i, network->cell_size);
     }
   for (i = 0; i <= maxid; ++i)
-    if (pj[i].ninlets + pj[i].noutlets > 1)
-      {
-        j = network->njunctions;
-        ++network->njunctions;
-        network->junction
-          = (Junction *) realloc (network->junction,
-                                  network->njunctions * sizeof (Junction));
-        memcpy (network->junction + j, pj + i, sizeof (Junction));
-      }
+    {
+      k = pj[i].ninlets + pj[i].noutlets;
+      if (k > 1)
+        {
+          j = network->njunctions;
+          ++network->njunctions;
+          network->junction
+            = (Junction *) realloc (network->junction,
+                                    network->njunctions * sizeof (Junction));
+          memcpy (network->junction + j, pj + i, sizeof (Junction));
+        }
+      else if (k == 1)
+        junction_destroy (pj + i);
+    }
 #if PIPE_LENGTHS_SAVE
   fclose (file_log);
 #endif
@@ -590,7 +613,7 @@ network_open_out (Network * network,    ///< pointer to the network struct data.
         goto exit_on_error;
       set[id] = 1;
       discharges->pipe[i] = pipe;
-      discharges->discharge[i] = q;
+      discharges->discharge[i] = q * 0.001;
     }
   error_code = 1;
 exit_on_error:
@@ -650,13 +673,6 @@ network_open_xml (Network * network,    ///< pointer to the network struct data.
       goto exit_on_error;
     }
 
-  // setting properties
-  network->cell_size = xml_node_get_float (node, XML_CELL_SIZE, &e);
-  if (!e)
-    {
-      m = _("Bad cell size");
-      goto exit_on_error;
-    }
   // reading Epanet file
   buffer = xmlGetProp (node, XML_PIPE_LENGTH);
   if (!buffer || !xmlStrcmp (buffer, XML_COORDINATES))
@@ -760,6 +776,7 @@ network_open_xml (Network * network,    ///< pointer to the network struct data.
       m = _("No discharges");
       goto exit_on_error;
     }
+  xmlFreeDoc (doc);
 
   // exit on success
 #if DEBUG_NETWORK
@@ -774,6 +791,7 @@ exit_on_error:
   network_error (m);
 
   // free memory on error
+  xmlFreeDoc (doc);
   network_destroy (network);
 
   // end
@@ -786,7 +804,7 @@ exit_on_error:
 /**
  * function to set the discharges on a network.
  */
-static inline void
+void
 network_set_discharges (Network * network)
                         ///< pointer to the network struct data.
 {
@@ -811,7 +829,7 @@ network_update_discharges (Network * network)
                            ///< pointer to the network struct data.
 {
   NetDischarges *discharges;
-  unsigned int last;
+  unsigned int i, last;
 #if DEBUG_NETWORK
   fprintf (stderr, "network_update_discharges: start\n");
 #endif
@@ -821,13 +839,16 @@ network_update_discharges (Network * network)
   fprintf (stderr, "network_update_discharges: current=%u last=%u\n",
            network->current_discharges, last);
 #endif
+  i = 0;
   while (network->current_discharges < last
          && current_time >= discharges[1].date)
     {
       ++network->current_discharges;
       ++discharges;
+      ++i;
     }
-  network_set_discharges (network);
+  if (i)
+    network_set_discharges (network);
 #if DEBUG_NETWORK
   fprintf (stderr, "network_update_discharges: end\n");
 #endif
@@ -856,13 +877,19 @@ network_maximum_time (Network * network,
   pipe = network->pipe;
   for (i = 0; i < network->npipes; ++i)
     t = fmin (t, pipe_maximum_time (pipe + i, cfl));
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_maximum_time: t=%.14lg\n", t);
+#endif
   if (network->current_discharges < network->ndischarges - 1)
     t = fmin (t, network->discharges[network->current_discharges + 1].date);
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_maximum_time: t=%.14lg\n", t);
+#endif
   inlet = network->inlet;
   for (i = 0; i < network->ninlets; ++i)
     t = inlet_maximum_time (inlet + i, t);
 #if DEBUG_NETWORK
-  fprintf (stderr, "network_maximum_time: t=%lg\n", t);
+  fprintf (stderr, "network_maximum_time: t=%.14lg\n", t);
   fprintf (stderr, "network_maximum_time: end\n");
 #endif
   return t;

@@ -101,6 +101,7 @@ typedef struct
 void network_null (Network * network);
 void network_destroy (Network * network);
 int network_open_xml (Network * network, char *directory, char *file_name);
+void network_set_discharges (Network * network);
 void network_update_discharges (Network * network);
 double network_maximum_time (Network * network, double final_time, double cfl);
 

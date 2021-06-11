@@ -39,6 +39,7 @@ pipe_destroy (Pipe * pipe)      ///< pointer to the pipe struct data.
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_destroy: start\n");
 #endif
+  free (pipe->wall);
   free (pipe->cell);
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_destroy: end\n");
@@ -59,8 +60,8 @@ pipe_create_mesh (Pipe * pipe,  ///< pointer to the pipe struct data.
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_create_mesh: start\n");
 #endif
-  pipe->area = M_PI * pipe->diameter * pipe->diameter;
-  pipe->perimeter = 2. * M_PI * pipe->diameter;
+  pipe->area = 0.25 * M_PI * pipe->diameter * pipe->diameter;
+  pipe->perimeter = M_PI * pipe->diameter;
   pipe->ncells = (unsigned int) ceil (pipe->length / cell_size);
   pipe->ncells = (2 > pipe->ncells) ? 2 : pipe->ncells;
   pipe->nwalls = n = pipe->ncells - 1;
@@ -153,13 +154,14 @@ double
 pipe_maximum_time (Pipe * pipe, ///< pointer to the pipe struct data.
                    double cfl)  ///< CFL number.
 {
-  double t;
+  double t, v;
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_maximum_time: start\n");
 #endif
-  t = current_time + cfl * pipe->cell->size / fabs (pipe->velocity);
+  v = fabs (pipe->velocity);
+  t = current_time + cfl * pipe->cell->size / v;
 #if DEBUG_PIPE
-  fprintf (stderr, "pipe_maximum_time: t=%lg\n", t);
+  fprintf (stderr, "pipe_maximum_time: t=%.14lg v=%lg\n", t, v);
   fprintf (stderr, "pipe_maximum_time: end\n");
 #endif
   return t;

@@ -114,6 +114,8 @@ nutrient_open_xml (char *file_name)     ///< input file name.
       goto exit_on_error;
     }
 
+  xmlFreeDoc (doc);
+
   // exit on success
 #if DEBUG_NUTRIENT
   fprintf (stderr, "nutrient_open_xml: end\n");
@@ -127,6 +129,7 @@ exit_on_error:
   nutrient_error (m);
 
   // free memory
+  xmlFreeDoc (doc);
   nutrient_destroy ();
 
   // end

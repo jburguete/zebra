@@ -34,6 +34,23 @@ junction_null (Junction * junction)
 }
 
 /**
+ * function to init an empty junction.
+ */
+void
+junction_destroy (Junction * junction)
+               ///< pointer to the junction struct data.
+{
+#if DEBUG_JUNCTION
+  fprintf (stderr, "junction_destroy: start\n");
+#endif
+  free (junction->outlet);
+  free (junction->inlet);
+#if DEBUG_JUNCTION
+  fprintf (stderr, "junction_destroy: end\n");
+#endif
+}
+
+/**
  * function to add an inlet pipe to a junction.
  */
 void
