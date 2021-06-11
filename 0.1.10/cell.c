@@ -56,11 +56,11 @@ cell_set_flow (Cell * cell,     ///< pointer to the cell struct data.
                double velocity) ///< flow velocity.
 {
 #if DEBUG_CELL
-  fprintf (stderr, "cell_set: start\n");
+  fprintf (stderr, "cell_set_flow: start\n");
 #endif
   cell->discharge = discharge;
   cell->velocity = velocity;
 #if DEBUG_CELL
-  fprintf (stderr, "cell_set: end\n");
+  fprintf (stderr, "cell_set_flow: end\n");
 #endif
 }

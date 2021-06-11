@@ -894,3 +894,23 @@ network_maximum_time (Network * network,
 #endif
   return t;
 }
+
+/**
+ * function to perform a numerical method step on a network.
+ */
+void
+network_step (Network * network)        ///< pointer to the network struct data.
+{
+  Pipe *pipe;
+  unsigned int i, n;
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_step: start\n");
+#endif
+  pipe = network->pipe;
+  n = network->npipes;
+  for (i = 0; i < n; ++i)
+    pipe_step (pipe);
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_step: end\n");
+#endif
+}

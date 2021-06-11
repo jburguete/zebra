@@ -55,13 +55,13 @@ pipe_create_mesh (Pipe * pipe,  ///< pointer to the pipe struct data.
 {
   Cell *cell;
   Wall *wall;
-  double distance, size;
+  double distance, size, area, perimeter;
   unsigned int i, n;
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_create_mesh: start\n");
 #endif
-  pipe->area = 0.25 * M_PI * pipe->diameter * pipe->diameter;
-  pipe->perimeter = M_PI * pipe->diameter;
+  pipe->perimeter = perimeter = M_PI * pipe->diameter;
+  pipe->area = area = 0.25 * perimeter * pipe->diameter;
   pipe->ncells = (unsigned int) ceil (pipe->length / cell_size);
   pipe->ncells = (2 > pipe->ncells) ? 2 : pipe->ncells;
   pipe->nwalls = n = pipe->ncells - 1;
@@ -71,12 +71,15 @@ pipe_create_mesh (Pipe * pipe,  ///< pointer to the pipe struct data.
   pipe->wall = wall = (Wall *) malloc (n * sizeof (Wall));
   cell_init (cell, 0., distance, size, pipe->area, pipe->perimeter);
   for (i = 1; i < pipe->ncells - 1; ++i)
-    cell_init (++cell, i * pipe->length / n, distance, distance, pipe->area,
-               pipe->perimeter);
-  cell_init (++cell, pipe->length, distance, size, pipe->area, pipe->perimeter);
-  cell = pipe->cell;
-  for (i = 0; i < pipe->nwalls; ++i, ++wall, ++cell)
-    wall_init (wall, cell, cell + 1);
+    cell_init (cell + i, i * pipe->length / n, distance, distance, area,
+               perimeter);
+  cell_init (cell + i, pipe->length, distance, size, area, perimeter);
+  for (i = 0; i < pipe->nwalls; ++i)
+    wall_init (wall + i, cell + i, cell + i + 1);
+#if NUMERICAL_ORDER > 1
+  for (i = 1; i < pipe->nwalls - 1; ++i)
+    wall_init_2 (wall + i, cell + i - 1, cell + i + 2);
+#endif
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_create_mesh: end\n");
 #endif
@@ -89,14 +92,24 @@ void
 pipe_set_discharge (Pipe * pipe,        ///< pointer to the pipe struct data.
                     double discharge)   ///< flow discharge.
 {
-  unsigned int i;
+  Wall *wall;
+  Cell *cell;
+  double v;
+  unsigned int i, n;
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_set_discharge: start\n");
 #endif
   pipe->discharge = discharge;
-  pipe->velocity = discharge / pipe->area;
-  for (i = 0; i < pipe->ncells; ++i)
-    cell_set_flow (pipe->cell + i, pipe->discharge, pipe->velocity);
+  pipe->velocity = v = discharge / pipe->area;
+  cell = pipe->cell;
+  n = pipe->ncells;
+  for (i = 0; i < n; ++i)
+    cell_set_flow (cell + i, discharge, v);
+  v *= time_step;
+  wall = pipe->wall;
+  n = pipe->nwalls;
+  for (i = 0; i < n; ++i)
+    wall_set_flow (wall + i, v);
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_set_discharge: end\n");
 #endif
@@ -109,14 +122,18 @@ void
 pipe_set_velocity (Pipe * pipe, ///< pointer to the pipe struct data.
                    double velocity)     ///< flow velocity.
 {
-  unsigned int i;
+  Cell *cell;
+  double q;
+  unsigned int i, n;
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_set_velocity: start\n");
 #endif
   pipe->velocity = velocity;
-  pipe->discharge = velocity * pipe->area;
-  for (i = 0; i < pipe->ncells; ++i)
-    cell_set_flow (pipe->cell + i, pipe->discharge, pipe->velocity);
+  pipe->discharge = q = velocity * pipe->area;
+  cell = pipe->cell;
+  n = pipe->ncells;
+  for (i = 0; i < n; ++i)
+    cell_set_flow (cell + i, q, velocity);
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_set_velocity: end\n");
 #endif
@@ -165,4 +182,32 @@ pipe_maximum_time (Pipe * pipe, ///< pointer to the pipe struct data.
   fprintf (stderr, "pipe_maximum_time: end\n");
 #endif
   return t;
+}
+
+/**
+ * function to perform a numerical method step on a pipe.
+ */
+void
+pipe_step (Pipe * pipe)         ///< pointer to the pipe struct data.
+{
+  Wall *wall;
+  double v;
+  unsigned int i, n;
+#if DEBUG_PIPE
+  fprintf (stderr, "pipe_step: start\n");
+#endif
+  wall = pipe->wall;
+  n = pipe->nwalls;
+  for (i = 0; i < n; ++i)
+    wall_set (wall + i);
+  v = pipe->velocity;
+  if (v > 0.)
+    for (i = 0; i < n; ++i)
+      wall_increments_p (wall + i);
+  else if (v < 0.)
+    for (i = 0; i < n; ++i)
+      wall_increments_n (wall + i);
+#if DEBUG_PIPE
+  fprintf (stderr, "pipe_step: end\n");
+#endif
 }

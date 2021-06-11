@@ -220,6 +220,7 @@ simulation_run (Simulation * simulation)
       network_update_discharges (network);
       next_time = network_maximum_time (network, final_time, cfl);
       time_step = next_time - current_time;
+      network_step (network);
 #if DEBUG_SIMULATION
       fprintf (stderr, "simulation_run: current_time=%.14lg next_time=%.14lg "
                "time_step=%lg\n", current_time, next_time, time_step);

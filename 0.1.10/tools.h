@@ -24,4 +24,24 @@ double xml_node_get_time (xmlNode * node, const xmlChar * prop, int *error);
 double distance (double x1, double y1, double z1, double x2, double y2,
                  double z2);
 
+/**
+ * function to limit 2nd order terms.
+ *
+ * \return limited flux.
+ */
+static inline double
+flux_limited (double upwind,    ///< upwind flux.
+              double centered)  ///< centered flux.
+{
+  double r;
+  if (upwind * centered <= 0.)
+    return 0.;
+  r = centered / upwind;
+  if (r <= 1. / 3.)
+    return centered + centered;
+  if (r >= 3.)
+    return upwind + upwind;
+  return 0.5 * (upwind + centered);
+}
+
 #endif

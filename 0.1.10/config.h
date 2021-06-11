@@ -104,4 +104,9 @@
 #define XML_TIME                (const xmlChar *) "time"
 ///< time XML label.
 
+// checks
+#if (NUMERICAL_ORDER != 1 && NUMERICAL_ORDER != 2)
+#error "Numerical order not implemented"
+#endif
+
 #endif
