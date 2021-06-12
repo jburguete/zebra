@@ -214,6 +214,7 @@ simulation_run (Simulation * simulation)
   final_time = simulation->final_time;
   cfl = simulation->cfl;
   network_set_discharges (network);
+  network_initial (network);
   for (current_time = simulation->initial_time; current_time < final_time;
        current_time = next_time)
     {

@@ -896,6 +896,34 @@ network_maximum_time (Network * network,
 }
 
 /**
+ * function to set the initial conditions on a network.
+ */
+void
+network_initial (Network * network)     ///< pointer to the network struct data.
+{
+  double nutrient_concentration[MAX_NUTRIENTS];
+  double species_concentration[MAX_SPECIES];
+  Inlet *inlet;
+  Pipe *pipe;
+  unsigned int i, n;
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_initial: start\n");
+#endif
+  inlet = network->inlet;
+  pipe = network->pipe;
+  n = network->npipes;
+  for (i = 0; i < nnutrients; ++i)
+    nutrient_concentration[i] = *(inlet->nutrient_concentration[i]);
+  for (i = 0; i < nspecies; ++i)
+    species_concentration[i] = *(inlet->species_concentration[i]);
+  for (i = 0; i < n; ++i)
+    pipe_initial (pipe, nutrient_concentration, species_concentration);
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_initial: end\n");
+#endif
+}
+
+/**
  * function to perform a numerical method step on a network.
  */
 void

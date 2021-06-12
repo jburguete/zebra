@@ -6,10 +6,13 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <math.h>
 #include <libxml/parser.h>
 #include "config.h"
 #include "tools.h"
+#include "nutrient.h"
+#include "species.h"
 #include "point.h"
 #include "cell.h"
 #include "wall.h"
@@ -182,6 +185,36 @@ pipe_maximum_time (Pipe * pipe, ///< pointer to the pipe struct data.
   fprintf (stderr, "pipe_maximum_time: end\n");
 #endif
   return t;
+}
+
+/**
+ * function to set the initial conditions on a pipe.
+ */
+void
+pipe_initial (Pipe * pipe,      ///< pointer to the pipe struct data.
+              double *nutrient_concentration,
+              ///< array of nutrient concetrations.
+              double *species_concentration)
+              ///< array of species concetrations.
+{
+  Cell *cell;
+  size_t sn, ss;
+  unsigned int i, n;
+#if DEBUG_PIPE
+  fprintf (stderr, "pipe_initial: start\n");
+#endif
+  n = pipe->ncells;
+  sn = nnutrients * sizeof (double);
+  ss = nspecies * sizeof (double);
+  for (i = 0; i < n; ++i)
+    {
+      cell = pipe->cell + i;
+      memcpy (cell->nutrient_concentration, nutrient_concentration, sn);
+      memcpy (cell->species_concentration, species_concentration, ss);
+    }
+#if DEBUG_PIPE
+  fprintf (stderr, "pipe_initial: end\n");
+#endif
 }
 
 /**
