@@ -9,16 +9,16 @@
 
 // debug macros
 
-#define DEBUG_CELL 1            ///< macro to debug the cell functions.
-#define DEBUG_INLET 1           ///< macro to debug the inlet functions.
-#define DEBUG_JUNCTION 1        ///< macro to debug the junction functions.
-#define DEBUG_MAIN 1            ///< macro to debug the main functions.
-#define DEBUG_NUTRIENT 1        ///< macro to debug the nutrient functions.
-#define DEBUG_NETWORK 1         ///< macro to debug the network functions.
-#define DEBUG_PIPE 1            ///< macro to debug the pipe functions.
-#define DEBUG_SIMULATION 1      ///< macro to debug the simulation functions.
-#define DEBUG_SPECIES 1         ///< macro to debug the species functions.
-#define DEBUG_WALL 1            ///< macro to debug the wall functions.
+#define DEBUG_CELL 0            ///< macro to debug the cell functions.
+#define DEBUG_INLET 0           ///< macro to debug the inlet functions.
+#define DEBUG_JUNCTION 0        ///< macro to debug the junction functions.
+#define DEBUG_MAIN 0            ///< macro to debug the main functions.
+#define DEBUG_NUTRIENT 0        ///< macro to debug the nutrient functions.
+#define DEBUG_NETWORK 0         ///< macro to debug the network functions.
+#define DEBUG_PIPE 0            ///< macro to debug the pipe functions.
+#define DEBUG_SIMULATION 0      ///< macro to debug the simulation functions.
+#define DEBUG_SPECIES 0         ///< macro to debug the species functions.
+#define DEBUG_WALL 0            ///< macro to debug the wall functions.
 
 // general macros
 
@@ -97,6 +97,8 @@
 ///< nutrient XML label.
 #define XML_PIPE_LENGTH         (const xmlChar *) "pipe-length"
 ///< pipe-length XML label.
+#define XML_SAVING_STEP         (const xmlChar *) "saving-step"
+///< saving-step XML label.
 #define XML_SIMULATION          (const xmlChar *) "simulation"
 ///< simulation XML label.
 #define XML_SPECIES             (const xmlChar *) "species"

@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <libintl.h>
+#include <math.h>
 #include <libxml/parser.h>
 #include <glib.h>
 #include "config.h"
@@ -120,6 +121,12 @@ simulation_open_xml (Simulation * simulation,
       m = _("Bad cell size");
       goto exit_on_error;
     }
+  simulation->saving_step = xml_node_get_float (node, XML_SAVING_STEP, &e);
+  if (!e)
+    {
+      m = _("Bad saving time step size");
+      goto exit_on_error;
+    }
 
   // open nutrients
 #if DEBUG_SIMULATION
@@ -206,26 +213,49 @@ void
 simulation_run (Simulation * simulation)
 {
   Network *network;
-  double final_time, cfl;
+  double final_time, cfl, saving_time, saving_step;
 #if DEBUG_SIMULATION
   fprintf (stderr, "simulation_run: end\n");
 #endif
+
+  // initial conditions
   network = simulation->network;
   final_time = simulation->final_time;
+  saving_step = simulation->saving_step;
   cfl = simulation->cfl;
   network_set_discharges (network);
   network_initial (network);
+
+  // bucle
   for (current_time = simulation->initial_time; current_time < final_time;
-       current_time = next_time)
+       current_time = saving_time)
     {
-      network_update_discharges (network);
-      next_time = network_maximum_time (network, final_time, cfl);
-      time_step = next_time - current_time;
-      network_step (network);
+
+      // time for saving results
+      saving_time = fmin (current_time + saving_step, final_time);
+
+      // inner bucle
+      for (; current_time < saving_time; current_time = next_time)
+        {
+
+          // update discharges and velocities
+          network_update_discharges (network);
+
+          // calculate time step size
+          next_time = network_maximum_time (network, saving_time, cfl);
+          time_step = next_time - current_time;
+
+          // perform numerical method
+          network_step (network);
+
 #if DEBUG_SIMULATION
-      fprintf (stderr, "simulation_run: current_time=%.14lg next_time=%.14lg "
-               "time_step=%lg\n", current_time, next_time, time_step);
+          fprintf (stderr,
+                   "simulation_run: current_time=%.14lg next_time=%.14lg "
+                   "time_step=%lg\n", current_time, next_time, time_step);
 #endif
+        }
+
+      // saving results
     }
 #if DEBUG_SIMULATION
   fprintf (stderr, "simulation_run: end\n");

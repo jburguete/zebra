@@ -1,4 +1,4 @@
-Zebra (0.1.11 english version)
+Zebra (0.1.12 english version)
 =============================
 
 :uk:[english](README.md) :es:[español](README.es.md)
@@ -15,7 +15,7 @@ FILES
 
 * README.md: basic help file
 * license.md: license file
-* 0.1.11/\*.h: header files
-* 0.1.11/\*.c: source files
-* 0.1.11/Makefile: configuration file to generate the executable
-* 0.1.11/Doxyfile: configuration file to generate doxygen documentation
+* 0.1.12/\*.h: header files
+* 0.1.12/\*.c: source files
+* 0.1.12/Makefile: configuration file to generate the executable
+* 0.1.12/Doxyfile: configuration file to generate doxygen documentation

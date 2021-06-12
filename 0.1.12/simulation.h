@@ -17,6 +17,7 @@ typedef struct
   double initial_time;          ///< initial time in seconds since 1970.
   double final_time;            ///< final time in seconds since 1970.
   double cfl;                   ///< CFL number.
+  double saving_step;           ///< time step size to save results.
 } Simulation;
 
 void simulation_destroy (Simulation * simulation);
