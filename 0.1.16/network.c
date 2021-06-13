@@ -930,6 +930,7 @@ network_initial (Network * network)     ///< pointer to the network struct data.
 void
 network_step (Network * network)        ///< pointer to the network struct data.
 {
+  Inlet *inlet;
   Junction *junction;
   Pipe *pipe;
   unsigned int i, n;
@@ -944,6 +945,10 @@ network_step (Network * network)        ///< pointer to the network struct data.
   n = network->njunctions;
   for (i = 0; i < n; ++i)
     junction_set (junction + i);
+  inlet = network->inlet;
+  n = network->ninlets;
+  for (i = 0; i < n; ++i)
+    inlet_set (inlet + i);
 #if DEBUG_NETWORK
   fprintf (stderr, "network_step: end\n");
 #endif

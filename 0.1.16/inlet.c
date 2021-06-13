@@ -362,3 +362,41 @@ inlet_maximum_time (Inlet * inlet,      ///< pointer to the inlet struct data.
 #endif
   return t;
 }
+
+/**
+ * function to set the variables on an inlet.
+ */
+void
+inlet_set (Inlet * inlet)       ///< pointer to the inlet struct data.
+{
+  Cell **cell;
+  double *v, *t;
+  double variable;
+  unsigned int i, j, n, ncells;
+#if DEBUG_INLET
+  fprintf (stderr, "inlet_set: start\n");
+#endif
+  cell = inlet->cell;
+  ncells = inlet->ncells;
+  for (i = 0; i < nnutrients; ++i)
+    {
+      n = inlet->nnutrient_times[i];
+      v = inlet->nutrient_concentration[i];
+      t = inlet->nutrient_time[i];
+      variable = array_interpolate (next_time, t, v, n);
+      for (j = 0; j < ncells; ++j)
+        cell[j]->nutrient_concentration[i] = variable;
+    }
+  for (i = 0; i < nspecies; ++i)
+    {
+      n = inlet->nspecies_times[i];
+      v = inlet->species_concentration[i];
+      t = inlet->species_time[i];
+      variable = array_interpolate (next_time, t, v, n);
+      for (j = 0; j < ncells; ++j)
+        cell[j]->species_concentration[i] = variable;
+    }
+#if DEBUG_INLET
+  fprintf (stderr, "inlet_set: end\n");
+#endif
+}

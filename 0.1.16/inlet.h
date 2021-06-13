@@ -32,5 +32,6 @@ void inlet_destroy (Inlet * inlet);
 int inlet_open_xml (Inlet * inlet, xmlNode * node, Pipe * pipe,
                     unsigned int npipes, char *directory);
 double inlet_maximum_time (Inlet * inlet, double maximum_time);
+void inlet_set (Inlet * inlet);
 
 #endif
