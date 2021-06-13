@@ -14,6 +14,7 @@
 typedef struct
 {
   Network network[1];           ///< network struct data.
+  char results[BUFFER_SIZE];    ///< results file name.
   double initial_time;          ///< initial time in seconds since 1970.
   double final_time;            ///< final time in seconds since 1970.
   double cfl;                   ///< CFL number.

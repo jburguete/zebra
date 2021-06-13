@@ -98,6 +98,8 @@
 ///< nutrient XML label.
 #define XML_PIPE_LENGTH         (const xmlChar *) "pipe-length"
 ///< pipe-length XML label.
+#define XML_RESULTS             (const xmlChar *) "results"
+///< results XML label.
 #define XML_SAVING_STEP         (const xmlChar *) "saving-step"
 ///< saving-step XML label.
 #define XML_SIMULATION          (const xmlChar *) "simulation"

@@ -128,6 +128,15 @@ simulation_open_xml (Simulation * simulation,
       m = _("Bad saving time step size");
       goto exit_on_error;
     }
+  buffer = xmlGetProp (node, XML_RESULTS);
+  if (!buffer)
+    {
+      m = _("No results file");
+      goto exit_on_error;
+    }
+  snprintf (simulation->results, BUFFER_SIZE, "%s/%s", directory,
+            (char *) buffer);
+  xmlFree (buffer);
 
   // open nutrients
 #if DEBUG_SIMULATION
@@ -215,6 +224,7 @@ simulation_run (Simulation * simulation)
 {
   Results results[1];
   Network *network;
+  FILE *file;
   double initial_time, final_time, cfl, saving_time, saving_step;
 #if DEBUG_SIMULATION
   fprintf (stderr, "simulation_run: end\n");
@@ -230,6 +240,8 @@ simulation_run (Simulation * simulation)
   network_initial (network);
   results_init (results, network, initial_time, final_time, saving_step);
   results_set (results, network);
+  file = fopen (simulation->results, "wb");
+  results_write_header (results, file);
 
   // bucle
   for (current_time = initial_time; current_time < final_time;
@@ -262,10 +274,12 @@ simulation_run (Simulation * simulation)
 
       // saving results
       results_set (results, network);
+      results_write_variables (results, file);
 
     }
 
   // freeing
+  fclose (file);
   results_destroy (results);
 
 #if DEBUG_SIMULATION
