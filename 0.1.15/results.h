@@ -29,6 +29,8 @@ typedef struct
   double *pipe_length;          ///< array of pipe lengths.
   unsigned int *point_id;       ///< array of point identifiers.
   unsigned int *pipe_id;        ///< array of pipe identifiers.
+  unsigned int *pipe_inlet_id;  ///< array of pipe inlet identifiers.
+  unsigned int *pipe_outlet_id; ///< array of pipe outlet identifiers.
   unsigned int *pipe_cell;      ///< array of inlet pipe cells.
   double *variable;             ///< array of variables.
   unsigned int nvariables;      ///< number of variables.

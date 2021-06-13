@@ -62,6 +62,8 @@ results_destroy (Results * results)
 #endif
   free (results->variable);
   free (results->pipe_cell);
+  free (results->pipe_outlet_id);
+  free (results->pipe_inlet_id);
   free (results->pipe_id);
   free (results->point_id);
   free (results->pipe_length);
@@ -98,6 +100,8 @@ results_init (Results * results,
   n = network->npipes;
   results->pipe_length = (double *) malloc (n * sizeof (double));
   results->pipe_id = (unsigned int *) malloc (n * sizeof (unsigned int));
+  results->pipe_inlet_id = (unsigned int *) malloc (n * sizeof (unsigned int));
+  results->pipe_outlet_id = (unsigned int *) malloc (n * sizeof (unsigned int));
   results->pipe_cell
     = (unsigned int *) malloc ((n + 1) * sizeof (unsigned int));
   pipe = network->pipe;
@@ -106,6 +110,8 @@ results_init (Results * results,
     {
       results->pipe_length[i] = pipe[i].length;
       results->pipe_id[i] = pipe[i].id;
+      results->pipe_inlet_id[i] = pipe[i].inlet_id;
+      results->pipe_outlet_id[i] = pipe[i].outlet_id;
       results->pipe_cell[i + 1] = j += pipe[i].ncells;
     }
   results->nvariables = j *= nnutrients + nspecies;
@@ -170,6 +176,8 @@ results_write_header (Results * results,
   fwrite (results->point_id, sizeof (unsigned int), header->npoints, file);
   n = header->npipes;
   fwrite (results->pipe_id, sizeof (unsigned int), n, file);
+  fwrite (results->pipe_inlet_id, sizeof (unsigned int), n, file);
+  fwrite (results->pipe_outlet_id, sizeof (unsigned int), n, file);
   fwrite (results->pipe_length, sizeof (double), n, file);
   fwrite (results->pipe_cell, sizeof (unsigned int), n + 1, file);
 #if DEBUG_RESULTS

@@ -15,14 +15,19 @@ typedef struct
 {
   Pipe **inlet;                 ///< array of inlet pipe pointers.
   Pipe **outlet;                ///< array of outlet pipe pointers.
+  Cell **cell;                  ///< array of cell pointers.
   Point *point;                 ///< Point pointer.
+  double volume;
   unsigned int ninlets;         ///< number of inlet pipes.
   unsigned int noutlets;        ///< number of outlet pipes.
+  unsigned int ncells;
 } Junction;
 
 void junction_null (Junction * junction);
 void junction_destroy (Junction * junction);
 void junction_add_inlet (Junction * junction, Pipe * pipe);
 void junction_add_outlet (Junction * junction, Pipe * pipe);
+void junction_init (Junction * junction);
+void junction_set (Junction * junction);
 
 #endif

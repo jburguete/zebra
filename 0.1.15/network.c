@@ -509,6 +509,7 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
             = (Junction *) realloc (network->junction,
                                     network->njunctions * sizeof (Junction));
           memcpy (network->junction + j, pj + i, sizeof (Junction));
+          junction_init (network->junction + j);
         }
       else if (k == 1)
         junction_destroy (pj + i);
@@ -929,6 +930,7 @@ network_initial (Network * network)     ///< pointer to the network struct data.
 void
 network_step (Network * network)        ///< pointer to the network struct data.
 {
+  Junction *junction;
   Pipe *pipe;
   unsigned int i, n;
 #if DEBUG_NETWORK
@@ -937,7 +939,11 @@ network_step (Network * network)        ///< pointer to the network struct data.
   pipe = network->pipe;
   n = network->npipes;
   for (i = 0; i < n; ++i)
-    pipe_step (pipe);
+    pipe_step (pipe + i);
+  junction = network->junction;
+  n = network->njunctions;
+  for (i = 0; i < n; ++i)
+    junction_set (junction + i);
 #if DEBUG_NETWORK
   fprintf (stderr, "network_step: end\n");
 #endif

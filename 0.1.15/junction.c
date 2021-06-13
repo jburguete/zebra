@@ -6,9 +6,12 @@
  */
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <libxml/parser.h>
 #include "config.h"
 #include "tools.h"
+#include "nutrient.h"
+#include "species.h"
 #include "point.h"
 #include "cell.h"
 #include "wall.h"
@@ -27,6 +30,7 @@ junction_null (Junction * junction)
 #endif
   junction->inlet = junction->outlet = NULL;
   junction->point = NULL;
+  junction->cell = NULL;
   junction->ninlets = junction->noutlets = 0;
 #if DEBUG_JUNCTION
   fprintf (stderr, "junction_null: end\n");
@@ -34,7 +38,7 @@ junction_null (Junction * junction)
 }
 
 /**
- * function to init an empty junction.
+ * function to free the memory used by a junction.
  */
 void
 junction_destroy (Junction * junction)
@@ -43,6 +47,7 @@ junction_destroy (Junction * junction)
 #if DEBUG_JUNCTION
   fprintf (stderr, "junction_destroy: start\n");
 #endif
+  free (junction->cell);
   free (junction->outlet);
   free (junction->inlet);
 #if DEBUG_JUNCTION
@@ -92,5 +97,83 @@ junction_add_outlet (Junction * junction,
   junction->outlet[n] = pipe;
 #if DEBUG_JUNCTION
   fprintf (stderr, "junction_add_outlet: end\n");
+#endif
+}
+
+/**
+ * function to init the variables on a junction.
+ */
+void
+junction_init (Junction * junction)
+               ///< pointer to the junction struct data.
+{
+  Pipe *pipe;
+  Cell *cell;
+  double volume;
+  unsigned int i, j, ninlets, noutlets;
+#if DEBUG_JUNCTION
+  fprintf (stderr, "junction_init: start\n");
+#endif
+  ninlets = junction->ninlets;
+  noutlets = junction->noutlets;
+  junction->ncells = ninlets + noutlets;
+  junction->cell = (Cell **) malloc (junction->ncells * sizeof (Cell *));
+  volume = 0.;
+  for (i = 0; i < ninlets; ++i)
+    {
+      pipe = junction->inlet[i];
+      junction->cell[i] = cell = pipe->cell;
+      volume += cell->volume;
+    }
+  for (j = 0; j < noutlets; ++j, ++i)
+    {
+      pipe = junction->outlet[j];
+      junction->cell[i] = cell = pipe->cell + pipe->ncells - 1;
+      volume += cell->volume;
+    }
+  junction->volume = volume;
+#if DEBUG_JUNCTION
+  fprintf (stderr, "junction_init: end\n");
+#endif
+}
+
+/**
+ * function to set the variables on a junction.
+ */
+void
+junction_set (Junction * junction)
+              ///< pointer to the junction struct data.
+{
+  double nc[MAX_NUTRIENTS], sc[MAX_SPECIES];
+  Cell *cell;
+  unsigned int i, j, n;
+#if DEBUG_JUNCTION
+  fprintf (stderr, "junction_set: start\n");
+#endif
+  n = junction->ncells;
+  for (j = 0; j < nnutrients; ++j)
+    nc[j] = 0.;
+  for (j = 0; j < nspecies; ++j)
+    sc[j] = 0.;
+  for (i = 0; i < n; ++i)
+    {
+      cell = junction->cell[i];
+      for (j = 0; j < nnutrients; ++j)
+        nc[j] += cell->volume * cell->nutrient_concentration[j];
+      for (j = 0; j < nspecies; ++j)
+        sc[j] += cell->volume * cell->species_concentration[j];
+    }
+  for (j = 0; j < nnutrients; ++j)
+    nc[j] /= junction->volume;
+  for (j = 0; j < nspecies; ++j)
+    sc[j] /= junction->volume;
+  for (i = 0; i < n; ++i)
+    {
+      cell = junction->cell[i];
+      memcpy (cell->nutrient_concentration, nc, nnutrients * sizeof (double));
+      memcpy (cell->species_concentration, sc, nspecies * sizeof (double));
+    }
+#if DEBUG_JUNCTION
+  fprintf (stderr, "junction_set: end\n");
 #endif
 }
