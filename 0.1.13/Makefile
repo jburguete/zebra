@@ -3,16 +3,17 @@
 all: zebra
 
 hdr = config.h tools.h nutrient.h species.h point.h cell.h wall.h pipe.h \
-	junction.h inlet.h junction.h network.h simulation.h
+	junction.h inlet.h junction.h network.h results.h simulation.h
 src = tools.c nutrient.c species.c cell.c wall.c pipe.c inlet.c junction.c \
-	network.c simulation.c main.c
+	network.c results.h simulation.c main.c
 obj = tools.o nutrient.o species.o cell.o wall.o pipe.o inlet.o junction.o \
-	network.o simulation.o main.o
+	network.o results.o simulation.o main.o
 cfg = tools.h config.h Makefile
 spe = species.h nutrient.h $(cfg)
 pip = pipe.h cell.h wall.h point.h $(spe)
 net = network.h inlet.h junction.h $(pip)
-sim = simulation.h $(net)
+res = results.h $(net)
+sim = simulation.h $(res)
 libs = libxml-2.0 glib-2.0
 
 CC = gcc
@@ -50,6 +51,9 @@ junction.o: junction.c junction.h $(pip)
 
 network.o: network.c $(net)
 	$(CC) $(CFLAGS) network.c -o network.o
+
+results.o: results.c $(res)
+	$(CC) $(CFLAGS) results.c -o results.o
 
 simulation.o: simulation.c $(sim)
 	$(CC) $(CFLAGS) simulation.c -o simulation.o

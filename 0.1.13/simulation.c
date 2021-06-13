@@ -22,6 +22,7 @@
 #include "junction.h"
 #include "inlet.h"
 #include "network.h"
+#include "results.h"
 #include "simulation.h"
 
 /**
@@ -212,22 +213,26 @@ exit_on_error:
 void
 simulation_run (Simulation * simulation)
 {
+  Results results[1];
   Network *network;
-  double final_time, cfl, saving_time, saving_step;
+  double initial_time, final_time, cfl, saving_time, saving_step;
 #if DEBUG_SIMULATION
   fprintf (stderr, "simulation_run: end\n");
 #endif
 
   // initial conditions
   network = simulation->network;
+  initial_time = simulation->initial_time;
   final_time = simulation->final_time;
   saving_step = simulation->saving_step;
   cfl = simulation->cfl;
   network_set_discharges (network);
   network_initial (network);
+  results_init (results, network, initial_time, final_time, saving_step);
+  results_set (results, network);
 
   // bucle
-  for (current_time = simulation->initial_time; current_time < final_time;
+  for (current_time = initial_time; current_time < final_time;
        current_time = saving_time)
     {
 
@@ -256,7 +261,13 @@ simulation_run (Simulation * simulation)
         }
 
       // saving results
+      results_set (results, network);
+
     }
+
+  // freeing
+  results_destroy (results);
+
 #if DEBUG_SIMULATION
   fprintf (stderr, "simulation_run: end\n");
 #endif

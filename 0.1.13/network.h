@@ -86,7 +86,7 @@ typedef struct
   ///< array of point pointers from identifiers. 
   Pipe **pipe_from_id;
   ///< array of pipe pointers from identifiers.
-  double cell_size;             ///< cell size.
+  double cell_size;             ///< maximum cell size.
   unsigned int npoints;         ///< number of points.
   unsigned int npipes;          ///< number of pipes.
   unsigned int njunctions;      ///< number of junctions.

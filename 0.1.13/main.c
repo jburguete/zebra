@@ -20,6 +20,7 @@
 #include "junction.h"
 #include "inlet.h"
 #include "network.h"
+#include "results.h"
 #include "simulation.h"
 
 ///> enum to define the error code.
