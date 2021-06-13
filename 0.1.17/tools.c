@@ -133,6 +133,27 @@ xml_node_get_uint (xmlNode * node,      ///< XML node struct.
 }
 
 /**
+ * function to get an unsigned integer number from a property of a XML node or a
+ * default value if the node has not the property.
+ *
+ * \return unsigned integer number value.
+ */
+unsigned int
+xml_node_get_uint_with_default (xmlNode * node, ///< XML node struct.
+                                const xmlChar * prop,   ///< XML node property.
+                                int *error,
+                                ///< error code (1 on success, 0 on error).
+                                unsigned int def)       ///< default value.
+{
+  if (!xmlHasProp (node, prop))
+    {
+      *error = 1;
+      return def;
+    }
+  return xml_node_get_uint (node, prop, error);
+}
+
+/**
  * function to get a floating number, in double format, from a property of a
  * XML node.
  *
@@ -156,7 +177,7 @@ xml_node_get_float (xmlNode * node,     ///< XML node struct.
 }
 
 /**
- * Function to get a floating number, in double format, from a property of a
+ * function to get a floating number, in double format, from a property of a
  * XML node or a default value if the node has not the property.
  *
  * \return floating number value in double format.

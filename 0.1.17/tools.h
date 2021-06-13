@@ -17,6 +17,9 @@ double array_interpolate (double t, double *x, double *y, unsigned int n);
 double read_time (FILE * file, int *error);
 unsigned int xml_node_get_uint (xmlNode * node, const xmlChar * prop,
                                 int *error);
+unsigned int xml_node_get_uint_with_default (xmlNode * node,
+                                             const xmlChar * prop, int *error,
+                                             unsigned int def);
 double xml_node_get_float (xmlNode * node, const xmlChar * prop, int *error);
 double xml_node_get_float_with_default (xmlNode * node, const xmlChar * prop,
                                         int *error, double def);

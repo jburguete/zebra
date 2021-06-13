@@ -79,10 +79,9 @@ pipe_create_mesh (Pipe * pipe,  ///< pointer to the pipe struct data.
   cell_init (cell + i, pipe->length, distance, size, area, perimeter);
   for (i = 0; i < pipe->nwalls; ++i)
     wall_init (wall + i, cell + i, cell + i + 1);
-#if NUMERICAL_ORDER > 1
-  for (i = 1; i < pipe->nwalls - 1; ++i)
-    wall_init_2 (wall + i, cell + i - 1, cell + i + 2);
-#endif
+  if (numerical_order > 1)
+    for (i = 1; i < pipe->nwalls - 1; ++i)
+      wall_init_2 (wall + i, cell + i - 1, cell + i + 2);
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_create_mesh: end\n");
 #endif
@@ -235,11 +234,27 @@ pipe_step (Pipe * pipe)         ///< pointer to the pipe struct data.
     wall_set (wall + i);
   v = pipe->velocity;
   if (v > 0.)
-    for (i = 0; i < n; ++i)
-      wall_increments_p (wall + i);
+    {
+      if (numerical_order > 1)
+        for (i = 1; i < n - 1; ++i)
+          wall_set_2p (wall + i, wall + i - 1);
+      for (i = 0; i < n; ++i)
+        wall_increments_p (wall + i);
+      if (numerical_order > 1)
+        for (i = 1; i < n - 1; ++i)
+          wall_increments_2p (wall + i);
+    }
   else if (v < 0.)
-    for (i = 0; i < n; ++i)
-      wall_increments_n (wall + i);
+    {
+      if (numerical_order > 1)
+        for (i = 1; i < n - 1; ++i)
+          wall_set_2n (wall + i, wall + i + 1);
+      for (i = 0; i < n; ++i)
+        wall_increments_n (wall + i);
+      if (numerical_order > 1)
+        for (i = 1; i < n - 1; ++i)
+          wall_increments_2n (wall + i);
+    }
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_step: end\n");
 #endif

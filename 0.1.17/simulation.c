@@ -137,6 +137,13 @@ simulation_open_xml (Simulation * simulation,
   snprintf (simulation->results, BUFFER_SIZE, "%s/%s", directory,
             (char *) buffer);
   xmlFree (buffer);
+  numerical_order
+    = xml_node_get_uint_with_default (node, XML_NUMERICAL_ORDER, &e, 2);
+  if (!e || numerical_order < 1 || numerical_order > 2)
+    {
+      m = _("Bad numerical order");
+      goto exit_on_error;
+    }
 
   // open nutrients
 #if DEBUG_SIMULATION

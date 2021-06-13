@@ -28,7 +28,6 @@
 #define LOCALES_DIR "locales"   ///< locale strings directory.
 #define MAX_NUTRIENTS 2         ///< maximum number of nutrients.
 #define MAX_SPECIES 1           ///< maximum number of species.
-#define NUMERICAL_ORDER 1       ///< accurate order of the numerical method.
 #define PIPE_LINE "  Link                  L/s       m/s    /1000m          "
 ///< pipe line of Epanet output file.
 #define PIPE_LENGTH 57          ///< length of the Epanet output file pipe line.
@@ -92,6 +91,8 @@
 ///< network XML label.
 #define XML_NODE                (const xmlChar *) "node"
 ///< node XML label.
+#define XML_NUMERICAL_ORDER     (const xmlChar *) "numerical-order"
+///< numerical-order XML label.
 #define XML_NUTRIENT            (const xmlChar *) "nutrient"
 ///< nutrient XML label.
 #define XML_NUTRIENTS           (const xmlChar *) "nutrients"
@@ -108,10 +109,5 @@
 ///< species XML label.
 #define XML_TIME                (const xmlChar *) "time"
 ///< time XML label.
-
-// checks
-#if (NUMERICAL_ORDER != 1 && NUMERICAL_ORDER != 2)
-#error "Numerical order not implemented"
-#endif
 
 #endif

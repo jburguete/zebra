@@ -14,6 +14,8 @@
 #include "cell.h"
 #include "wall.h"
 
+unsigned int numerical_order;   ///< accurate order of the numerical method.
+
 /**
  * function to init the data of a mesh wall struct.
  */
@@ -138,8 +140,6 @@ wall_increments_n (Wall * wall)
 #endif
 }
 
-#if NUMERICAL_ORDER > 1
-
 /**
  * function to init the 2nd order data of a mesh wall struct.
  */
@@ -181,9 +181,9 @@ wall_set_2p (Wall * wall,       ///< pointer to the wall struct data.
   ds2 = wall->ds2;
   k = 0.5 * (1. - wall->vdt / wall->size);
   for (i = 0; i < nnutrients; ++i)
-    dn2[i] = k * limited_flow (dnl[i], dnr[i]);
+    dn2[i] = k * flux_limited (dnl[i], dnr[i]);
   for (i = 0; i < nspecies; ++i)
-    ds2[i] = k * limited_flow (dsl[i], dsr[i]);
+    ds2[i] = k * flux_limited (dsl[i], dsr[i]);
 #if DEBUG_WALL
   fprintf (stderr, "wall_set_2n: end\n");
 #endif
@@ -210,12 +210,88 @@ wall_set_2n (Wall * wall,       ///< pointer to the wall struct data.
   ds2 = wall->ds2;
   k = 0.5 * (1. + wall->vdt / wall->size);
   for (i = 0; i < nnutrients; ++i)
-    dn2[i] = k * limited_flow (dnr[i], dnl[i]);
+    dn2[i] = k * flux_limited (dnr[i], dnl[i]);
   for (i = 0; i < nspecies; ++i)
-    ds2[i] = k * limited_flow (dsr[i], dsl[i]);
+    ds2[i] = k * flux_limited (dsr[i], dsl[i]);
 #if DEBUG_WALL
   fprintf (stderr, "wall_set_2n: end\n");
 #endif
 }
 
+/**
+ * function to calculate 2nd order variable increments on a wall for positive
+ * velocities.
+ */
+void
+wall_increments_2p (Wall * wall)
+{
+  Cell *right, *right2;
+  double *n, *s, *n2, *s2, *dn2, *ds2;
+  double dx, dx2;
+  unsigned int i;
+#if DEBUG_WALL
+  fprintf (stderr, "wall_increments_2p: start\n");
 #endif
+  right = wall->right;
+  right2 = wall->right2;
+  n = right->nutrient_concentration;
+  s = right->species_concentration;
+  n2 = right2->nutrient_concentration;
+  s2 = right2->species_concentration;
+  dn2 = wall->dn2;
+  ds2 = wall->ds2;
+  dx = right->size;
+  dx2 = right2->size;
+  for (i = 0; i < nnutrients; ++i)
+    {
+      n[i] -= dn2[i] / dx;
+      n2[i] += dn2[i] / dx2;
+    }
+  for (i = 0; i < nspecies; ++i)
+    {
+      s[i] -= ds2[i] / dx;
+      s2[i] += ds2[i] / dx2;
+    }
+#if DEBUG_WALL
+  fprintf (stderr, "wall_increments_2p: end\n");
+#endif
+}
+
+/**
+ * function to calculate 2nd order variable increments on a wall for negative
+ * velocities.
+ */
+void
+wall_increments_2n (Wall * wall)
+{
+  Cell *left, *left2;
+  double *n, *s, *n2, *s2, *dn2, *ds2;
+  double dx, dx2;
+  unsigned int i;
+#if DEBUG_WALL
+  fprintf (stderr, "wall_increments_2n: start\n");
+#endif
+  left = wall->left;
+  left2 = wall->left2;
+  n = left->nutrient_concentration;
+  s = left->species_concentration;
+  n2 = left2->nutrient_concentration;
+  s2 = left2->species_concentration;
+  dn2 = wall->dn2;
+  ds2 = wall->ds2;
+  dx = left->size;
+  dx2 = left2->size;
+  for (i = 0; i < nnutrients; ++i)
+    {
+      n[i] -= dn2[i] / dx;
+      n2[i] += dn2[i] / dx2;
+    }
+  for (i = 0; i < nspecies; ++i)
+    {
+      s[i] -= ds2[i] / dx;
+      s2[i] += ds2[i] / dx2;
+    }
+#if DEBUG_WALL
+  fprintf (stderr, "wall_increments_2n: end\n");
+#endif
+}
