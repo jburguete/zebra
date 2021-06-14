@@ -69,8 +69,6 @@
 ///< discharges XML label.
 #define XML_EAT                 (const xmlChar *) "eat"
 ///< eat XML label.
-#define XML_EPANET              (const xmlChar *) "epanet"
-///< epanet XML label.
 #define XML_FILE                (const xmlChar *) "file"
 ///< file XML label.
 #define XML_FINAL_TIME          (const xmlChar *) "final-time"

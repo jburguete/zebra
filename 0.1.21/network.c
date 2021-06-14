@@ -687,7 +687,7 @@ network_open_xml (Network * network,    ///< pointer to the network struct data.
       goto exit_on_error;
     }
   xmlFree (buffer);
-  buffer = xmlGetProp (node, XML_EPANET);
+  buffer = xmlGetProp (node, XML_FILE);
   if (!buffer)
     {
       m = _("No Epanet file");

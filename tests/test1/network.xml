@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<network epanet="template.inp">
+<network file="template.inp">
 	<inlet node="0">
 		<nutrient name="oxygen" file="oxygen.in"/>
 		<nutrient name="organic-matter" file="organic-matter.in"/>
