@@ -77,6 +77,8 @@
 ///< final-time XML label.
 #define XML_GROW                (const xmlChar *) "grow"
 ///< grow XML label.
+#define XML_ID                  (const xmlChar *) "id"
+///< id XML label.
 #define XML_INITIAL_TIME        (const xmlChar *) "initial-time"
 ///< initial-time XML label.
 #define XML_INLET               (const xmlChar *) "inlet"
@@ -97,8 +99,12 @@
 ///< nutrient XML label.
 #define XML_NUTRIENTS           (const xmlChar *) "nutrients"
 ///< nutrient XML label.
+#define XML_PIPE                (const xmlChar *) "pipe"
+///< pipe XML label.
 #define XML_PIPE_LENGTH         (const xmlChar *) "pipe-length"
 ///< pipe-length XML label.
+#define XML_POINT               (const xmlChar *) "point"
+///< point XML label.
 #define XML_RESULTS             (const xmlChar *) "results"
 ///< results XML label.
 #define XML_SAVING_STEP         (const xmlChar *) "saving-step"

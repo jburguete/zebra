@@ -30,7 +30,8 @@ enum ErrorCode
   ERROR_CODE_NONE,              ///< none.
   ERROR_CODE_ARGUMENTS_NUMBER,  ///< bad command line arguments number.
   ERROR_CODE_SIMULATION,        ///< bad simulation input file.
-  ERROR_CODE_RESULTS,           ///< bad results data base file.
+  ERROR_CODE_RESULTS_BIN,       ///< bad results binary data base file.
+  ERROR_CODE_RESULTS_XML,       ///< bad results configuration data base file.
 };
 
 /**
@@ -105,7 +106,13 @@ main (int argn,                 ///< number of command line arguments.
       // read results data base file
       if (!results_open_bin (input.results, argc[1]))
         {
-          error_code = ERROR_CODE_RESULTS;
+          error_code = ERROR_CODE_RESULTS_BIN;
+          break;
+        }
+      if (!results_open_xml (input.results, argc[2]))
+        {
+          error_code = ERROR_CODE_RESULTS_XML;
+          results_destroy (input.results);
           break;
         }
 
