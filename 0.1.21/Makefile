@@ -24,46 +24,121 @@ COPT = -O3 -flto
 CFLAGS = -c -g -Wall -Wextra $(COPT) `pkg-config --cflags $(libs)`
 LDFLAGS = -g -flto -lm `pkg-config --libs $(libs)`
 
+PGO = 1
+ifeq ($(PGO), 1)
+	objpgo = tools.pgo nutrient.pgo species.pgo cell.pgo wall.pgo pipe.pgo \
+		 inlet.pgo junction.pgo network.pgo results.pgo simulation.pgo \
+		 main.pgo
+	pgogen = -fprofile-generate
+	pgouse = -fprofile-use -fprofile-correction
+	toolsdep = zebrapgo
+	nutrientdep = zebrapgo
+	speciesdep = zebrapgo
+	celldep = zebrapgo
+	walldep = zebrapgo
+	pipedep = zebrapgo
+	inletdep = zebrapgo
+	junctiondep = zebrapgo
+	networkdep = zebrapgo
+	resultsdep = zebrapgo
+	simulationdep = zebrapgo
+	maindep = zebrapgo
+else
+	toolsdep = tools.c $(cfg)
+	nutrientdep = nutrient.c nutrient.h $(cfg)
+	speciesdep = species.c $(spe)
+	celldep = cell.c cell.h point.h $(spe)
+	walldep = wall.c wall.h cell.h point.h $(spe)
+	pipedep = pipe.c $(pip)
+	inletdep = inlet.c inlet.h $(pip)
+	junctiondep = junction.c junction.h $(pip)
+	networkdep = network.c $(net)
+	resultsdep = results.c $(res)
+	simulationdep = simulation.c $(sim)
+	maindep = main.c $(sim)
+endif
+
 all: zebra $(locales)
+
+zebrapgo: $(objpgo)
+	$(CC) $(objpgo) $(LDFLAGS) $(pgogen) -o zebrapgo
+	./zebrapgo ../tests/test1/simulation.xml
+	./zebrapgo ../tests/test1/results.bin ../tests/test1/results.xml
+
+tools.pgo: tools.c $(cfg)
+	$(CC) $(CFLAGS) $(pgogen) tools.c -o tools.pgo
+
+nutrient.pgo: nutrient.c nutrient.h $(cfg)
+	$(CC) $(CFLAGS) $(pgogen) nutrient.c -o nutrient.pgo
+
+species.pgo: species.c $(spe)
+	$(CC) $(CFLAGS) $(pgogen) species.c -o species.pgo
+
+cell.pgo: cell.c cell.h point.h $(spe)
+	$(CC) $(CFLAGS) $(pgogen) cell.c -o cell.pgo
+
+wall.pgo: wall.c wall.h cell.h point.h $(spe)
+	$(CC) $(CFLAGS) $(pgogen) wall.c -o wall.pgo
+
+pipe.pgo: pipe.c $(pip)
+	$(CC) $(CFLAGS) $(pgogen) pipe.c -o pipe.pgo
+
+inlet.pgo: inlet.c inlet.h $(pip)
+	$(CC) $(CFLAGS) $(pgogen) inlet.c -o inlet.pgo
+
+junction.pgo: junction.c junction.h $(pip)
+	$(CC) $(CFLAGS) $(pgogen) junction.c -o junction.pgo
+
+network.pgo: network.c $(net)
+	$(CC) $(CFLAGS) $(pgogen) network.c -o network.pgo
+
+results.pgo: results.c $(res)
+	$(CC) $(CFLAGS) $(pgogen) results.c -o results.pgo
+
+simulation.pgo: simulation.c $(sim)
+	$(CC) $(CFLAGS) $(pgogen) simulation.c -o simulation.pgo
+
+main.pgo: main.c $(sim)
+	$(CC) $(CFLAGS) $(pgogen) main.c -o main.pgo
 
 zebra: $(obj)
 	$(CC) $(obj) $(LDFLAGS) -o zebra
 
-tools.o: tools.c $(cfg)
-	$(CC) $(CFLAGS) tools.c -o tools.o
+tools.o: $(toolsdep)
+	$(CC) $(CFLAGS) $(pgouse) tools.c -o tools.o
 
-nutrient.o: nutrient.c nutrient.h $(cfg)
-	$(CC) $(CFLAGS) nutrient.c -o nutrient.o
+nutrient.o: $(nutrientdep)
+	$(CC) $(CFLAGS) $(pgouse) nutrient.c -o nutrient.o
 
-species.o: species.c $(spe)
-	$(CC) $(CFLAGS) species.c -o species.o
+species.o: $(speciesdep)
+	$(CC) $(CFLAGS) $(pgouse) species.c -o species.o
 
-cell.o: cell.c cell.h point.h $(spe)
-	$(CC) $(CFLAGS) cell.c -o cell.o
+cell.o: $(celldep)
+	$(CC) $(CFLAGS) $(pgouse) cell.c -o cell.o
 
-wall.o: wall.c wall.h cell.h point.h $(spe)
-	$(CC) $(CFLAGS) wall.c -o wall.o
+wall.o: $(walldep)
+	$(CC) $(CFLAGS) $(pgouse) wall.c -o wall.o
 
-pipe.o: pipe.c $(pip)
-	$(CC) $(CFLAGS) pipe.c -o pipe.o
+pipe.o: $(pipedep)
+	$(CC) $(CFLAGS) $(pgouse) pipe.c -o pipe.o
 
-inlet.o: inlet.c inlet.h $(pip)
-	$(CC) $(CFLAGS) inlet.c -o inlet.o
+inlet.o: $(inletdep)
+	$(CC) $(CFLAGS) $(pgouse) inlet.c -o inlet.o
 
-junction.o: junction.c junction.h $(pip)
-	$(CC) $(CFLAGS) junction.c -o junction.o
+junction.o: $(junctiondep)
+	$(CC) $(CFLAGS) $(pgouse) junction.c -o junction.o
 
-network.o: network.c $(net)
-	$(CC) $(CFLAGS) network.c -o network.o
+network.o: $(networkdep)
+	$(CC) $(CFLAGS) $(pgouse) network.c -o network.o
 
-results.o: results.c $(res)
-	$(CC) $(CFLAGS) results.c -o results.o
+results.o: $(resultsdep)
+	$(CC) $(CFLAGS) $(pgouse) results.c -o results.o
 
-simulation.o: simulation.c $(sim)
-	$(CC) $(CFLAGS) simulation.c -o simulation.o
+simulation.o: $(simulationdep)
+	$(CC) $(CFLAGS) $(pgouse) simulation.c -o simulation.o
 
-main.o: main.c $(sim)
-	$(CC) $(CFLAGS) main.c -o main.o
+main.o: $(maindep)
+	$(CC) $(CFLAGS) $(pgouse) main.c -o main.o
 
 locales/zebra.pot: $(src) Makefile
 	test -d locales || mkdir -p locales
