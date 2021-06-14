@@ -573,7 +573,8 @@ results_open_xml (Results * results,
           ncells = results->pipe_cell[i + 1] - results->pipe_cell[i];
           variable
             = (double *) realloc (variable, ncells * n * sizeof (double));
-          if (fread (variable, n * sizeof (double), ncells, file) != ncells)
+          if (fread (variable, n * sizeof (double), ncells, results->file)
+              != ncells)
             {
               m = _("Bad data base");
               goto exit_on_error;
