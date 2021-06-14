@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <locale.h>
 #include <libintl.h>
+#include <math.h>
 #include <libxml/parser.h>
 #include <glib.h>
 #include "config.h"
@@ -29,6 +30,7 @@ enum ErrorCode
   ERROR_CODE_NONE,              ///< none.
   ERROR_CODE_ARGUMENTS_NUMBER,  ///< bad command line arguments number.
   ERROR_CODE_SIMULATION,        ///< bad simulation input file.
+  ERROR_CODE_RESULTS,           ///< bad results data base file.
 };
 
 /**
@@ -40,7 +42,11 @@ int
 main (int argn,                 ///< number of command line arguments.
       char **argc)              ///< array of command line argument strings.
 {
-  Simulation simulation[1];
+  union Input
+  {
+    Simulation simulation[1];
+    Results results[1];
+  } input;
   int error_code = ERROR_CODE_NONE;
 
 #if DEBUG_MAIN
@@ -62,38 +68,69 @@ main (int argn,                 ///< number of command line arguments.
 #if DEBUG_MAIN
   fprintf (stderr, "main: start\n");
 #endif
-  if (argn != 2)
+  switch (argn)
     {
+
+      // simulation
+    case 2:
+
+#if DEBUG_MAIN
+      fprintf (stderr, "main: open simulation\n");
+#endif
+
+      // open simulation
+      if (!simulation_open_xml (input.simulation, argc[1]))
+        {
+          error_code = ERROR_CODE_SIMULATION;
+          break;
+        }
+      simulation_run (input.simulation);
+
+#if DEBUG_MAIN
+      fprintf (stderr, "main: free memory\n");
+#endif
+
+      // free memory
+      simulation_destroy (input.simulation);
+      break;
+
+      // results
+    case 3:
+
+#if DEBUG_MAIN
+      fprintf (stderr, "main: read results data base file\n");
+#endif
+
+
+      // read results data base file
+      if (!results_open_bin (input.results, argc[1]))
+        {
+          error_code = ERROR_CODE_RESULTS;
+          break;
+        }
+
+#if DEBUG_MAIN
+      fprintf (stderr, "main: free memory\n");
+#endif
+
+      // free memory
+      results_destroy (input.results);
+      break;
+
+      // bad arguments number
+    default:
       error_code = ERROR_CODE_ARGUMENTS_NUMBER;
       error_msg
-        = (char *) g_strdup (_("The syntax is:\n./zebra simulation_file"));
-      goto exit_on_error;
+        = (char *) g_strdup (_("The syntax is:\n./zebra simulation_file\nor:\n"
+                               "./zebra data_base_file configuration_file\n"));
     }
 
-  // open simulation
-#if DEBUG_MAIN
-  fprintf (stderr, "main: open simulation\n");
-#endif
-  if (!simulation_open_xml (simulation, argc[1]))
-    {
-      error_code = ERROR_CODE_SIMULATION;
-      goto exit_on_error;
-    }
-  simulation_run (simulation);
-
-  // error code
-exit_on_error:
+  // error message
   if (error_code != ERROR_CODE_NONE)
     {
       printf ("%s\n%s\n", _("ERROR!"), error_msg);
       g_free (error_msg);
     }
-
-  // free memory
-#if DEBUG_MAIN
-  fprintf (stderr, "main: free memory\n");
-#endif
-  simulation_destroy (simulation);
 
   // end
 #if DEBUG_MAIN

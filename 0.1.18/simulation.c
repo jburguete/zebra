@@ -117,13 +117,13 @@ simulation_open_xml (Simulation * simulation,
   simulation->cfl
     = xml_node_get_float_with_default (node, XML_CFL, &e, DEFAULT_CFL);
   network->cell_size = xml_node_get_float (node, XML_CELL_SIZE, &e);
-  if (!e)
+  if (!e || network->cell_size <= 0.)
     {
       m = _("Bad cell size");
       goto exit_on_error;
     }
   simulation->saving_step = xml_node_get_float (node, XML_SAVING_STEP, &e);
-  if (!e)
+  if (!e || simulation->saving_step <= 0.)
     {
       m = _("Bad saving time step size");
       goto exit_on_error;

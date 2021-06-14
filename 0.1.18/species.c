@@ -7,6 +7,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <libintl.h>
+#include <math.h>
 #include <libxml/parser.h>
 #include <glib.h>
 #include "config.h"

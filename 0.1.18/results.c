@@ -8,6 +8,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <libintl.h>
+#include <math.h>
 #include <libxml/parser.h>
 #include <glib.h>
 #include "config.h"
@@ -22,6 +23,15 @@
 #include "inlet.h"
 #include "network.h"
 #include "results.h"
+
+/**
+ * function to set an error message opening a results data base file.
+ */
+static inline void
+results_error (const char *msg) ///< error message.
+{
+  error_message (_("Results"), (char *) g_strdup (msg));
+}
 
 /**
  * function to init the header of a results data base.
@@ -52,6 +62,25 @@ results_header_init (ResultsHeader * header,
 }
 
 /**
+ * function to init an empty results data base.
+ */
+static void
+results_null (Results * results)
+{
+#if DEBUG_RESULTS
+  fprintf (stderr, "results_destroy: start\n");
+#endif
+  results->point_x = results->point_y = results->point_z = results->pipe_length
+    = results->variable = NULL;
+  results->point_id = results->pipe_id = results->pipe_inlet_id
+    = results->pipe_outlet_id = NULL;
+  results->pipe_cell = NULL;
+#if DEBUG_RESULTS
+  fprintf (stderr, "results_destroy: end\n");
+#endif
+}
+
+/**
  * function to free the memory used by a results data base.
  */
 void
@@ -65,8 +94,11 @@ results_destroy (Results * results)
   free (results->pipe_outlet_id);
   free (results->pipe_inlet_id);
   free (results->pipe_id);
-  free (results->point_id);
   free (results->pipe_length);
+  free (results->point_z);
+  free (results->point_y);
+  free (results->point_x);
+  free (results->point_id);
 #if DEBUG_RESULTS
   fprintf (stderr, "results_destroy: end\n");
 #endif
@@ -93,10 +125,18 @@ results_init (Results * results,
   results_header_init (results->header, network, initial_time, final_time,
                        saving_step);
   n = network->npoints;
+  results->point_x = (double *) malloc (n * sizeof (double));
+  results->point_y = (double *) malloc (n * sizeof (double));
+  results->point_z = (double *) malloc (n * sizeof (double));
   results->point_id = (unsigned int *) malloc (n * sizeof (unsigned int));
   point = network->point;
   for (i = 0; i < n; ++i)
-    results->point_id[i] = point[i].id;
+    {
+      results->point_x[i] = point[i].x;
+      results->point_y[i] = point[i].y;
+      results->point_z[i] = point[i].z;
+      results->point_id[i] = point[i].id;
+    }
   n = network->npipes;
   results->pipe_length = (double *) malloc (n * sizeof (double));
   results->pipe_id = (unsigned int *) malloc (n * sizeof (unsigned int));
@@ -173,7 +213,11 @@ results_write_header (Results * results,
 #endif
   header = results->header;
   fwrite (header, sizeof (ResultsHeader), 1, file);
-  fwrite (results->point_id, sizeof (unsigned int), header->npoints, file);
+  n = header->npoints;
+  fwrite (results->point_id, sizeof (unsigned int), n, file);
+  fwrite (results->point_x, sizeof (double), n, file);
+  fwrite (results->point_y, sizeof (double), n, file);
+  fwrite (results->point_z, sizeof (double), n, file);
   n = header->npipes;
   fwrite (results->pipe_id, sizeof (unsigned int), n, file);
   fwrite (results->pipe_inlet_id, sizeof (unsigned int), n, file);
@@ -200,4 +244,171 @@ results_write_variables (Results * results,
 #if DEBUG_RESULTS
   fprintf (stderr, "results_write_variables: end\n");
 #endif
+}
+
+/**
+ * function to open the results data base from a file.
+ */
+int
+results_open_bin (Results * results,
+                  ///< pointer to the results data base struct.
+                  char *file_name)      ///< file name.
+{
+  ResultsHeader *header;
+  FILE *file;
+  const char *m;
+  unsigned int i, n;
+
+#if DEBUG_RESULTS
+  fprintf (stderr, "results_open_bin: start\n");
+#endif
+
+  // init pointers
+  results_null (results);
+
+  // open file
+  file = fopen (file_name, "rb");
+  if (!file)
+    {
+      m = _("Unable to open the results data base file");
+      goto exit_on_error;
+    }
+
+  // read header
+  header = results->header;
+  if (fread (header, sizeof (ResultsHeader), 1, file) != 1)
+    {
+      m = _("Bad header");
+      goto exit_on_error;
+    }
+  if (header->final_time < header->initial_time)
+    {
+      m = _("Bad final time");
+      goto exit_on_error;
+    }
+  if (header->saving_step <= 0.)
+    {
+      m = _("Bad saving time step size");
+      goto exit_on_error;
+    }
+  if (header->cell_size <= 0.)
+    {
+      m = _("Bad cell size");
+      goto exit_on_error;
+    }
+  if (!header->nnutrients || header->nnutrients > MAX_NUTRIENTS)
+    {
+      m = _("Bad nutrients number");
+      goto exit_on_error;
+    }
+  if (!header->nspecies || header->nspecies > MAX_SPECIES)
+    {
+      m = _("Bad species number");
+      goto exit_on_error;
+    }
+  if (!header->npoints)
+    {
+      m = _("Bad points number");
+      goto exit_on_error;
+    }
+  if (!header->npipes)
+    {
+      m = _("Bad pipes number");
+      goto exit_on_error;
+    }
+
+  // read arrays
+  n = header->npoints;
+  results->point_id = (unsigned int *) malloc (n * sizeof (unsigned int));
+  if (fread (results->point_id, sizeof (unsigned int), n, file) != n)
+    {
+      m = _("Bad point identifiers");
+      goto exit_on_error;
+    }
+  results->point_x = (double *) malloc (n * sizeof (double));
+  if (fread (results->point_x, sizeof (double), n, file) != n)
+    {
+      m = _("Bad point x-coordinates");
+      goto exit_on_error;
+    }
+  results->point_y = (double *) malloc (n * sizeof (double));
+  if (fread (results->point_y, sizeof (double), n, file) != n)
+    {
+      m = _("Bad point y-coordinates");
+      goto exit_on_error;
+    }
+  results->point_z = (double *) malloc (n * sizeof (double));
+  if (fread (results->point_z, sizeof (double), n, file) != n)
+    {
+      m = _("Bad point z-coordinates");
+      goto exit_on_error;
+    }
+  n = header->npipes;
+  results->pipe_id = (unsigned int *) malloc (n * sizeof (unsigned int));
+  if (fread (results->pipe_id, sizeof (unsigned int), n, file) != n)
+    {
+      m = _("Bad pipe identifiers");
+      goto exit_on_error;
+    }
+  results->pipe_inlet_id = (unsigned int *) malloc (n * sizeof (unsigned int));
+  if (fread (results->pipe_inlet_id, sizeof (unsigned int), n, file) != n)
+    {
+      m = _("Bad pipe inlet identifiers");
+      goto exit_on_error;
+    }
+  results->pipe_outlet_id = (unsigned int *) malloc (n * sizeof (unsigned int));
+  if (fread (results->pipe_outlet_id, sizeof (unsigned int), n, file) != n)
+    {
+      m = _("Bad pipe outlet identifiers");
+      goto exit_on_error;
+    }
+  results->pipe_length = (double *) malloc (n * sizeof (double));
+  if (fread (results->pipe_length, sizeof (double), n, file) != n)
+    {
+      m = _("Bad pipe lengths");
+      goto exit_on_error;
+    }
+  for (i = 0; i < n; ++i)
+    if (results->pipe_length[i] <= 0.)
+      {
+        m = _("Bad pipe length");
+        goto exit_on_error;
+      }
+  ++n;
+  results->pipe_cell = (unsigned int *) malloc (n * sizeof (unsigned int));
+  if (fread (results->pipe_cell, sizeof (unsigned int), n, file) != n)
+    {
+      m = _("Bad cell numbers");
+      goto exit_on_error;
+    }
+
+  // check identifiers
+
+  // saving data
+  results->nvariables = (header->nnutrients + header->nspecies)
+    * results->pipe_cell[header->npipes];
+  results->header_position = ftell (file);
+  results->file = file;
+
+  // exit on success
+#if DEBUG_RESULTS
+  fprintf (stderr, "results_open_bin: end\n");
+#endif
+  return 1;
+
+  // exit on error
+exit_on_error:
+
+  // set error message
+  results_error (m);
+
+  // freeing
+  if (file)
+    fclose (file);
+  results_destroy (results);
+
+#if DEBUG_RESULTS
+  fprintf (stderr, "results_open_bin: end\n");
+#endif
+  return 0;
 }

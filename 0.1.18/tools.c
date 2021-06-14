@@ -28,6 +28,30 @@ error_message (const char *label,       ///< error label.
 }
 
 /**
+ * function to set a string in format "year month day hour minute seconds" from
+ * a time in seconds since 1970.
+ */
+void
+time_string (char *string,
+             ///< string in format "year month day hour minute seconds".
+             unsigned int length,       ///< maximum string length.
+             double date)       ///< time in seconds since 1970.
+{
+  struct tm *t;
+  double f;
+  time_t tt;
+  unsigned int year, month;
+  tt = floor (date);
+  f = date - tt;
+  t = localtime (&tt);
+  year = t->tm_year + 1900;
+  month = t->tm_mon + 1;
+  f += t->tm_sec;
+  snprintf (string, length, "%u %u %u %u %u %lg", year, month, t->tm_mday,
+            t->tm_hour, t->tm_min, f);
+}
+
+/**
  * function to get the interval index of a value on an array.
  *
  * \return array interval index,
@@ -238,23 +262,4 @@ xml_node_get_time (xmlNode * node,      ///< XML node struct.
         *error = 0;
     }
   return sec;
-}
-
-/**
- * function to calculate the distance between 2 points.
- *
- * \return distance.
- */
-double
-distance (double x1,            ///< x-coordinate from 1st point.
-          double y1,            ///< y-coordinate from 1st point.
-          double z1,            ///< z-coordinate from 1st point.
-          double x2,            ///< x-coordinate from 2nd point.
-          double y2,            ///< y-coordinate from 2nd point.
-          double z2)            ///< z-coordinate from 2nd point.
-{
-  x2 -= x1;
-  y2 -= y1;
-  z2 -= z1;
-  return sqrt (x2 * x2 + y2 * y2 + z2 * z2);
 }

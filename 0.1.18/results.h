@@ -26,6 +26,9 @@ typedef struct
 typedef struct
 {
   ResultsHeader header[1];      ///< header data.
+  double *point_x;              ///< array of point x-coordinates.
+  double *point_y;              ///< array of point x-coordinates.
+  double *point_z;              ///< array of point x-coordinates.
   double *pipe_length;          ///< array of pipe lengths.
   unsigned int *point_id;       ///< array of point identifiers.
   unsigned int *pipe_id;        ///< array of pipe identifiers.
@@ -34,6 +37,8 @@ typedef struct
   unsigned int *pipe_cell;      ///< array of inlet pipe cells.
   double *variable;             ///< array of variables.
   unsigned int nvariables;      ///< number of variables.
+  FILE *file;                   ///< file.
+  long header_position;         ///< position after header on the file.
 } Results;
 
 void results_destroy (Results * results);
@@ -42,5 +47,7 @@ void results_init (Results * results, Network * network, double initial_time,
 void results_set (Results * results, Network * network);
 void results_write_header (Results * results, FILE * file);
 void results_write_variables (Results * results, FILE * file);
+int results_open_bin (Results * results, char *file_name);
+int results_open_xml (Results * results, char *file_name);
 
 #endif
