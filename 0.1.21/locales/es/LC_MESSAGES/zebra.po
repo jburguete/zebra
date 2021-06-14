@@ -1,0 +1,282 @@
+# Spanish translations for Zebra package.
+# Copyright (C) 2021 THE Zebra'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the Zebra package.
+# Automatically generated, 2021.
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: 0.1.21\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2021-06-15 01:12+0200\n"
+"PO-Revision-Date: 2021-06-15 01:12+0200\n"
+"Last-Translator: Automatically generated\n"
+"Language-Team: none\n"
+"Language: es\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: nutrient.c:26
+msgid "Nutrient"
+msgstr "Nutriente"
+
+#: nutrient.c:72 species.c:73 network.c:660 simulation.c:87
+msgid "Bad input file"
+msgstr "Fichero de entrada incorrecto"
+
+#: nutrient.c:80 species.c:81 network.c:668 simulation.c:95
+msgid "No root XML node"
+msgstr "Falta nodo XML raíz"
+
+#: nutrient.c:85 species.c:86 network.c:673 simulation.c:100
+msgid "Bad root XML node"
+msgstr "Nodo XML raíz incorrecto"
+
+#: nutrient.c:94 species.c:95 network.c:771
+msgid "Bad XML node"
+msgstr "Nodo XML incorrecto"
+
+#: nutrient.c:105 species.c:105
+msgid "Bad name"
+msgstr "Nombre incorrecto"
+
+#: nutrient.c:114
+msgid "No nutrients"
+msgstr "Faltan nutrientes"
+
+#: species.c:26
+msgid "Species"
+msgstr "Especie"
+
+#: species.c:111
+msgid "Bad decay coefficient"
+msgstr "Coeficiente de decaimiento incorrecto"
+
+#: species.c:117
+msgid "Bad grow coefficient"
+msgstr "Coeficiente de crecimiento incorrecto"
+
+#: species.c:123
+msgid "Bad cling coefficient"
+msgstr "Coeficiente de anclaje incorrecto"
+
+#: species.c:129
+msgid "Bad eat coefficient"
+msgstr "Coeficiente de comida incorrecto"
+
+#: species.c:136
+msgid "Bad maximum velocity"
+msgstr "Velocidad máxima incorrecta"
+
+#: species.c:145
+msgid "No species"
+msgstr "Faltan especies"
+
+#: inlet.c:29
+msgid "Inlet"
+msgstr "Entrada"
+
+#: inlet.c:181
+msgid "Bad node identifier"
+msgstr "Identificador de nodo incorrecto"
+
+#: inlet.c:197
+msgid "The node is not assigned to a pipe"
+msgstr "El nodo no está asignado a ningún tubo"
+
+#: inlet.c:232
+msgid "No nutrient name"
+msgstr "Falta el nombre del nutriente"
+
+#: inlet.c:239
+msgid "Unknown nutrient"
+msgstr "Nutriente desconocido"
+
+#: inlet.c:245
+msgid "No nutrient file"
+msgstr "Falta el fichero de nutriente"
+
+#: inlet.c:254
+msgid "Bad nutrient input file"
+msgstr "Falta el fichero de entrada de nutriente"
+
+#: inlet.c:264
+msgid "No species name"
+msgstr "Falta el nombre de la especie"
+
+#: inlet.c:271
+msgid "Unknown species"
+msgstr "Especie desconocida"
+
+#: inlet.c:277 simulation.c:173
+msgid "No species file"
+msgstr "Falta el fichero de especie"
+
+#: inlet.c:286
+msgid "Bad species input file"
+msgstr "Fichero de entrad de especie incorrecto"
+
+#: inlet.c:293
+msgid "Unknown node"
+msgstr "Nodo desconocido"
+
+#: network.c:66
+msgid "Network"
+msgstr "Red"
+
+#: network.c:207
+msgid "Bad Epanet title"
+msgstr "Título de Epanet incorrecto"
+
+#: network.c:215
+msgid "Bad Epanet file"
+msgstr "Fichero de Epanet incorrecto"
+
+#: network.c:241 network.c:255
+msgid "Bad Epanet coordinates section"
+msgstr "Sección de coordenadas de Epanet incorrecta"
+
+#: network.c:270 network.c:284
+msgid "Bad Epanet junctions section"
+msgstr "Sección de intersecciones de Epanet incorrecta"
+
+#: network.c:301 network.c:316
+msgid "Bad Epanet pipes section"
+msgstr "Sección de tubos de Epanet incorrecta"
+
+#: network.c:333 network.c:348
+msgid "Bad Epanet reservoirs section"
+msgstr "Sección de fuentes de Epanet incorrecta"
+
+#: network.c:363
+msgid "No Epanet end section"
+msgstr "Sección final de Epanet incorrecta"
+
+#: network.c:404
+msgid "Duplicated node"
+msgstr "Nodo duplicado"
+
+#: network.c:414
+msgid "Duplicated junction"
+msgstr "Intersección duplicada"
+
+#: network.c:419
+msgid "Unknown node indentifier on junction"
+msgstr "Identificador de nodo de intersección desconocido"
+
+#: network.c:430
+msgid "Duplicated reservoir"
+msgstr "Fuente duplicada"
+
+#: network.c:435
+msgid "Unknown node indentifier on reservoir"
+msgstr "Indentificador de nodo de fuente desconocido"
+
+#: network.c:454
+msgid "Unknown 1st node indentifier on pipe"
+msgstr "Identificador de primer nodo de tubo desconocido"
+
+#: network.c:459
+msgid "No elevation of 1st node"
+msgstr "Falta elevación del primer nodo"
+
+#: network.c:467
+msgid "Unknown 2nd node indentifier on pipe"
+msgstr "Identificador de segundo nodo de tubo desconocido"
+
+#: network.c:472
+msgid "No elevation of 2nd node"
+msgstr "Falta elevación del segundo nodo"
+
+#: network.c:478
+msgid "Same nodes for inlet and outlet"
+msgstr "Mismo nodo para entrada y salida"
+
+#: network.c:686
+msgid "Unknown pipe length model"
+msgstr "Modo de longitud de tubo desconocido"
+
+#: network.c:693
+msgid "No Epanet file"
+msgstr "Falta fichero de Epanet"
+
+#: network.c:701
+msgid "Unable to open the Epanet file"
+msgstr "No se pudo abrir el fichero de Epanet"
+
+#: network.c:732
+msgid "No inlets"
+msgstr "Faltan entradas"
+
+#: network.c:747
+msgid "Bad discharges time"
+msgstr "Tiempo de caudales incorrecto"
+
+#: network.c:752
+msgid "Bad discharges time order"
+msgstr "Orden de tiempos de caudales incorrecto"
+
+#: network.c:758
+msgid "No discharges file"
+msgstr "Falta fichero de caudales"
+
+#: network.c:765
+msgid "Bad discharges file"
+msgstr "Fichero de caudales incorrecto"
+
+#: network.c:777
+msgid "No discharges"
+msgstr "Faltan caudales"
+
+#: simulation.c:34
+msgid "Simulation"
+msgstr "Simulación"
+
+#: simulation.c:108
+msgid "Bad initial time"
+msgstr "Tiempo inicial incorrecto"
+
+#: simulation.c:114
+msgid "Bad final time"
+msgstr "Tiempo final incorrecto"
+
+#: simulation.c:122
+msgid "Bad cell size"
+msgstr "Tamaño de celda incorrecto"
+
+#: simulation.c:128
+msgid "Bad saving time step size"
+msgstr "Tamaño de paso de tiemp de guardado incorrecto"
+
+#: simulation.c:134
+msgid "No results file"
+msgstr "Falta fichero de resultados"
+
+#: simulation.c:144
+msgid "Bad numerical order"
+msgstr "Orden del método numérico incorrecto"
+
+#: simulation.c:155
+msgid "No nutrients file"
+msgstr "Falta fichero de nutrientes"
+
+#: simulation.c:191
+msgid "No network file"
+msgstr "Falta fichero de red"
+
+#: main.c:131
+msgid ""
+"The syntax is:\n"
+"./zebra simulation_file\n"
+"or:\n"
+"./zebra data_base_file configuration_file\n"
+msgstr ""
+"La sintaxis es:\n"
+"./zebra fichero_de_simulación\n"
+"or:\n"
+"./zebra fichero_de_base_de_datos fichero_de_configuración\n"
+
+#: main.c:138
+msgid "ERROR!"
+msgstr "¡ERROR!"

@@ -15,12 +15,16 @@ net = network.h inlet.h junction.h $(pip)
 res = results.h $(net)
 sim = simulation.h $(res)
 libs = libxml-2.0 glib-2.0
+es = locales/es/LC_MESSAGES/
+locales = $(es)zebra.mo
 
 CC = gcc
 #COPT = -O3 -march=native -flto
 COPT = -O3 -flto
 CFLAGS = -c -g -Wall -Wextra $(COPT) `pkg-config --cflags $(libs)`
 LDFLAGS = -g -flto -lm `pkg-config --libs $(libs)`
+
+all: zebra $(locales)
 
 zebra: $(obj)
 	$(CC) $(obj) $(LDFLAGS) -o zebra
@@ -60,6 +64,25 @@ simulation.o: simulation.c $(sim)
 
 main.o: main.c $(sim)
 	$(CC) $(CFLAGS) main.c -o main.o
+
+locales/zebra.pot: $(src) Makefile
+	test -d locales || mkdir -p locales
+	$(gnu)xgettext -k_ -d zebra -o locales/zebra.pot --from-code=UTF-8 \
+		$(src)
+	touch locales/zebra.pot
+
+$(es)zebra.po: locales/zebra.pot
+	test -d $(es) || mkdir -p $(es)
+	test -f $(es)zebra.po || \
+		msginit -l es -o $(es)zebra.po -i locales/zebra.pot \
+			--no-translator
+	msgmerge -U $(es)zebra.po locales/zebra.pot
+	touch $(es)zebra.po
+	vim $(es)zebra.po
+
+$(es)zebra.mo: $(es)zebra.po
+	$(gnu)msgfmt -c -v -o $(es)zebra.mo $(es)zebra.po
+	touch $(es)zebra.mo
 
 clean:
 	rm zebra $(obj)
