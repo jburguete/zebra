@@ -48,6 +48,7 @@ zebra_mussel_grow (Species * species,   ///< pointer to the species struct data.
                    ///< zebra mussel infestation coefficient.
                    double *concentration,       ///< zebra mussel concentration.
                    double volume,       ///< cell volume.
+                   double area, ///< cell cross sectional area.
                    double lateral_area, ///< cell lateral area.
                    double velocity,     ///< flow velocity.
                    int n,       ///< number of nutrients.
@@ -55,7 +56,7 @@ zebra_mussel_grow (Species * species,   ///< pointer to the species struct data.
 {
   va_list list;
   double *oxygen, *organic_matter;
-  double m, w, o2, o2d, om, d;
+  double m, w, o2, o2d, om, d, vef;
 
 #if DEBUG_SPECIES
   fprintf (stderr, "zebra_mussel_grow: start\n");
@@ -88,8 +89,12 @@ zebra_mussel_grow (Species * species,   ///< pointer to the species struct data.
   // respiration
   o2 = fmax (0., o2d - species->respiration * m * time_step);
 
+  // effective volume
+  vef = volume + area * velocity * time_step;
+
   // eating
-  d = fmax (0., om - species->eat * m * time_step);
+  d = fmax (0.,
+            om - *organic_matter * species->eat * m * time_step * vef / volume);
   om -= d;
   m += species->grow * d;
 

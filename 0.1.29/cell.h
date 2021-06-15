@@ -90,8 +90,8 @@ cell_grow (Cell * cell)         ///< pointer to the cell struct data.
             }
           zebra_mussel_grow (species + i, cell->species_infestation + i,
                              cell->species_concentration + i, cell->volume,
-                             cell->lateral_area, cell->velocity, 2, nc[0],
-                             nc[1]);
+                             cell->area, cell->lateral_area, cell->velocity, 2,
+                             nc[0], nc[1]);
         }
     }
 #if DEBUG_CELL
