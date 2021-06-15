@@ -47,21 +47,3 @@ cell_init (Cell * cell,         ///< pointer to the cell struct data.
   fprintf (stderr, "cell_init: end\n");
 #endif
 }
-
-/**
- * function to set the flow properties on a cell.
- */
-void
-cell_set_flow (Cell * cell,     ///< pointer to the cell struct data.
-               double discharge,        ///< flow discharge.
-               double velocity) ///< flow velocity.
-{
-#if DEBUG_CELL
-  fprintf (stderr, "cell_set_flow: start\n");
-#endif
-  cell->discharge = discharge;
-  cell->velocity = velocity;
-#if DEBUG_CELL
-  fprintf (stderr, "cell_set_flow: end\n");
-#endif
-}

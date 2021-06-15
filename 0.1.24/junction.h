@@ -1,28 +1,34 @@
 /**
- * \file junction.c
- * \brief source file to define the network junctions.
+ * \file junction.h
+ * \brief header file to define the network junctions.
  * \author Javier Burguete Tolosa.
  * \copyright Copyright 2021, Javier Burguete Tolosa.
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include <libxml/parser.h>
-#include "config.h"
-#include "tools.h"
-#include "nutrient.h"
-#include "species.h"
-#include "point.h"
-#include "cell.h"
-#include "wall.h"
-#include "pipe.h"
-#include "junction.h"
+#ifndef JUNCTION__H
+#define JUNCTION__H 1
+
+/**
+ * \struct Junction
+ * \brief struct to define the junctions.
+ */
+typedef struct
+{
+  Pipe **inlet;                 ///< array of inlet pipe pointers.
+  Pipe **outlet;                ///< array of outlet pipe pointers.
+  Cell **cell;                  ///< array of cell pointers.
+  Point *point;                 ///< Point pointer.
+  double volume;
+  unsigned int ninlets;         ///< number of inlet pipes.
+  unsigned int noutlets;        ///< number of outlet pipes.
+  unsigned int ncells;
+} Junction;
+
+void junction_destroy (Junction * junction);
 
 /**
  * function to init an empty junction.
  */
-void
+static inline void
 junction_null (Junction * junction)
                ///< pointer to the junction struct data.
 {
@@ -39,27 +45,9 @@ junction_null (Junction * junction)
 }
 
 /**
- * function to free the memory used by a junction.
- */
-void
-junction_destroy (Junction * junction)
-               ///< pointer to the junction struct data.
-{
-#if DEBUG_JUNCTION
-  fprintf (stderr, "junction_destroy: start\n");
-#endif
-  free (junction->cell);
-  free (junction->outlet);
-  free (junction->inlet);
-#if DEBUG_JUNCTION
-  fprintf (stderr, "junction_destroy: end\n");
-#endif
-}
-
-/**
  * function to add an inlet pipe to a junction.
  */
-void
+static inline void
 junction_add_inlet (Junction * junction,
                     ///< pointer to the junction struct data.
                     Pipe * pipe)
@@ -81,7 +69,7 @@ junction_add_inlet (Junction * junction,
 /**
  * function to add an outlet pipe to a junction.
  */
-void
+static inline void
 junction_add_outlet (Junction * junction,
                      ///< pointer to the junction struct data.
                      Pipe * pipe)
@@ -104,7 +92,7 @@ junction_add_outlet (Junction * junction,
 /**
  * function to init the variables on a junction.
  */
-void
+static inline void
 junction_init (Junction * junction)
                ///< pointer to the junction struct data.
 {
@@ -141,7 +129,7 @@ junction_init (Junction * junction)
 /**
  * function to set the variables on a junction.
  */
-void
+static inline void
 junction_set (Junction * junction)
               ///< pointer to the junction struct data.
 {
@@ -178,3 +166,5 @@ junction_set (Junction * junction)
   fprintf (stderr, "junction_set: end\n");
 #endif
 }
+
+#endif

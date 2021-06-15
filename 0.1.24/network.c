@@ -23,6 +23,8 @@
 #include "inlet.h"
 #include "network.h"
 
+unsigned int numerical_order;   ///< accurate order of the numerical method.
+
 /**
  * function to init the pointers of a network discharges struct.
  */
@@ -123,7 +125,7 @@ network_destroy (Network * network)     ///< pointer to the network struct data.
 /**
  * function to copy on a point struct the data from a Epanet node struct.
  */
-static void
+static inline void
 point_net_copy (Point * point,  ///< pointer to the point struct data.
                 NetNode * node) ///< pointer to the Epanet node struct data.
 {
@@ -164,7 +166,7 @@ pipe_net_copy (Pipe * pipe,     ///< pointer to the pipe struct data.
  *
  * \return 1 on success, 0 on error.
  */
-static int
+static inline int
 network_open_inp (Network * network,    ///< pointer to the network struct data.
                   FILE * file)  ///< .INP Epanet file. 
 {
@@ -566,7 +568,7 @@ exit_on_error:
  * 
  * \return 1 on success, 0 on error.
  */
-static int
+static inline int
 network_open_out (Network * network,    ///< pointer to the network struct data.
                   NetDischarges * discharges,
                   ///< pointer to the network discharges struct data.
@@ -819,137 +821,5 @@ network_set_discharges (Network * network)
     pipe_set_discharge (discharges->pipe[i], discharges->discharge[i]);
 #if DEBUG_NETWORK
   fprintf (stderr, "network_set_discharges: end\n");
-#endif
-}
-
-/**
- * function to update the discharges on a network.
- */
-void
-network_update_discharges (Network * network)
-                           ///< pointer to the network struct data.
-{
-  NetDischarges *discharges;
-  unsigned int i, last;
-#if DEBUG_NETWORK
-  fprintf (stderr, "network_update_discharges: start\n");
-#endif
-  discharges = network->discharges + network->current_discharges;
-  last = network->ndischarges - 1;
-#if DEBUG_NETWORK
-  fprintf (stderr, "network_update_discharges: current=%u last=%u\n",
-           network->current_discharges, last);
-#endif
-  i = 0;
-  while (network->current_discharges < last
-         && current_time >= discharges[1].date)
-    {
-      ++network->current_discharges;
-      ++discharges;
-      ++i;
-    }
-  if (i)
-    network_set_discharges (network);
-#if DEBUG_NETWORK
-  fprintf (stderr, "network_update_discharges: end\n");
-#endif
-}
-
-/**
- * function to calculate the maximum next time allowed by a network.
- *
- * \return maximum allowed next time in seconds since 1970.
- */
-double
-network_maximum_time (Network * network,
-                      ///< pointer to the network struct data.
-                      double final_time,
-                      ///< final time in seconds since 1970.
-                      double cfl)       ///< CFL number.
-{
-  Inlet *inlet;
-  Pipe *pipe;
-  double t;
-  unsigned int i;
-#if DEBUG_NETWORK
-  fprintf (stderr, "network_maximum_time: start\n");
-#endif
-  t = final_time;
-  pipe = network->pipe;
-  for (i = 0; i < network->npipes; ++i)
-    t = fmin (t, pipe_maximum_time (pipe + i, cfl));
-#if DEBUG_NETWORK
-  fprintf (stderr, "network_maximum_time: t=%.14lg\n", t);
-#endif
-  if (network->current_discharges < network->ndischarges - 1)
-    t = fmin (t, network->discharges[network->current_discharges + 1].date);
-#if DEBUG_NETWORK
-  fprintf (stderr, "network_maximum_time: t=%.14lg\n", t);
-#endif
-  inlet = network->inlet;
-  for (i = 0; i < network->ninlets; ++i)
-    t = inlet_maximum_time (inlet + i, t);
-#if DEBUG_NETWORK
-  fprintf (stderr, "network_maximum_time: t=%.14lg\n", t);
-  fprintf (stderr, "network_maximum_time: end\n");
-#endif
-  return t;
-}
-
-/**
- * function to set the initial conditions on a network.
- */
-void
-network_initial (Network * network)     ///< pointer to the network struct data.
-{
-  double nutrient_concentration[MAX_NUTRIENTS];
-  double species_concentration[MAX_SPECIES];
-  Inlet *inlet;
-  Pipe *pipe;
-  unsigned int i, n;
-#if DEBUG_NETWORK
-  fprintf (stderr, "network_initial: start\n");
-#endif
-  inlet = network->inlet;
-  pipe = network->pipe;
-  n = network->npipes;
-  for (i = 0; i < nnutrients; ++i)
-    nutrient_concentration[i] = *(inlet->nutrient_concentration[i]);
-  for (i = 0; i < nspecies; ++i)
-    species_concentration[i] = *(inlet->species_concentration[i]);
-  for (i = 0; i < n; ++i)
-    pipe_initial (pipe, nutrient_concentration, species_concentration);
-#if DEBUG_NETWORK
-  fprintf (stderr, "network_initial: end\n");
-#endif
-}
-
-/**
- * function to perform a numerical method step on a network.
- */
-void
-network_step (Network * network)        ///< pointer to the network struct data.
-{
-  Inlet *inlet;
-  Junction *junction;
-  Pipe *pipe;
-  unsigned int i, n;
-#if DEBUG_NETWORK
-  fprintf (stderr, "network_step: start\n");
-#endif
-  pipe = network->pipe;
-  n = network->npipes;
-  for (i = 0; i < n; ++i)
-    pipe_step (pipe + i);
-  junction = network->junction;
-  n = network->njunctions;
-  for (i = 0; i < n; ++i)
-    junction_set (junction + i);
-  inlet = network->inlet;
-  n = network->ninlets;
-  for (i = 0; i < n; ++i)
-    inlet_set (inlet + i);
-#if DEBUG_NETWORK
-  fprintf (stderr, "network_step: end\n");
 #endif
 }

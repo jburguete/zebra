@@ -4,10 +4,10 @@ all: zebra
 
 hdr = config.h tools.h nutrient.h species.h point.h cell.h wall.h pipe.h \
 	junction.h inlet.h junction.h network.h results.h simulation.h
-src = tools.c nutrient.c species.c cell.c wall.c pipe.c inlet.c junction.c \
-	network.c results.h simulation.c main.c
-obj = tools.o nutrient.o species.o cell.o wall.o pipe.o inlet.o junction.o \
-	network.o results.o simulation.o main.o
+src = tools.c nutrient.c species.c cell.c inlet.c junction.c network.c \
+	results.c simulation.c main.c
+obj = tools.o nutrient.o species.o cell.o inlet.o junction.o network.o \
+	results.o simulation.o main.o
 cfg = tools.h config.h Makefile
 spe = species.h nutrient.h $(cfg)
 pip = pipe.h cell.h wall.h point.h $(spe)
@@ -26,17 +26,14 @@ LDFLAGS = -g -flto -lm `pkg-config --libs $(libs)`
 
 PGO = 1
 ifeq ($(PGO), 1)
-	objpgo = tools.pgo nutrient.pgo species.pgo cell.pgo wall.pgo pipe.pgo \
-		 inlet.pgo junction.pgo network.pgo results.pgo simulation.pgo \
-		 main.pgo
+	objpgo = tools.pgo nutrient.pgo species.pgo cell.pgo inlet.pgo \
+		 junction.pgo network.pgo results.pgo simulation.pgo main.pgo
 	pgogen = -fprofile-generate
 	pgouse = -fprofile-use -fprofile-correction
 	toolsdep = zebrapgo
 	nutrientdep = zebrapgo
 	speciesdep = zebrapgo
 	celldep = zebrapgo
-	walldep = zebrapgo
-	pipedep = zebrapgo
 	inletdep = zebrapgo
 	junctiondep = zebrapgo
 	networkdep = zebrapgo
@@ -48,8 +45,6 @@ else
 	nutrientdep = nutrient.c nutrient.h $(cfg)
 	speciesdep = species.c $(spe)
 	celldep = cell.c cell.h point.h $(spe)
-	walldep = wall.c wall.h cell.h point.h $(spe)
-	pipedep = pipe.c $(pip)
 	inletdep = inlet.c inlet.h $(pip)
 	junctiondep = junction.c junction.h $(pip)
 	networkdep = network.c $(net)
@@ -76,12 +71,6 @@ species.pgo: species.c $(spe)
 
 cell.pgo: cell.c cell.h point.h $(spe)
 	$(CC) $(CFLAGS) $(pgogen) cell.c -o cell.pgo
-
-wall.pgo: wall.c wall.h cell.h point.h $(spe)
-	$(CC) $(CFLAGS) $(pgogen) wall.c -o wall.pgo
-
-pipe.pgo: pipe.c $(pip)
-	$(CC) $(CFLAGS) $(pgogen) pipe.c -o pipe.pgo
 
 inlet.pgo: inlet.c inlet.h $(pip)
 	$(CC) $(CFLAGS) $(pgogen) inlet.c -o inlet.pgo
@@ -115,12 +104,6 @@ species.o: $(speciesdep)
 
 cell.o: $(celldep)
 	$(CC) $(CFLAGS) $(pgouse) cell.c -o cell.o
-
-wall.o: $(walldep)
-	$(CC) $(CFLAGS) $(pgouse) wall.c -o wall.o
-
-pipe.o: $(pipedep)
-	$(CC) $(CFLAGS) $(pgouse) pipe.c -o pipe.o
 
 inlet.o: $(inletdep)
 	$(CC) $(CFLAGS) $(pgouse) inlet.c -o inlet.o

@@ -1,26 +1,40 @@
 /**
  * \file wall.h
- * \brief source file to define the calculation mesh walls.
+ * \brief header file to define the calculation mesh walls.
  * \author Javier Burguete Tolosa.
  * \copyright Copyright 2021, Javier Burguete Tolosa.
  */
-#include <stdio.h>
-#include <math.h>
-#include <libxml/parser.h>
-#include "config.h"
-#include "tools.h"
-#include "nutrient.h"
-#include "species.h"
-#include "point.h"
-#include "cell.h"
-#include "wall.h"
+#ifndef WALL__H
+#define WALL__H 1
 
-unsigned int numerical_order;   ///< accurate order of the numerical method.
+/**
+ * \struct Wall
+ * \brief struct to define a mesh wall for calculation.
+ */
+typedef struct
+{
+  double dn[MAX_NUTRIENTS];
+  ///< array of nutrient concentration differences.
+  double ds[MAX_SPECIES];
+  ///< array of species concentration differences.
+  double dn2[MAX_NUTRIENTS];
+  ///< array of 2nd order nutrient concentration differences.
+  double ds2[MAX_SPECIES];
+  ///< array of 2nd order species concentration differences.
+  Cell *left2;                  ///< left cell.
+  Cell *right2;                 ///< right cell.
+  Cell *left;                   ///< left cell.
+  Cell *right;                  ///< right cell.
+  double size;                  ///< longitudinal size.
+  double vdt;                   ///< velocity times time step size.
+} Wall;
+
+extern unsigned int numerical_order;
 
 /**
  * function to init the data of a mesh wall struct.
  */
-void
+static inline void
 wall_init (Wall * wall,         ///< pointer to the mesh wall struct data.
            Cell * left,         ///< pointer to the left cell struct data.
            Cell * right)        ///< pointer to the right cell struct data.
@@ -39,7 +53,7 @@ wall_init (Wall * wall,         ///< pointer to the mesh wall struct data.
 /**
  * function to set the flow properties on a wall.
  */
-void
+static inline void
 wall_set_flow (Wall * wall,     ///< pointer to the wall struct data.
                double vdt)      ///< flow velocity times time step size.
 {
@@ -55,7 +69,7 @@ wall_set_flow (Wall * wall,     ///< pointer to the wall struct data.
 /**
  * function to set the 1st order differences of a mesh wall struct.
  */
-void
+static inline void
 wall_set (Wall * wall)          ///< pointer to the mesh wall struct data.
 {
   Cell *left, *right;
@@ -87,7 +101,7 @@ wall_set (Wall * wall)          ///< pointer to the mesh wall struct data.
  * function to calculate 1st order variable increments on a wall for positive
  * velocities.
  */
-void
+static inline void
 wall_increments_p (Wall * wall)
 {
   Cell *right;
@@ -116,7 +130,7 @@ wall_increments_p (Wall * wall)
  * function to calculate 1st order variable increments on a wall for negative
  * velocities.
  */
-void
+static inline void
 wall_increments_n (Wall * wall)
 {
   Cell *left;
@@ -144,7 +158,7 @@ wall_increments_n (Wall * wall)
 /**
  * function to init the 2nd order data of a mesh wall struct.
  */
-void
+static inline void
 wall_init_2 (Wall * wall,       ///< pointer to the mesh wall struct data.
              Cell * left2,      ///< pointer to the left left cell struct data.
              Cell * right2)
@@ -164,7 +178,7 @@ wall_init_2 (Wall * wall,       ///< pointer to the mesh wall struct data.
  * function to set the 2nd order differences of a mesh wall struct for positive
  * velocities.
  */
-void
+static inline void
 wall_set_2p (Wall * wall,       ///< pointer to the wall struct data.
              Wall * prev)       ///< pointer to the previous wall struct data.
 {
@@ -193,7 +207,7 @@ wall_set_2p (Wall * wall,       ///< pointer to the wall struct data.
 /**
  * function to set the 2nd order differences of a mesh wall struct.
  */
-void
+static inline void
 wall_set_2n (Wall * wall,       ///< pointer to the wall struct data.
              Wall * next)       ///< pointer to the next wall struct data.
 {
@@ -223,7 +237,7 @@ wall_set_2n (Wall * wall,       ///< pointer to the wall struct data.
  * function to calculate 2nd order variable increments on a wall for positive
  * velocities.
  */
-void
+static inline void
 wall_increments_2p (Wall * wall)
 {
   Cell *right, *right2;
@@ -262,7 +276,7 @@ wall_increments_2p (Wall * wall)
  * function to calculate 2nd order variable increments on a wall for negative
  * velocities.
  */
-void
+static inline void
 wall_increments_2n (Wall * wall)
 {
   Cell *left, *left2;
@@ -296,3 +310,5 @@ wall_increments_2n (Wall * wall)
   fprintf (stderr, "wall_increments_2n: end\n");
 #endif
 }
+
+#endif

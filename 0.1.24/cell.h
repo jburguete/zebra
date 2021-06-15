@@ -38,6 +38,23 @@ extern double time_step;
 
 void cell_init (Cell * cell, double position, double distance, double size,
                 double area, double perimeter);
-void cell_set_flow (Cell * cell, double discharge, double velocity);
+
+/**
+ * function to set the flow properties on a cell.
+ */
+static inline void
+cell_set_flow (Cell * cell,     ///< pointer to the cell struct data.
+               double discharge,        ///< flow discharge.
+               double velocity) ///< flow velocity.
+{
+#if DEBUG_CELL
+  fprintf (stderr, "cell_set_flow: start\n");
+#endif
+  cell->discharge = discharge;
+  cell->velocity = velocity;
+#if DEBUG_CELL
+  fprintf (stderr, "cell_set_flow: end\n");
+#endif
+}
 
 #endif

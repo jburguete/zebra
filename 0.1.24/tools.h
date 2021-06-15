@@ -13,8 +13,6 @@ extern char *error_msg;
 
 void error_message (const char *label, char *msg);
 void time_string (char *string, unsigned int length, double date);
-unsigned int array_search (double t, double *x, unsigned int n);
-double array_interpolate (double t, double *x, double *y, unsigned int n);
 double read_time (FILE * file, int *error);
 unsigned int xml_node_get_uint (xmlNode * node, const xmlChar * prop,
                                 int *error);
@@ -64,6 +62,56 @@ flux_limited (double upwind,    ///< upwind flux.
   if (r >= 3.)
     return upwind + upwind;
   return 0.5 * (upwind + centered);
+}
+
+/**
+ * function to get the interval index of a value on an array.
+ *
+ * \return array interval index,
+ */
+static inline unsigned int
+array_search (double t,         ///< value to find.
+              double *x,        ///< array.
+              unsigned int n)   ///< number of array elements.
+{
+  unsigned int i, i1, i2;
+  i1 = 1;
+  i2 = n - 1;
+  if (!i2 || t < x[i1])
+    return 0;
+  --i2;
+  if (t >= x[i2])
+    return i2;
+  while (i2 - i1 > 1)
+    {
+      i = (i2 + i1) / 2;
+      if (t > x[i])
+        i1 = i;
+      else
+        i2 = i;
+    }
+  return i1;
+}
+
+/**
+ * function to get the interpolated y-coordinate on an array.
+ *
+ * \return interpolated y-coordinate.
+ */
+static inline double
+array_interpolate (double t,    ///< x-coordinate to interpolate.
+                   double *x,   ///< array of x-coordinates.
+                   double *y,   ///< array of y-coordinates.
+                   unsigned int n)      ///< number of array elements.
+{
+  unsigned int i;
+  if (t <= x[0])
+    return y[0];
+  i = n - 1;
+  if (t >= x[i])
+    return y[i];
+  i = array_search (t, x, n);
+  return y[i] + (y[i + 1] - y[i]) * (t - x[i]) / (x[i + 1] - x[i]);
 }
 
 #endif

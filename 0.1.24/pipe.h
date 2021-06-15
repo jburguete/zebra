@@ -1,27 +1,40 @@
 /**
  * \file pipe.h
- * \brief source file to define the network pipes.
+ * \brief header file to define the network pipes.
  * \author Javier Burguete Tolosa.
  * \copyright Copyright 2021, Javier Burguete Tolosa.
  */
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
-#include <math.h>
-#include <libxml/parser.h>
-#include "config.h"
-#include "tools.h"
-#include "nutrient.h"
-#include "species.h"
-#include "point.h"
-#include "cell.h"
-#include "wall.h"
-#include "pipe.h"
+#ifndef PIPE__H
+#define PIPE__H 1
+
+/**
+ * \struct Pipe
+ * \brief struct to define an irrigation pipe.
+ */
+typedef struct
+{
+  Point *inlet;                 ///< pointer to the inlet point.
+  Point *outlet;                ///< pointer to the outlet point.
+  Cell *cell;                   ///< array of node cells.
+  Wall *wall;                   ///< array of mesh walls.
+  double length;                ///< length.
+  double diameter;              ///< diameter.
+  double area;                  ///< cross sectional area.
+  double perimeter;             ///< cross sectional perimeter.
+  double roughness;             ///< roughness length.
+  double discharge;             ///< current discharge.
+  double velocity;              ///< current flow velocity.
+  unsigned int ncells;          ///< number of node cells.
+  unsigned int nwalls;          ///< number of mesh walls.
+  unsigned int id;              ///< identifier.
+  unsigned int inlet_id;        ///< inlet node identifier.
+  unsigned int outlet_id;       ///< outlet node identifier.
+} Pipe;
 
 /**
  * function to init an empty pipe.
  */
-void
+static inline void
 pipe_null (Pipe * pipe)         ///< pointer to the pipe struct data.
 {
 #if DEBUG_PIPE
@@ -36,7 +49,7 @@ pipe_null (Pipe * pipe)         ///< pointer to the pipe struct data.
 /**
  * function free the memory used by a pipe.
  */
-void
+static inline void
 pipe_destroy (Pipe * pipe)      ///< pointer to the pipe struct data.
 {
 #if DEBUG_PIPE
@@ -52,7 +65,7 @@ pipe_destroy (Pipe * pipe)      ///< pointer to the pipe struct data.
 /**
  * function to create a mesh of cells in a pipe.
  */
-void
+static inline void
 pipe_create_mesh (Pipe * pipe,  ///< pointer to the pipe struct data.
                   double cell_size)     ///< maximum cell size.
 {
@@ -90,7 +103,7 @@ pipe_create_mesh (Pipe * pipe,  ///< pointer to the pipe struct data.
 /**
  * function to set the flow discharge in a pipe.
  */
-void
+static inline void
 pipe_set_discharge (Pipe * pipe,        ///< pointer to the pipe struct data.
                     double discharge)   ///< flow discharge.
 {
@@ -120,7 +133,7 @@ pipe_set_discharge (Pipe * pipe,        ///< pointer to the pipe struct data.
 /**
  * function to set the flow velocity in a pipe.
  */
-void
+static inline void
 pipe_set_velocity (Pipe * pipe, ///< pointer to the pipe struct data.
                    double velocity)     ///< flow velocity.
 {
@@ -146,7 +159,7 @@ pipe_set_velocity (Pipe * pipe, ///< pointer to the pipe struct data.
  *
  * \return cell pointer on succes, NULL on error.
  */
-Cell *
+static inline Cell *
 pipe_node_cell (Pipe * pipe,    ///< pointer to the pipe struct data.
                 unsigned int id)        ///< node identifier.
 {
@@ -169,7 +182,7 @@ pipe_node_cell (Pipe * pipe,    ///< pointer to the pipe struct data.
  *
  * \return maximum time in seconds since 1970.
  */
-double
+static inline double
 pipe_maximum_time (Pipe * pipe, ///< pointer to the pipe struct data.
                    double cfl)  ///< CFL number.
 {
@@ -189,7 +202,7 @@ pipe_maximum_time (Pipe * pipe, ///< pointer to the pipe struct data.
 /**
  * function to set the initial conditions on a pipe.
  */
-void
+static inline void
 pipe_initial (Pipe * pipe,      ///< pointer to the pipe struct data.
               double *nutrient_concentration,
               ///< array of nutrient concetrations.
@@ -219,7 +232,7 @@ pipe_initial (Pipe * pipe,      ///< pointer to the pipe struct data.
 /**
  * function to perform a numerical method step on a pipe.
  */
-void
+static inline void
 pipe_step (Pipe * pipe)         ///< pointer to the pipe struct data.
 {
   Wall *wall;
@@ -259,3 +272,5 @@ pipe_step (Pipe * pipe)         ///< pointer to the pipe struct data.
   fprintf (stderr, "pipe_step: end\n");
 #endif
 }
+
+#endif
