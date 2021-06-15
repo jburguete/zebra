@@ -1,4 +1,4 @@
-Zebra (0.1.26 versión española)
+Zebra (0.1.27 versión española)
 ==============================
 
 :uk:[english](README.md) :es:[español](README.es.md)
@@ -15,7 +15,7 @@ FICHEROS
 
 * README\*.md: ficheros básicos de ayuda
 * license.md: fichero de licencia
-* 0.1.26/\*.h: ficheros de cabecera
-* 0.1.26/\*.c: ficheros fuente
-* 0.1.26/Makefile: fichero de configuración para generar el ejecutable
-* 0.1.26/Doxyfile: fichero de configuración para generar la documentación doxygen
+* 0.1.27/\*.h: ficheros de cabecera
+* 0.1.27/\*.c: ficheros fuente
+* 0.1.27/Makefile: fichero de configuración para generar el ejecutable
+* 0.1.27/Doxyfile: fichero de configuración para generar la documentación doxygen

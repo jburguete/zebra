@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.1.26\n"
+"Project-Id-Version: 0.1.27\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-15 14:04+0200\n"
+"POT-Creation-Date: 2021-06-15 16:25+0200\n"
 "PO-Revision-Date: 2021-06-15 01:12+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -53,39 +53,39 @@ msgstr "Faltan nutrientes"
 msgid "Species"
 msgstr "Especie"
 
-#: species.c:120
+#: species.c:119
 msgid "Bad maximum velocity"
 msgstr "Velocidad máxima incorrecta"
 
-#: species.c:127
+#: species.c:125
 msgid "Bad cling pipe coefficient"
 msgstr "Coeficiente de anclaje a tubo incorrecto"
 
-#: species.c:134
+#: species.c:131
 msgid "Bad cling water coefficient"
 msgstr "Coeficiente de anclaje de agua incorrecto"
 
-#: species.c:141
+#: species.c:137
 msgid "Bad minimum oxygen"
 msgstr "Mínimo oxígeno disuelto incorrecto"
 
-#: species.c:148
+#: species.c:143
 msgid "Bad respiration coefficient"
 msgstr "Coeficiente de respiración incorrecto"
 
-#: species.c:154
+#: species.c:149
 msgid "Bad eat coefficient"
 msgstr "Coeficiente de comida incorrecto"
 
-#: species.c:160
+#: species.c:155
 msgid "Bad grow coefficient"
 msgstr "Coeficiente de crecimiento incorrecto"
 
-#: species.c:166
+#: species.c:161
 msgid "Bad decay coefficient"
 msgstr "Coeficiente de decaimiento incorrecto"
 
-#: species.c:175
+#: species.c:170
 msgid "No species"
 msgstr "Faltan especies"
 

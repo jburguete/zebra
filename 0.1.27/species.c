@@ -113,55 +113,50 @@ species_open_xml (char *file_name)      ///< input file name.
           m = _("Unknown");
           goto exit_on_error;
         }
-      s->maximum_velocity
-        = xml_node_get_float_with_default (node, XML_MAXIMUM_VELOCITY, &k, 0.);
-      if (!k)
+      s->maximum_velocity = xml_node_get_float (node, XML_MAXIMUM_VELOCITY, &k);
+      if (!k || s->maximum_velocity < 0.)
         {
           m = _("Bad maximum velocity");
           goto exit_on_error;
         }
-      s->cling_pipe
-        = xml_node_get_float_with_default (node, XML_CLING_PIPE, &k, 0.);
-      if (!k)
+      s->cling_pipe = xml_node_get_float (node, XML_CLING_PIPE, &k);
+      if (!k || s->cling_pipe < 0.)
         {
           m = _("Bad cling pipe coefficient");
           goto exit_on_error;
         }
-      s->cling_water
-        = xml_node_get_float_with_default (node, XML_CLING_WATER, &k, 0.);
-      if (!k)
+      s->cling_water = xml_node_get_float (node, XML_CLING_WATER, &k);
+      if (!k || s->cling_water < 0.)
         {
           m = _("Bad cling water coefficient");
           goto exit_on_error;
         }
-      s->minimum_oxygen
-        = xml_node_get_float_with_default (node, XML_MINIMUM_OXYGEN, &k, 0.);
-      if (!k)
+      s->minimum_oxygen = xml_node_get_float (node, XML_MINIMUM_OXYGEN, &k);
+      if (!k || s->minimum_oxygen < 0.)
         {
           m = _("Bad minimum oxygen");
           goto exit_on_error;
         }
-      s->respiration
-        = xml_node_get_float_with_default (node, XML_RESPIRATION, &k, 0.);
-      if (!k)
+      s->respiration = xml_node_get_float (node, XML_RESPIRATION, &k);
+      if (!k || s->respiration < 0.)
         {
           m = _("Bad respiration coefficient");
           goto exit_on_error;
         }
-      s->eat = xml_node_get_float_with_default (node, XML_EAT, &k, 0.);
-      if (!k)
+      s->eat = xml_node_get_float (node, XML_EAT, &k);
+      if (!k || s->eat < 0.)
         {
           m = _("Bad eat coefficient");
           goto exit_on_error;
         }
-      s->grow = xml_node_get_float_with_default (node, XML_GROW, &k, 0.);
-      if (!k)
+      s->grow = xml_node_get_float (node, XML_GROW, &k);
+      if (!k || s->grow < 0.)
         {
           m = _("Bad grow coefficient");
           goto exit_on_error;
         }
       s->decay = xml_node_get_float_with_default (node, XML_DECAY, &k, 0.);
-      if (!k)
+      if (!k || s->decay < 0.)
         {
           m = _("Bad decay coefficient");
           goto exit_on_error;
