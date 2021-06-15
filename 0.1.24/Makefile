@@ -143,7 +143,7 @@ $(es)zebra.mo: $(es)zebra.po
 	touch $(es)zebra.mo
 
 clean:
-	rm zebra $(obj)
+	rm zebra $(obj) $(locales) zebrapgo $(objpgo) *.gcda
 
 strip:
 	make
