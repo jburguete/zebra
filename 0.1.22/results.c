@@ -154,7 +154,7 @@ results_init (Results * results,
       results->pipe_outlet_id[i] = pipe[i].outlet_id;
       results->pipe_cell[i + 1] = j += pipe[i].ncells;
     }
-  results->nvariables = j *= nnutrients + nspecies;
+  results->nvariables = j *= nnutrients + 2 * nspecies;
   results->variable = (double *) malloc (j * sizeof (double));
 #if DEBUG_RESULTS
   fprintf (stderr, "results_init: end\n");
@@ -189,6 +189,9 @@ results_set (Results * results,
                   nnutrients * sizeof (double));
           k += nnutrients;
           memcpy (variable + k, cell->species_concentration,
+                  nspecies * sizeof (double));
+          k += nspecies;
+          memcpy (variable + k, cell->species_infestation,
                   nspecies * sizeof (double));
           k += nspecies;
         }
@@ -385,7 +388,7 @@ results_open_bin (Results * results,
   // check identifiers
 
   // saving data
-  results->nvariables = (header->nnutrients + header->nspecies)
+  results->nvariables = (header->nnutrients + 2 * header->nspecies)
     * results->pipe_cell[header->npipes];
   results->header_position = ftell (file);
   results->file = file;
@@ -461,7 +464,7 @@ results_open_xml (Results * results,
     }
 
   header = results->header;
-  n = header->nnutrients + header->nspecies;
+  n = header->nnutrients + 2 * header->nspecies;
 
   for (node = node->children; node; node = node->next)
     {
