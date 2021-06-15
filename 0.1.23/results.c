@@ -522,7 +522,7 @@ results_open_xml (Results * results,
               t = fmin (header->final_time,
                         header->initial_time + i * header->saving_step);
               time_string (name, BUFFER_SIZE, t);
-              fprintf (file, "%s", name);
+              fprintf (file, "%.14lg %s", t - header->initial_time, name);
               for (j = 0; j < n; ++j)
                 fprintf (file, " %lg", variable[j]);
               fprintf (file, "\n");
