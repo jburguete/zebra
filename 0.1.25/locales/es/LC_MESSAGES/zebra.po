@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.1.24\n"
+"Project-Id-Version: 0.1.25\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-15 04:01+0200\n"
+"POT-Creation-Date: 2021-06-15 05:42+0200\n"
 "PO-Revision-Date: 2021-06-15 01:12+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -21,19 +21,19 @@ msgstr ""
 msgid "Nutrient"
 msgstr "Nutriente"
 
-#: nutrient.c:72 species.c:73 network.c:662 simulation.c:87
+#: nutrient.c:72 species.c:73 network.c:662 simulation.c:69
 msgid "Bad input file"
 msgstr "Fichero de entrada incorrecto"
 
-#: nutrient.c:80 species.c:81 network.c:670 results.c:457 simulation.c:95
+#: nutrient.c:80 species.c:81 network.c:670 results.c:324 simulation.c:77
 msgid "No root XML node"
 msgstr "Falta nodo XML raíz"
 
-#: nutrient.c:85 species.c:86 network.c:675 results.c:462 simulation.c:100
+#: nutrient.c:85 species.c:86 network.c:675 results.c:329 simulation.c:82
 msgid "Bad root XML node"
 msgstr "Nodo XML raíz incorrecto"
 
-#: nutrient.c:94 species.c:95 network.c:773 results.c:614
+#: nutrient.c:94 species.c:95 network.c:773 results.c:481
 msgid "Bad XML node"
 msgstr "Nodo XML incorrecto"
 
@@ -109,7 +109,7 @@ msgstr "Falta el nombre de la especie"
 msgid "Unknown species"
 msgstr "Especie desconocida"
 
-#: inlet.c:277 simulation.c:173
+#: inlet.c:277 simulation.c:155
 msgid "No species file"
 msgstr "Falta el fichero de especie"
 
@@ -233,123 +233,123 @@ msgstr "Faltan caudales"
 msgid "Results"
 msgstr "Resultados"
 
-#: results.c:276
+#: results.c:143
 msgid "Unable to open the results data base file"
 msgstr "No se pudo abrir el fichero de la base de datos de resultados"
 
-#: results.c:284
+#: results.c:151
 msgid "Bad header"
 msgstr "Cabecera incorrecta"
 
-#: results.c:289 simulation.c:114
+#: results.c:156 simulation.c:96
 msgid "Bad final time"
 msgstr "Tiempo final incorrecto"
 
-#: results.c:294 simulation.c:128
+#: results.c:161 simulation.c:110
 msgid "Bad saving time step size"
 msgstr "Tamaño de paso de tiemp de guardado incorrecto"
 
-#: results.c:299 simulation.c:122
+#: results.c:166 simulation.c:104
 msgid "Bad cell size"
 msgstr "Tamaño de celda incorrecto"
 
-#: results.c:304
+#: results.c:171
 msgid "Bad nutrients number"
 msgstr "Número de nutrientes incorrecto"
 
-#: results.c:309
+#: results.c:176
 msgid "Bad species number"
 msgstr "Número de especies incorrecto"
 
-#: results.c:314
+#: results.c:181
 msgid "Bad points number"
 msgstr "Número de puntos incorrecto"
 
-#: results.c:319
+#: results.c:186
 msgid "Bad pipes number"
 msgstr "Número de tubos incorrecto"
 
-#: results.c:328
+#: results.c:195
 msgid "Bad point identifiers"
 msgstr "Identificadores de nodos incorrectos"
 
-#: results.c:334
+#: results.c:201
 msgid "Bad point x-coordinates"
 msgstr "Coordenadas x de puntos incorrectas"
 
-#: results.c:340
+#: results.c:207
 msgid "Bad point y-coordinates"
 msgstr "Coordenadas y de puntos incorrectas"
 
-#: results.c:346
+#: results.c:213
 msgid "Bad point z-coordinates"
 msgstr "Coordenadas z de puntos incorrectas"
 
-#: results.c:353
+#: results.c:220
 msgid "Bad pipe identifiers"
 msgstr "Identificadores de tubos incorrectos"
 
-#: results.c:359
+#: results.c:226
 msgid "Bad pipe inlet identifiers"
 msgstr "Identificadores de entradas de tubos incorrectos"
 
-#: results.c:365
+#: results.c:232
 msgid "Bad pipe outlet identifiers"
 msgstr "Identificadores de salidas de tubos incorrectos"
 
-#: results.c:371
+#: results.c:238
 msgid "Bad pipe lengths"
 msgstr "Lungiudes de tubos incorrectas"
 
-#: results.c:377
+#: results.c:244
 msgid "Bad pipe length"
 msgstr "Longitud de tubo incorrecta"
 
-#: results.c:384
+#: results.c:251
 msgid "Bad cell numbers"
 msgstr "Números de celda incorrectos"
 
-#: results.c:449
+#: results.c:316
 msgid "Bad configuration file"
 msgstr "Fichero de configuración incorrecto"
 
-#: results.c:480
+#: results.c:347
 msgid "Bad point identifier"
 msgstr "Identificador de punto incorrecto"
 
-#: results.c:501
+#: results.c:368
 msgid "Unknown point identifier"
 msgstr "Identificador de punto desconocido"
 
-#: results.c:507
+#: results.c:374
 msgid "No point file"
 msgstr "Falta fichero de punto"
 
-#: results.c:515
+#: results.c:382
 msgid "Bad point file"
 msgstr "Fichero de punto incorrecto"
 
-#: results.c:542
+#: results.c:409
 msgid "Bad pipe identifier"
 msgstr "Identificador de tubo incorrecto"
 
-#: results.c:550
+#: results.c:417
 msgid "Unknown pipe identifier"
 msgstr "Identicador de tubo desconocido"
 
-#: results.c:556
+#: results.c:423
 msgid "Bad pipe time"
 msgstr "Tiempo de tubo incorrecto"
 
-#: results.c:562
+#: results.c:429
 msgid "No pipe file"
 msgstr "Falta el fichero de tubo"
 
-#: results.c:570
+#: results.c:437
 msgid "Bad pipe file"
 msgstr "Fichero de tubo incorrecto"
 
-#: results.c:582
+#: results.c:449
 msgid "Bad data base"
 msgstr "Base de datos incorrecta"
 
@@ -357,23 +357,23 @@ msgstr "Base de datos incorrecta"
 msgid "Simulation"
 msgstr "Simulación"
 
-#: simulation.c:108
+#: simulation.c:90
 msgid "Bad initial time"
 msgstr "Tiempo inicial incorrecto"
 
-#: simulation.c:134
+#: simulation.c:116
 msgid "No results file"
 msgstr "Falta fichero de resultados"
 
-#: simulation.c:144
+#: simulation.c:126
 msgid "Bad numerical order"
 msgstr "Orden del método numérico incorrecto"
 
-#: simulation.c:155
+#: simulation.c:137
 msgid "No nutrients file"
 msgstr "Falta fichero de nutrientes"
 
-#: simulation.c:191
+#: simulation.c:173
 msgid "No network file"
 msgstr "Falta fichero de red"
 
