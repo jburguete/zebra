@@ -81,7 +81,7 @@ zebra_mussel_grow (Species * species,   ///< pointer to the species struct data.
   o2d *= volume;
 
   // cling
-  d = lateral_area * time_step;
+  d = *concentration * lateral_area * time_step;
   m += d * species->cling_pipe;
   w -= d * species->cling_water;
 
@@ -94,7 +94,8 @@ zebra_mussel_grow (Species * species,   ///< pointer to the species struct data.
   m += species->grow * d;
 
   // update variables
-  *infestation = m / volume;
+  *infestation = m / lateral_area;
+  *concentration = w / volume;
   *oxygen = o2 / volume;
   *organic_matter = om / volume;
 
