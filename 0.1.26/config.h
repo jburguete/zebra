@@ -57,8 +57,10 @@
 ///< cell-size XML label.
 #define XML_CFL                 (const xmlChar *) "cfl"
 ///< cfl XML label.
-#define XML_CLING               (const xmlChar *) "cling"
-///< cling XML label.
+#define XML_CLING_PIPE          (const xmlChar *) "cling-pipe"
+///< cling-pipe XML label.
+#define XML_CLING_WATER         (const xmlChar *) "cling-water"
+///< cling-water XML label.
 #define XML_CONCENTRATION       (const xmlChar *) "concentration"
 ///< concentration XML label.
 #define XML_COORDINATES         (const xmlChar *) "coordinates"
@@ -85,6 +87,8 @@
 ///< length XML label.
 #define XML_MAXIMUM_VELOCITY    (const xmlChar *) "maximum-velocity"
 ///< maximum-velocity XML label.
+#define XML_MINIMUM_OXYGEN      (const xmlChar *) "minimum-oxygen"
+///< minimum-oxygen XML label.
 #define XML_NAME                (const xmlChar *) "name"
 ///< name XML label.
 #define XML_NETWORK             (const xmlChar *) "network"
@@ -97,12 +101,18 @@
 ///< nutrient XML label.
 #define XML_NUTRIENTS           (const xmlChar *) "nutrients"
 ///< nutrient XML label.
+#define XML_ORGANIC_MATTER      (const xmlChar *) "organic-matter"
+///< organic-matter XML label.
+#define XML_OXYGEN              (const xmlChar *) "oxygen"
+///< oxygen XML label.
 #define XML_PIPE                (const xmlChar *) "pipe"
 ///< pipe XML label.
 #define XML_PIPE_LENGTH         (const xmlChar *) "pipe-length"
 ///< pipe-length XML label.
 #define XML_POINT               (const xmlChar *) "point"
 ///< point XML label.
+#define XML_RESPIRATION         (const xmlChar *) "respiration"
+///< respiration XML label.
 #define XML_RESULTS             (const xmlChar *) "results"
 ///< results XML label.
 #define XML_SAVING_STEP         (const xmlChar *) "saving-step"
@@ -113,5 +123,7 @@
 ///< species XML label.
 #define XML_TIME                (const xmlChar *) "time"
 ///< time XML label.
+#define XML_ZEBRA_MUSSEL        (const xmlChar *) "zebra-mussel"
+///< zebra-mussel XML label.
 
 #endif

@@ -25,6 +25,7 @@ typedef struct
   double area;                  ///< cross sectional area.
   double perimeter;             ///< cross sectional perimeter.
   double volume;                ///< volume.
+  double lateral_area;          ///< lateral area.
   double velocity;              ///< flow velocity.
   double discharge;             ///< flow discharge.
   double dispersion;            ///< water dispersion coefficient.
@@ -34,7 +35,6 @@ typedef struct
 
 extern double current_time;
 extern double next_time;
-extern double time_step;
 
 void cell_init (Cell * cell, double position, double distance, double size,
                 double area, double perimeter);
@@ -54,6 +54,48 @@ cell_set_flow (Cell * cell,     ///< pointer to the cell struct data.
   cell->velocity = velocity;
 #if DEBUG_CELL
   fprintf (stderr, "cell_set_flow: end\n");
+#endif
+}
+
+/**
+ * function to grow the species in a cell.
+ */
+static inline void
+cell_grow (Cell * cell)         ///< pointer to the cell struct data.
+{
+  Species *s;
+  Nutrient *n;
+  double *nc[MAX_NUTRIENTS];
+  unsigned int i, j;
+#if DEBUG_CELL
+  fprintf (stderr, "cell_grow: start\n");
+#endif
+  for (i = 0; i < nspecies; ++i)
+    {
+      s = species + i;
+      switch (s->type)
+        {
+        case SPECIES_TYPE_ZEBRA_MUSSEL:
+          for (j = 0; j < nnutrients; ++j)
+            {
+              n = nutrient + j;
+              switch (n->type)
+                {
+                case NUTRIENT_TYPE_OXYGEN:
+                  nc[0] = cell->nutrient_concentration + j;
+                  break;
+                case NUTRIENT_TYPE_ORGANIC_MATTER:
+                  nc[1] = cell->nutrient_concentration + j;
+                }
+            }
+          zebra_mussel_grow (species + i, cell->species_infestation + i,
+                             cell->species_concentration + i, cell->volume,
+                             cell->lateral_area, cell->velocity, 2, nc[0],
+                             nc[1]);
+        }
+    }
+#if DEBUG_CELL
+  fprintf (stderr, "cell_grow: end\n");
 #endif
 }
 

@@ -37,7 +37,7 @@ nutrient_destroy ()
   fprintf (stderr, "nutrient_destroy: start\n");
 #endif
   for (i = 0; i < nnutrients; ++i)
-    xmlFree ((xmlChar *) nutrient[i].name);
+    xmlFree (nutrient[i].name);
   free (nutrient);
   nutrient = NULL;
   nnutrients = 0;
@@ -99,10 +99,19 @@ nutrient_open_xml (char *file_name)     ///< input file name.
       nutrient
         = (Nutrient *) realloc (nutrient, nnutrients * sizeof (Nutrient));
       n = nutrient + i;
-      n->name = (char *) xmlGetProp (node, XML_NAME);
+      n->name = xmlGetProp (node, XML_NAME);
       if (!n->name)
         {
           m = _("Bad name");
+          goto exit_on_error;
+        }
+      if (!xmlStrcmp (n->name, XML_OXYGEN))
+        n->type = NUTRIENT_TYPE_OXYGEN;
+      else if (!xmlStrcmp (n->name, XML_ORGANIC_MATTER))
+        n->type = NUTRIENT_TYPE_ORGANIC_MATTER;
+      else
+        {
+          m = _("Unknown");
           goto exit_on_error;
         }
       if (nnutrients == MAX_NUTRIENTS)
@@ -153,7 +162,7 @@ nutrient_index (const char *name)       ///< nutrient name.
   fprintf (stderr, "nutrient_index: start\n");
 #endif
   for (i = 0; i < nnutrients; ++i)
-    if (!strcmp (nutrient[i].name, name))
+    if (!strcmp ((char *) nutrient[i].name, name))
       break;
 #if DEBUG_NUTRIENT
   fprintf (stderr, "nutrient_index: end\n");

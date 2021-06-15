@@ -7,13 +7,21 @@
 #ifndef NUTRIENT__H
 #define NUTRIENT__H 1
 
+///> enum to define the nutrient type.
+enum NutrientType
+{
+  NUTRIENT_TYPE_OXYGEN,         ///< oxygen.
+  NUTRIENT_TYPE_ORGANIC_MATTER, ///< organic matter.
+};
+
 /**
  * \struct Nutrient
  * \brief struct to define a nutrient.
  */
 typedef struct
 {
-  const char *name;             ///< name.
+  xmlChar *name;                ///< name.
+  unsigned int type;            ///< type.
 } Nutrient;
 
 extern Nutrient *nutrient;

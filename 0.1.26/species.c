@@ -16,6 +16,7 @@
 
 Species *species = NULL;        ///< array of species struct data.
 unsigned int nspecies = 0;      ///< number of species.
+double time_step;               ///< time step size.
 
 /**
  * function to set an error message opening a species input file.
@@ -37,7 +38,7 @@ species_destroy ()
   fprintf (stderr, "species_destroy: start\n");
 #endif
   for (i = 0; i < nspecies; ++i)
-    xmlFree ((xmlChar *) species[i].name);
+    xmlFree (species[i].name);
   free (species);
   species = NULL;
   nspecies = 0;
@@ -99,28 +100,52 @@ species_open_xml (char *file_name)      ///< input file name.
       ++nspecies;
       species = (Species *) realloc (species, nspecies * sizeof (Species));
       s = species + i;
-      s->name = (char *) xmlGetProp (node, XML_NAME);
+      s->name = xmlGetProp (node, XML_NAME);
       if (!s->name)
         {
           m = _("Bad name");
           goto exit_on_error;
         }
-      s->decay = xml_node_get_float_with_default (node, XML_DECAY, &k, 0.);
-      if (!k)
+      if (!xmlStrcmp (s->name, XML_ZEBRA_MUSSEL))
+        s->type = SPECIES_TYPE_ZEBRA_MUSSEL;
+      else
         {
-          m = _("Bad decay coefficient");
+          m = _("Unknown");
           goto exit_on_error;
         }
-      s->grow = xml_node_get_float_with_default (node, XML_GROW, &k, 0.);
+      s->maximum_velocity
+        = xml_node_get_float_with_default (node, XML_MAXIMUM_VELOCITY, &k, 0.);
       if (!k)
         {
-          m = _("Bad grow coefficient");
+          m = _("Bad maximum velocity");
           goto exit_on_error;
         }
-      s->cling = xml_node_get_float_with_default (node, XML_CLING, &k, 0.);
+      s->cling_pipe
+        = xml_node_get_float_with_default (node, XML_CLING_PIPE, &k, 0.);
       if (!k)
         {
-          m = _("Bad cling coefficient");
+          m = _("Bad cling pipe coefficient");
+          goto exit_on_error;
+        }
+      s->cling_water
+        = xml_node_get_float_with_default (node, XML_CLING_WATER, &k, 0.);
+      if (!k)
+        {
+          m = _("Bad cling water coefficient");
+          goto exit_on_error;
+        }
+      s->minimum_oxygen
+        = xml_node_get_float_with_default (node, XML_MINIMUM_OXYGEN, &k, 0.);
+      if (!k)
+        {
+          m = _("Bad minimum oxygen");
+          goto exit_on_error;
+        }
+      s->respiration
+        = xml_node_get_float_with_default (node, XML_RESPIRATION, &k, 0.);
+      if (!k)
+        {
+          m = _("Bad respiration coefficient");
           goto exit_on_error;
         }
       s->eat = xml_node_get_float_with_default (node, XML_EAT, &k, 0.);
@@ -129,11 +154,16 @@ species_open_xml (char *file_name)      ///< input file name.
           m = _("Bad eat coefficient");
           goto exit_on_error;
         }
-      s->maximum_velocity
-        = xml_node_get_float_with_default (node, XML_MAXIMUM_VELOCITY, &k, 0.);
+      s->grow = xml_node_get_float_with_default (node, XML_GROW, &k, 0.);
       if (!k)
         {
-          m = _("Bad maximum velocity");
+          m = _("Bad grow coefficient");
+          goto exit_on_error;
+        }
+      s->decay = xml_node_get_float_with_default (node, XML_DECAY, &k, 0.);
+      if (!k)
+        {
+          m = _("Bad decay coefficient");
           goto exit_on_error;
         }
       if (nspecies == MAX_SPECIES)
@@ -184,7 +214,7 @@ species_index (const char *name)        ///< species name.
   fprintf (stderr, "species_index: start\n");
 #endif
   for (i = 0; i < nspecies; ++i)
-    if (!strcmp (species[i].name, name))
+    if (!strcmp ((char *) species[i].name, name))
       break;
 #if DEBUG_SPECIES
   fprintf (stderr, "species_index: end\n");

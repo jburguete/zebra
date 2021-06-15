@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.1.25\n"
+"Project-Id-Version: 0.1.26\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-15 05:42+0200\n"
+"POT-Creation-Date: 2021-06-15 14:04+0200\n"
 "PO-Revision-Date: 2021-06-15 01:12+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -21,55 +21,71 @@ msgstr ""
 msgid "Nutrient"
 msgstr "Nutriente"
 
-#: nutrient.c:72 species.c:73 network.c:662 simulation.c:69
+#: nutrient.c:72 species.c:74 network.c:662 simulation.c:69
 msgid "Bad input file"
 msgstr "Fichero de entrada incorrecto"
 
-#: nutrient.c:80 species.c:81 network.c:670 results.c:324 simulation.c:77
+#: nutrient.c:80 species.c:82 network.c:670 results.c:324 simulation.c:77
 msgid "No root XML node"
 msgstr "Falta nodo XML raíz"
 
-#: nutrient.c:85 species.c:86 network.c:675 results.c:329 simulation.c:82
+#: nutrient.c:85 species.c:87 network.c:675 results.c:329 simulation.c:82
 msgid "Bad root XML node"
 msgstr "Nodo XML raíz incorrecto"
 
-#: nutrient.c:94 species.c:95 network.c:773 results.c:481
+#: nutrient.c:94 species.c:96 network.c:773 results.c:481
 msgid "Bad XML node"
 msgstr "Nodo XML incorrecto"
 
-#: nutrient.c:105 species.c:105
+#: nutrient.c:105 species.c:106
 msgid "Bad name"
 msgstr "Nombre incorrecto"
 
-#: nutrient.c:114
+#: nutrient.c:114 species.c:113
+msgid "Unknown"
+msgstr "Desconocido"
+
+#: nutrient.c:123
 msgid "No nutrients"
 msgstr "Faltan nutrientes"
 
-#: species.c:26
+#: species.c:27
 msgid "Species"
 msgstr "Especie"
 
-#: species.c:111
-msgid "Bad decay coefficient"
-msgstr "Coeficiente de decaimiento incorrecto"
-
-#: species.c:117
-msgid "Bad grow coefficient"
-msgstr "Coeficiente de crecimiento incorrecto"
-
-#: species.c:123
-msgid "Bad cling coefficient"
-msgstr "Coeficiente de anclaje incorrecto"
-
-#: species.c:129
-msgid "Bad eat coefficient"
-msgstr "Coeficiente de comida incorrecto"
-
-#: species.c:136
+#: species.c:120
 msgid "Bad maximum velocity"
 msgstr "Velocidad máxima incorrecta"
 
-#: species.c:145
+#: species.c:127
+msgid "Bad cling pipe coefficient"
+msgstr "Coeficiente de anclaje a tubo incorrecto"
+
+#: species.c:134
+msgid "Bad cling water coefficient"
+msgstr "Coeficiente de anclaje de agua incorrecto"
+
+#: species.c:141
+msgid "Bad minimum oxygen"
+msgstr "Mínimo oxígeno disuelto incorrecto"
+
+#: species.c:148
+msgid "Bad respiration coefficient"
+msgstr "Coeficiente de respiración incorrecto"
+
+#: species.c:154
+msgid "Bad eat coefficient"
+msgstr "Coeficiente de comida incorrecto"
+
+#: species.c:160
+msgid "Bad grow coefficient"
+msgstr "Coeficiente de crecimiento incorrecto"
+
+#: species.c:166
+msgid "Bad decay coefficient"
+msgstr "Coeficiente de decaimiento incorrecto"
+
+#: species.c:175
 msgid "No species"
 msgstr "Faltan especies"
 

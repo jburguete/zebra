@@ -236,6 +236,7 @@ static inline void
 pipe_step (Pipe * pipe)         ///< pointer to the pipe struct data.
 {
   Wall *wall;
+  Cell *cell;
   double v;
   unsigned int i, n;
 #if DEBUG_PIPE
@@ -268,6 +269,10 @@ pipe_step (Pipe * pipe)         ///< pointer to the pipe struct data.
         for (i = 1; i < n - 1; ++i)
           wall_increments_2n (wall + i);
     }
+  cell = pipe->cell;
+  n = pipe->ncells;
+  for (i = 0; i < n; ++i)
+    cell_grow (cell + i);
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_step: end\n");
 #endif

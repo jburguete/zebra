@@ -16,7 +16,6 @@
 
 double current_time;            ///< current time.
 double next_time;               ///< next time.
-double time_step;               ///< time step size.
 
 /**
  * function to set the initial conditions on a cell.
@@ -39,6 +38,7 @@ cell_init (Cell * cell,         ///< pointer to the cell struct data.
   cell->area = area;
   cell->volume = area * size;
   cell->perimeter = perimeter;
+  cell->lateral_area = perimeter * size;
   for (i = 0; i < nnutrients; ++i)
     cell->nutrient_concentration[i] = 0.;
   for (i = 0; i < nspecies; ++i)
