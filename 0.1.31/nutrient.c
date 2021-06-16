@@ -4,7 +4,6 @@
  * \author Javier Burguete Tolosa.
  * \copyright Copyright 2021, Javier Burguete Tolosa.
  */
-#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <libintl.h>

@@ -4,7 +4,6 @@
  * \author Javier Burguete Tolosa.
  * \copyright Copyright 2021, Javier Burguete Tolosa.
  */
-#define _GNU_SOURCE
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -171,6 +170,7 @@ static inline int
 network_open_inp (Network * network,    ///< pointer to the network struct data.
                   FILE * file)  ///< .INP Epanet file. 
 {
+  char buffer[BUFFER_SIZE];
   NetNode *node;
   NetJunction *junction;
   NetPipe *pipe;
@@ -183,9 +183,7 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
 #endif
   int *se;
   const char *m;
-  char *buffer;
-  size_t n;
-  ssize_t r;
+  char *r;
   int e, error_code = 0;
   unsigned int i, j, k, id, maxid, nnodes, njunctions, npipes, nreservoirs;
 
@@ -203,17 +201,16 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
   pj = NULL;
 
   // reading title lines
-  buffer = NULL, n = 0;
-  r = getline (&buffer, &n, file);
-  if (r <= 0 || strncmp (buffer, EPANET_TITLE, 5))
+  r = fgets (buffer, BUFFER_SIZE, file);
+  if (!r || strncmp (buffer, EPANET_TITLE, 5))
     {
       m = _("Bad Epanet title");
       goto exit_on_error;
     }
   do
     {
-      r = getline (&buffer, &n, file);
-      if (r < 0)
+      r = fgets (buffer, BUFFER_SIZE, file);
+      if (!r)
         {
           m = _("Bad Epanet file");
           goto exit_on_error;
@@ -238,13 +235,13 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
         {
           do
             {
-              r = getline (&buffer, &n, file);
-              if (r < 0)
+              r = fgets (buffer, BUFFER_SIZE, file);
+              if (!r)
                 {
                   m = _("Bad Epanet coordinates section");
                   goto exit_on_error;
                 }
-              if (r <= 2 || *buffer == ';')
+              if (strlen (r) <= 2 || *buffer == ';')
                 continue;
               if (*buffer == '[')
                 break;
@@ -267,13 +264,13 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
         {
           do
             {
-              r = getline (&buffer, &n, file);
-              if (r < 0)
+              r = fgets (buffer, BUFFER_SIZE, file);
+              if (!r)
                 {
                   m = _("Bad Epanet junctions section");
                   goto exit_on_error;
                 }
-              if (r <= 2 || *buffer == ';')
+              if (strlen(r) <= 2 || *buffer == ';')
                 continue;
               if (*buffer == '[')
                 break;
@@ -298,13 +295,13 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
         {
           do
             {
-              r = getline (&buffer, &n, file);
-              if (r < 0)
+              r = fgets (buffer, BUFFER_SIZE, file);
+              if (!r)
                 {
                   m = _("Bad Epanet pipes section");
                   goto exit_on_error;
                 }
-              if (r <= 2 || *buffer == ';')
+              if (strlen (r) <= 2 || *buffer == ';')
                 continue;
               if (*buffer == '[')
                 break;
@@ -330,13 +327,13 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
         {
           do
             {
-              r = getline (&buffer, &n, file);
-              if (r < 0)
+              r = fgets (buffer, BUFFER_SIZE, file);
+              if (!r)
                 {
                   m = _("Bad Epanet reservoirs section");
                   goto exit_on_error;
                 }
-              if (r <= 2 || *buffer == ';')
+              if (strlen (r) <= 2 || *buffer == ';')
                 continue;
               if (*buffer == '[')
                 break;
@@ -360,8 +357,8 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
         {
           do
             {
-              r = getline (&buffer, &n, file);
-              if (r < 0)
+              r = fgets (buffer, BUFFER_SIZE, file);
+              if (!r)
                 {
                   m = _("No Epanet end section");
                   goto exit_on_error;
@@ -550,7 +547,6 @@ exit_on_error:
   free (pipe);
   free (junction);
   free (node);
-  free (buffer);
   fclose (file);
 
   // set error message on error
@@ -575,13 +571,12 @@ network_open_out (Network * network,    ///< pointer to the network struct data.
                   ///< pointer to the network discharges struct data.
                   char *name)   ///< .OUT Epanet file name.
 {
+  char buffer[BUFFER_SIZE];
   Pipe *pipe;
   FILE *file;
   unsigned int *set = NULL;
-  char *buffer = NULL;
+  char *r;
   double q;
-  size_t n = 0;
-  ssize_t r;
   int error_code = 0;
   unsigned int i, id;
 #if DEBUG_NETWORK
@@ -592,14 +587,14 @@ network_open_out (Network * network,    ///< pointer to the network struct data.
     goto exit_on_error;
   do
     {
-      r = getline (&buffer, &n, file);
-      if (r < 0)
+      r = fgets (buffer, BUFFER_SIZE, file);
+      if (!r)
         goto exit_on_error;
       if (!strncmp (buffer, PIPE_LINE, PIPE_LENGTH))
         break;
     }
   while (1);
-  if (getline (&buffer, &n, file) < 0)
+  if (!fgets (buffer, BUFFER_SIZE, file))
     goto exit_on_error;
   discharges->pipe = (Pipe **) malloc (network->npipes * sizeof (Pipe *));
   discharges->discharge = (double *) malloc (network->npipes * sizeof (double));
@@ -622,7 +617,6 @@ network_open_out (Network * network,    ///< pointer to the network struct data.
   error_code = 1;
 exit_on_error:
   free (set);
-  free (buffer);
 #if DEBUG_NETWORK
   fprintf (stderr, "network_open_out: end\n");
 #endif
