@@ -48,7 +48,7 @@ simulation_open_xml (Simulation * simulation,
   Network *network;
   xmlDoc *doc;
   xmlNode *node;
-  xmlChar *buffer;
+  xmlChar *buffer = NULL;
   const char *m;
   char *directory;
   int e;
