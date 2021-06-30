@@ -438,7 +438,8 @@ results_open_xml (Results * results,
               goto exit_on_error;
             }
           j = ceil ((t - header->initial_time) / header->saving_step);
-          fseek (file, (j * results->nvariables + results->pipe_cell[i])
+          fseek (results->file,
+                 (j * results->nvariables + results->pipe_cell[i])
                  * sizeof (double), SEEK_CUR);
           ncells = results->pipe_cell[i + 1] - results->pipe_cell[i];
           variable

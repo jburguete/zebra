@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.1.32\n"
+"Project-Id-Version: 0.1.33\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-06-16 18:04+0200\n"
+"POT-Creation-Date: 2021-06-30 11:06+0200\n"
 "PO-Revision-Date: 2021-06-15 01:12+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -33,7 +33,7 @@ msgstr "Falta nodo XML raíz"
 msgid "Bad root XML node"
 msgstr "Nodo XML raíz incorrecto"
 
-#: nutrient.c:94 species.c:96 network.c:768 results.c:481
+#: nutrient.c:94 species.c:96 network.c:768 results.c:482
 msgid "Bad XML node"
 msgstr "Nodo XML incorrecto"
 
@@ -365,7 +365,7 @@ msgstr "Falta el fichero de tubo"
 msgid "Bad pipe file"
 msgstr "Fichero de tubo incorrecto"
 
-#: results.c:449
+#: results.c:450
 msgid "Bad data base"
 msgstr "Base de datos incorrecta"
 

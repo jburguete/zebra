@@ -270,7 +270,7 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
                   m = _("Bad Epanet junctions section");
                   goto exit_on_error;
                 }
-              if (strlen(r) <= 2 || *buffer == ';')
+              if (strlen (r) <= 2 || *buffer == ';')
                 continue;
               if (*buffer == '[')
                 break;
