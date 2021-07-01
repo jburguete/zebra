@@ -36,6 +36,7 @@
 #define PIPE_LENGTHS_FILE "pipe-lengths.log"
 ///< name of the pipe lengths log file.
 #define PROGRAM_NAME "zebra"    ///< program name.
+#define RECIRCULATION_LENGTH 100.       ///< length of the recirculation area.
 
 // Epanet labels
 #define EPANET_COORDINATES      "[COORDINATES]"

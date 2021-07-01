@@ -32,6 +32,7 @@ cell_init (Cell * cell,         ///< pointer to the cell struct data.
 #if DEBUG_CELL
   fprintf (stderr, "cell_init: start\n");
 #endif
+  cell->recirculation = 0;
   cell->position = position;
   cell->distance = distance;
   cell->size = size;

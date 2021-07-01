@@ -31,6 +31,7 @@ typedef struct
   double dispersion;            ///< water dispersion coefficient.
   double roughness;             ///< roughness length.
   double friction;              ///< friction factor.
+  unsigned int recirculation;   ///< 1 on recirculation flow, 0 otherwise.
 } Cell;
 
 extern double current_time;

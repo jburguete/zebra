@@ -96,9 +96,9 @@ static inline void
 junction_init (Junction * junction)
                ///< pointer to the junction struct data.
 {
-  Pipe *pipe;
+  Pipe *pipe, *pipe2;
   Cell *cell;
-  double volume;
+  double volume, length;
   unsigned int i, j, ninlets, noutlets;
 #if DEBUG_JUNCTION
   fprintf (stderr, "junction_init: start\n");
@@ -121,6 +121,36 @@ junction_init (Junction * junction)
       volume += cell->volume;
     }
   junction->volume = volume;
+  if (junction->ncells == 2)
+    switch (junction->ninlets)
+      {
+      case 0:
+        pipe = junction->outlet[0];
+        pipe2 = junction->outlet[1];
+        length = RECIRCULATION_LENGTH * (pipe2->radius - pipe->radius);
+        if (length > 0.)
+          pipe_outlet_add_recirculation (pipe, length);
+        else if (length < 0.)
+          pipe_outlet_add_recirculation (pipe2, -length);
+        break;
+      case 2:
+        pipe = junction->inlet[0];
+        pipe2 = junction->inlet[1];
+        length = RECIRCULATION_LENGTH * (pipe2->radius - pipe->radius);
+        if (length > 0.)
+          pipe_inlet_add_recirculation (pipe, length);
+        else if (length < 0.)
+          pipe_inlet_add_recirculation (pipe2, -length);
+        break;
+      default:
+        pipe = junction->inlet[0];
+        pipe2 = junction->outlet[0];
+        length = RECIRCULATION_LENGTH * (pipe2->radius - pipe->radius);
+        if (length > 0.)
+          pipe_inlet_add_recirculation (pipe, length);
+        else if (length < 0.)
+          pipe_outlet_add_recirculation (pipe2, -length);
+      }
 #if DEBUG_JUNCTION
   fprintf (stderr, "junction_init: end\n");
 #endif

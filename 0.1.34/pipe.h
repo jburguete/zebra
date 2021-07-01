@@ -19,6 +19,7 @@ typedef struct
   Wall *wall;                   ///< array of mesh walls.
   double length;                ///< length.
   double diameter;              ///< diameter.
+  double radius;                ///< radius.
   double area;                  ///< cross sectional area.
   double perimeter;             ///< cross sectional perimeter.
   double roughness;             ///< roughness length.
@@ -30,6 +31,9 @@ typedef struct
   unsigned int inlet_id;        ///< inlet node identifier.
   unsigned int outlet_id;       ///< outlet node identifier.
 } Pipe;
+
+void pipe_inlet_add_recirculation (Pipe * pipe, double length);
+void pipe_outlet_add_recirculation (Pipe * pipe, double length);
 
 /**
  * function to init an empty pipe.
@@ -76,8 +80,9 @@ pipe_create_mesh (Pipe * pipe,  ///< pointer to the pipe struct data.
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_create_mesh: start\n");
 #endif
+  pipe->radius = 0.5 * pipe->diameter;
   pipe->perimeter = perimeter = M_PI * pipe->diameter;
-  pipe->area = area = 0.25 * perimeter * pipe->diameter;
+  pipe->area = area = 0.5 * perimeter * pipe->radius;
   pipe->ncells = (unsigned int) ceil (pipe->length / cell_size);
   pipe->ncells = (2 > pipe->ncells) ? 2 : pipe->ncells;
   pipe->nwalls = n = pipe->ncells - 1;
