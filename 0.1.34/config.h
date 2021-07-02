@@ -25,20 +25,23 @@
 
 #define BUFFER_SIZE 512         ///< size of string buffers.
 #define DEFAULT_CFL 0.9         ///< default CFL value.
+#define FLUX_LIMITER 3
+///< flux limiter (0:null, 1:upwind, 2:centred, 3:monotonized central)
 #define LOCALES_DIR "locales"   ///< locale strings directory.
 #define MAX_NUTRIENTS 2         ///< maximum number of nutrients.
 #define MAX_SPECIES 1           ///< maximum number of species.
 #define PIPE_LINE "  Link                  L/s       m/s    /1000m          "
 ///< pipe line of Epanet output file.
 #define PIPE_LENGTH 57          ///< length of the Epanet output file pipe line.
-#define PIPE_LENGTHS_SAVE 1
+#define PIPE_LENGTHS_SAVE 0
 ///< macro to save the pipe lengths on a log file.
 #define PIPE_LENGTHS_FILE "pipe-lengths.log"
 ///< name of the pipe lengths log file.
 #define PROGRAM_NAME "zebra"    ///< program name.
-#define RECIRCULATION_LENGTH 100.       ///< length of the recirculation area.
+#define RECIRCULATION_LENGTH 8. ///< length of the recirculation zone.
 
 // Epanet labels
+
 #define EPANET_COORDINATES      "[COORDINATES]"
 ///< [COORDINATES] Epanet label.
 #define EPANET_END              "[END]"

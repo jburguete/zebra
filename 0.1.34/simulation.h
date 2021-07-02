@@ -68,6 +68,10 @@ simulation_run (Simulation * simulation)
   file = fopen (simulation->results, "wb");
   results_write_header (results, file);
 
+  // saving initial results
+  results_set (results, network);
+  results_write_variables (results, file);
+
   // bucle
   for (current_time = initial_time; current_time < final_time;
        current_time = saving_time)

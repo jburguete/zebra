@@ -1,9 +1,10 @@
 <?xml version="1.0"?>
-<network file="simp.inp" pipe-length="length">
+<network file="template.inp" pipe-length="length">
 	<inlet node="0">
 		<nutrient name="oxygen" file="oxygen.in"/>
 		<nutrient name="organic-matter" file="organic-matter.in"/>
 		<species name="zebra-mussel" file="zebra-mussel.in"/>
 	</inlet>
-	<discharges time="2017 1 1 0 0 0" file="simp.out"/>
+	<discharges time="2017 1 1 0 0 0" file="1.out"/>
+	<discharges time="2017 1 2 0 0 0" file="2.out"/>
 </network>

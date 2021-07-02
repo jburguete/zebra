@@ -1,7 +1,12 @@
 <?xml version="1.0"?>
 <results>
 	<point id="0" file="results-point-0"/>
-	<point id="700" file="results-point-700"/>
-	<pipe id="2" time="2017 1 2 0 0 0" file="results-pipe-2-2017-1-2-0-0-0"/>
-	<pipe id="6" time="2017 1 2 0 0 0" file="results-pipe-6-2017-1-2-0-0-0"/>
+	<point id="702" file="results-point-702"/>
+	<point id="921" file="results-point-921"/>
+	<point id="226" file="results-point-226"/>
+	<pipe id="54" time="2017 1 1 0 0 0" file="results-pipe-54-2017-1-1-0-0-0"/>
+	<pipe id="57" time="2017 1 1 0 0 0" file="results-pipe-57-2017-1-1-0-0-0"/>
+	<pipe id="9" time="2017 1 1 0 0 0" file="results-pipe-9-2017-1-1-0-0-0"/>
+	<pipe id="9" time="2017 1 1 0 1 0" file="results-pipe-9-2017-1-1-0-1-0"/>
+	<pipe id="9" time="2017 1 1 0 2 0" file="results-pipe-9-2017-1-1-0-2-0"/>
 </results>

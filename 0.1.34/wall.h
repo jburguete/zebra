@@ -51,30 +51,14 @@ wall_init (Wall * wall,         ///< pointer to the mesh wall struct data.
 }
 
 /**
- * function to set the flow properties on a wall.
- */
-static inline void
-wall_set_flow (Wall * wall,     ///< pointer to the wall struct data.
-               double vdt)      ///< flow velocity times time step size.
-{
-#if DEBUG_WALL
-  fprintf (stderr, "wall_set_flow: start\n");
-#endif
-  wall->vdt = vdt;
-#if DEBUG_WALL
-  fprintf (stderr, "wall_set_flow: end\n");
-#endif
-}
-
-/**
  * function to set the 1st order differences of a mesh wall struct.
  */
 static inline void
-wall_set (Wall * wall)          ///< pointer to the mesh wall struct data.
+wall_set (Wall * wall,          ///< pointer to the mesh wall struct data.
+          double vdt)           ///< flow velocity times time step size.
 {
   Cell *left, *right;
   double *n1, *s1, *n2, *s2, *dn, *ds;
-  double vdt;
   unsigned int i;
 #if DEBUG_WALL
   fprintf (stderr, "wall_set: start\n");
@@ -87,12 +71,21 @@ wall_set (Wall * wall)          ///< pointer to the mesh wall struct data.
   s2 = right->species_concentration;
   dn = wall->dn;
   ds = wall->ds;
-  vdt = wall->vdt;
+  wall->vdt = vdt;
   for (i = 0; i < nnutrients; ++i)
     dn[i] = vdt * (n2[i] - n1[i]);
   for (i = 0; i < nspecies; ++i)
     ds[i] = vdt * (s2[i] - s1[i]);
 #if DEBUG_WALL
+  fprintf (stderr, "wall_set: vdt=%lg\n", vdt);
+  for (i = 0; i < nnutrients; ++i)
+    fprintf (stderr, "wall_set: i=%u n2=%lg n1=%lg\n", i, n2[i], n1[i]);
+  for (i = 0; i < nspecies; ++i)
+    fprintf (stderr, "wall_set: i=%u s2=%lg s1=%lg\n", i, s2[i], s1[i]);
+  for (i = 0; i < nnutrients; ++i)
+    fprintf (stderr, "wall_set: i=%u dn=%lg\n", i, dn[i]);
+  for (i = 0; i < nspecies; ++i)
+    fprintf (stderr, "wall_set: i=%u ds=%lg\n", i, ds[i]);
   fprintf (stderr, "wall_set: end\n");
 #endif
 }
@@ -240,23 +233,23 @@ wall_set_2n (Wall * wall,       ///< pointer to the wall struct data.
 static inline void
 wall_increments_2p (Wall * wall)
 {
-  Cell *right, *right2;
+  Cell *left, *right;
   double *n, *s, *n2, *s2, *dn2, *ds2;
   double dx, dx2;
   unsigned int i;
 #if DEBUG_WALL
   fprintf (stderr, "wall_increments_2p: start\n");
 #endif
+  left = wall->left;
   right = wall->right;
-  right2 = wall->right2;
-  n = right->nutrient_concentration;
-  s = right->species_concentration;
-  n2 = right2->nutrient_concentration;
-  s2 = right2->species_concentration;
+  n = left->nutrient_concentration;
+  s = left->species_concentration;
+  n2 = right->nutrient_concentration;
+  s2 = right->species_concentration;
   dn2 = wall->dn2;
   ds2 = wall->ds2;
-  dx = right->size;
-  dx2 = right2->size;
+  dx = left->size;
+  dx2 = right->size;
   for (i = 0; i < nnutrients; ++i)
     {
       n[i] -= dn2[i] / dx;
@@ -279,7 +272,7 @@ wall_increments_2p (Wall * wall)
 static inline void
 wall_increments_2n (Wall * wall)
 {
-  Cell *left, *left2;
+  Cell *left, *right;
   double *n, *s, *n2, *s2, *dn2, *ds2;
   double dx, dx2;
   unsigned int i;
@@ -287,15 +280,15 @@ wall_increments_2n (Wall * wall)
   fprintf (stderr, "wall_increments_2n: start\n");
 #endif
   left = wall->left;
-  left2 = wall->left2;
+  right = wall->right;
   n = left->nutrient_concentration;
   s = left->species_concentration;
-  n2 = left2->nutrient_concentration;
-  s2 = left2->species_concentration;
+  n2 = right->nutrient_concentration;
+  s2 = right->species_concentration;
   dn2 = wall->dn2;
   ds2 = wall->ds2;
   dx = left->size;
-  dx2 = left2->size;
+  dx2 = right->size;
   for (i = 0; i < nnutrients; ++i)
     {
       n[i] -= dn2[i] / dx;

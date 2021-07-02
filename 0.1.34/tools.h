@@ -51,17 +51,25 @@ distance (double x1,            ///< x-coordinate from 1st point.
  */
 static inline double
 flux_limited (double upwind,    ///< upwind flux.
-              double centered)  ///< centered flux.
+              double centred)   ///< centred flux.
 {
   double r;
-  if (upwind * centered <= 0.)
+#if FLUX_LIMITER == 0
+  return 0;
+#elif FLUX_LIMITER == 1
+  return upwind;
+#elif FLUX_LIMITER == 2
+  return centred;
+#else
+  if (upwind * centred <= 0.)
     return 0.;
-  r = centered / upwind;
+  r = centred / upwind;
   if (r <= 1. / 3.)
-    return centered + centered;
+    return centred + centred;
   if (r >= 3.)
     return upwind + upwind;
-  return 0.5 * (upwind + centered);
+  return 0.5 * (upwind + centred);
+#endif
 }
 
 /**

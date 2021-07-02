@@ -112,7 +112,6 @@ static inline void
 pipe_set_discharge (Pipe * pipe,        ///< pointer to the pipe struct data.
                     double discharge)   ///< flow discharge.
 {
-  Wall *wall;
   Cell *cell;
   double v;
   unsigned int i, n;
@@ -125,12 +124,9 @@ pipe_set_discharge (Pipe * pipe,        ///< pointer to the pipe struct data.
   n = pipe->ncells;
   for (i = 0; i < n; ++i)
     cell_set_flow (cell + i, discharge, v);
-  v *= time_step;
-  wall = pipe->wall;
-  n = pipe->nwalls;
-  for (i = 0; i < n; ++i)
-    wall_set_flow (wall + i, v);
 #if DEBUG_PIPE
+  fprintf (stderr, "pipe_set_discharge: discharge=%lg velocity=%lg\n",
+           discharge, pipe->velocity);
   fprintf (stderr, "pipe_set_discharge: end\n");
 #endif
 }
@@ -155,6 +151,8 @@ pipe_set_velocity (Pipe * pipe, ///< pointer to the pipe struct data.
   for (i = 0; i < n; ++i)
     cell_set_flow (cell + i, q, velocity);
 #if DEBUG_PIPE
+  fprintf (stderr, "pipe_set_velocity: discharge=%lg velocity=%lg\n",
+           pipe->discharge, velocity);
   fprintf (stderr, "pipe_set_velocity: end\n");
 #endif
 }
@@ -242,37 +240,51 @@ pipe_step (Pipe * pipe)         ///< pointer to the pipe struct data.
 {
   Wall *wall;
   Cell *cell;
-  double v;
+  double vdt;
   unsigned int i, n;
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_step: start\n");
 #endif
   wall = pipe->wall;
   n = pipe->nwalls;
+  vdt = pipe->velocity * time_step;
   for (i = 0; i < n; ++i)
-    wall_set (wall + i);
-  v = pipe->velocity;
-  if (v > 0.)
+    wall_set (wall + i, vdt);
+  if (vdt > 0.)
     {
       if (numerical_order > 1)
-        for (i = 1; i < n - 1; ++i)
-          wall_set_2p (wall + i, wall + i - 1);
-      for (i = 0; i < n; ++i)
-        wall_increments_p (wall + i);
-      if (numerical_order > 1)
-        for (i = 1; i < n - 1; ++i)
-          wall_increments_2p (wall + i);
+        {
+          for (i = 1; i < n - 1; ++i)
+            wall_set_2p (wall + i, wall + i - 1);
+          wall_increments_p (wall);
+          for (i = 1; i < n - 1; ++i)
+	    {
+              wall_increments_p (wall + i);
+              wall_increments_2p (wall + i);
+	    }
+          wall_increments_p (wall + i);
+	}
+      else
+        for (i = 0; i < n; ++i)
+          wall_increments_p (wall + i);
     }
-  else if (v < 0.)
+  else if (vdt < 0.)
     {
       if (numerical_order > 1)
-        for (i = 1; i < n - 1; ++i)
-          wall_set_2n (wall + i, wall + i + 1);
-      for (i = 0; i < n; ++i)
-        wall_increments_n (wall + i);
-      if (numerical_order > 1)
-        for (i = 1; i < n - 1; ++i)
-          wall_increments_2n (wall + i);
+        {
+          for (i = 1; i < n - 1; ++i)
+            wall_set_2n (wall + i, wall + i + 1);
+          wall_increments_n (wall);
+          for (i = 1; i < n - 1; ++i)
+	    {
+              wall_increments_n (wall + i);
+              wall_increments_2n (wall + i);
+	    }
+          wall_increments_n (wall + i);
+	}
+      else
+        for (i = 0; i < n; ++i)
+          wall_increments_n (wall + i);
     }
   cell = pipe->cell;
   n = pipe->ncells;
