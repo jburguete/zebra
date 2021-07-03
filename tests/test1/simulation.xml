@@ -1,2 +1,2 @@
 <?xml version="1.0"?>
-<simulation nutrients="nutrients.xml" species="species.xml" network="network.xml" initial-time="2017 1 1 0 0 0" final-time="2017 1 1 0 2 0" cell-size="5" saving-step="60" numerical-order="2" cfl="0.9" results="results.bin"/>
+<simulation nutrients="nutrients.xml" species="species.xml" network="network.xml" initial-time="2017 1 1 0 0 0" final-time="2017 1 1 0 10 0" cell-size="5" saving-step="60" numerical-order="2" cfl="0.9" results="results.bin"/>

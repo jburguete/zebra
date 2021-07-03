@@ -51,6 +51,7 @@ zebra_mussel_grow (Species * species,   ///< pointer to the species struct data.
                    double area, ///< cell cross sectional area.
                    double lateral_area, ///< cell lateral area.
                    double velocity,     ///< flow velocity.
+                   unsigned int recirculation,  ///< flow recirculation zone.
                    int n,       ///< number of nutrients.
                    ...)
 {
@@ -62,8 +63,8 @@ zebra_mussel_grow (Species * species,   ///< pointer to the species struct data.
   fprintf (stderr, "zebra_mussel_grow: start\n");
 #endif
 
-  // check maximum velocity
-  if (velocity >= species->maximum_velocity)
+  // check maximum velocity and flow recirculation
+  if (velocity >= species->maximum_velocity && !recirculation)
     goto no_growing;
 
   // get oxygen and organic matter concentrations

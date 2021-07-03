@@ -199,7 +199,7 @@ network_initial (Network * network)     ///< pointer to the network struct data.
   for (i = 0; i < nspecies; ++i)
     species_concentration[i] = *(inlet->species_concentration[i]);
   for (i = 0; i < n; ++i)
-    pipe_initial (pipe, nutrient_concentration, species_concentration);
+    pipe_initial (pipe + i, nutrient_concentration, species_concentration);
 #if DEBUG_NETWORK
   fprintf (stderr, "network_initial: end\n");
 #endif
