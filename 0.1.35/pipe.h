@@ -258,12 +258,13 @@ pipe_step (Pipe * pipe)         ///< pointer to the pipe struct data.
             wall_set_2p (wall + i, wall + i - 1);
           wall_increments_p (wall);
           for (i = 1; i < n - 1; ++i)
-	    {
+            {
               wall_increments_p (wall + i);
               wall_increments_2p (wall + i);
-	    }
-          wall_increments_p (wall + i);
-	}
+            }
+          if (i < n)
+            wall_increments_p (wall + i);
+        }
       else
         for (i = 0; i < n; ++i)
           wall_increments_p (wall + i);
@@ -276,12 +277,13 @@ pipe_step (Pipe * pipe)         ///< pointer to the pipe struct data.
             wall_set_2n (wall + i, wall + i + 1);
           wall_increments_n (wall);
           for (i = 1; i < n - 1; ++i)
-	    {
+            {
               wall_increments_n (wall + i);
               wall_increments_2n (wall + i);
-	    }
-          wall_increments_n (wall + i);
-	}
+            }
+          if (i < n)
+            wall_increments_n (wall + i);
+        }
       else
         for (i = 0; i < n; ++i)
           wall_increments_n (wall + i);

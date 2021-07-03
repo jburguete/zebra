@@ -52,7 +52,7 @@ simulation_run (Simulation * simulation)
   FILE *file;
   double initial_time, final_time, cfl, saving_time, saving_step;
 #if DEBUG_SIMULATION
-  fprintf (stderr, "simulation_run: end\n");
+  fprintf (stderr, "simulation_run: start\n");
 #endif
 
   // initial conditions
