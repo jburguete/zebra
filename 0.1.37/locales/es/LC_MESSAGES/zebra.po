@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.1.36\n"
+"Project-Id-Version: 0.1.37\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-02 01:42+0200\n"
+"POT-Creation-Date: 2021-07-06 14:38+0200\n"
 "PO-Revision-Date: 2021-06-15 01:12+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -21,19 +21,19 @@ msgstr ""
 msgid "Nutrient"
 msgstr "Nutriente"
 
-#: nutrient.c:72 species.c:74 network.c:657 simulation.c:69
+#: nutrient.c:72 species.c:74 network.c:674 simulation.c:69
 msgid "Bad input file"
 msgstr "Fichero de entrada incorrecto"
 
-#: nutrient.c:80 species.c:82 network.c:665 results.c:324 simulation.c:77
+#: nutrient.c:80 species.c:82 network.c:682 results.c:324 simulation.c:77
 msgid "No root XML node"
 msgstr "Falta nodo XML raíz"
 
-#: nutrient.c:85 species.c:87 network.c:670 results.c:329 simulation.c:82
+#: nutrient.c:85 species.c:87 network.c:687 results.c:329 simulation.c:82
 msgid "Bad root XML node"
 msgstr "Nodo XML raíz incorrecto"
 
-#: nutrient.c:94 species.c:96 network.c:768 results.c:482
+#: nutrient.c:94 species.c:96 network.c:785 results.c:482
 msgid "Bad XML node"
 msgstr "Nodo XML incorrecto"
 
@@ -209,39 +209,55 @@ msgstr "Falta elevación del segundo nodo"
 msgid "Same nodes for inlet and outlet"
 msgstr "Mismo nodo para entrada y salida"
 
-#: network.c:683
+#: network.c:589
+msgid "Unable to open the file"
+msgstr "No se pudo abrir el fichero"
+
+#: network.c:597 results.c:151
+msgid "Bad header"
+msgstr "Cabecera incorrecta"
+
+#: network.c:606
+msgid "Bad header line"
+msgstr "Línea de cabecera incorrecta"
+
+#: network.c:616
+msgid "Bad data"
+msgstr "Datos incorrecta"
+
+#: network.c:634
+msgid "File"
+msgstr "Fichero"
+
+#: network.c:700
 msgid "Unknown pipe length model"
 msgstr "Modo de longitud de tubo desconocido"
 
-#: network.c:690
+#: network.c:707
 msgid "No Epanet file"
 msgstr "Falta fichero de Epanet"
 
-#: network.c:698
+#: network.c:715
 msgid "Unable to open the Epanet file"
 msgstr "No se pudo abrir el fichero de Epanet"
 
-#: network.c:729
+#: network.c:746
 msgid "No inlets"
 msgstr "Faltan entradas"
 
-#: network.c:744
+#: network.c:761
 msgid "Bad discharges time"
 msgstr "Tiempo de caudales incorrecto"
 
-#: network.c:749
+#: network.c:766
 msgid "Bad discharges time order"
 msgstr "Orden de tiempos de caudales incorrecto"
 
-#: network.c:755
+#: network.c:772
 msgid "No discharges file"
 msgstr "Falta fichero de caudales"
 
-#: network.c:762
-msgid "Bad discharges file"
-msgstr "Fichero de caudales incorrecto"
-
-#: network.c:774
+#: network.c:791
 msgid "No discharges"
 msgstr "Faltan caudales"
 
@@ -252,10 +268,6 @@ msgstr "Resultados"
 #: results.c:143
 msgid "Unable to open the results data base file"
 msgstr "No se pudo abrir el fichero de la base de datos de resultados"
-
-#: results.c:151
-msgid "Bad header"
-msgstr "Cabecera incorrecta"
 
 #: results.c:156 simulation.c:96
 msgid "Bad final time"
@@ -408,3 +420,6 @@ msgstr ""
 #: main.c:138
 msgid "ERROR!"
 msgstr "¡ERROR!"
+
+#~ msgid "Bad discharges file"
+#~ msgstr "Fichero de caudales incorrecto"

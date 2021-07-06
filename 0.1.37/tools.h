@@ -122,4 +122,35 @@ array_interpolate (double t,    ///< x-coordinate to interpolate.
   return y[i] + (y[i + 1] - y[i]) * (t - x[i]) / (x[i + 1] - x[i]);
 }
 
+/**
+ * Function to solve a linear equations system stored in a tridiagonal matrix
+ * with format: \f$\left(\begin{array}{cccc|c}
+ * D_0 & E_0    &         &         & H_0\\
+ * C_0 & D_1    & E_1     &         & H_1\\
+ *     & \ddots & \ddots  & \ddots  & \vdots\\
+ *     &        & C_{n-2} & D_{n-1} & H_{n-1}
+ * \end{array}\right)\f$.
+ * Results are stored in the H array. It modifies D and H arrays (JBFLOAT).
+ */
+static inline void
+matrix_tridiagonal_solve (double *C,    ///< left diagonal array.
+                          double *D,    ///< central diagonal array.
+                          double *E,    ///< right diagonal array.
+                          double *H,    ///< final column array.
+                          unsigned int n)       ///< number of matrix rows.
+{
+  register double k;
+  register unsigned int i;
+  --n;
+  for (i = 0; i < n; ++i)
+    {
+      k = C[i] / D[i];
+      D[i + 1] -= k * E[i];
+      H[i + 1] -= k * H[i];
+    }
+  H[i] /= D[i];
+  while (i--)
+    H[i] = (H[i] - E[i] * H[i + 1]) / D[i];
+}
+
 #endif

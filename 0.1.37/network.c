@@ -576,6 +576,7 @@ network_open_out (Network * network,    ///< pointer to the network struct data.
   FILE *file;
   unsigned int *set = NULL;
   char *r;
+  const char *m;
   double q;
   int error_code = 0;
   unsigned int i, id;
@@ -584,25 +585,37 @@ network_open_out (Network * network,    ///< pointer to the network struct data.
 #endif
   file = fopen (name, "r");
   if (!file)
-    goto exit_on_error;
+    {
+      m = _("Unable to open the file");
+      goto exit_on_error;
+    }
   do
     {
       r = fgets (buffer, BUFFER_SIZE, file);
       if (!r)
-        goto exit_on_error;
+        {
+          m = _("Bad header");
+          goto exit_on_error;
+        }
       if (!strncmp (buffer, PIPE_LINE, PIPE_LENGTH))
         break;
     }
   while (1);
   if (!fgets (buffer, BUFFER_SIZE, file))
-    goto exit_on_error;
+    {
+      m = _("Bad header line");
+      goto exit_on_error;
+    }
   discharges->pipe = (Pipe **) malloc (network->npipes * sizeof (Pipe *));
   discharges->discharge = (double *) malloc (network->npipes * sizeof (double));
   set = calloc (network->max_pipe_id + 1, sizeof (unsigned int));
   for (i = 0; i < network->npipes; ++i)
     {
       if (fscanf (file, "%u%lf%*f%*f%*f", &id, &q) != 2)
-        goto exit_on_error;
+        {
+          m = _("Bad data");
+          goto exit_on_error;
+        }
       if (id > network->max_pipe_id)
         goto exit_on_error;
       if (set[id])
@@ -617,6 +630,10 @@ network_open_out (Network * network,    ///< pointer to the network struct data.
   error_code = 1;
 exit_on_error:
   free (set);
+  if (!error_code)
+    error_msg = g_strconcat (_("File"), ": ", name, "\n", m, NULL);
+  if (file)
+    fclose (file);
 #if DEBUG_NETWORK
   fprintf (stderr, "network_open_out: end\n");
 #endif
@@ -759,7 +776,7 @@ network_open_xml (Network * network,    ///< pointer to the network struct data.
           xmlFree (buffer);
           if (!network_open_out (network, discharges + i, name))
             {
-              m = _("Bad discharges file");
+              m = error_msg;
               goto exit_on_error;
             }
         }

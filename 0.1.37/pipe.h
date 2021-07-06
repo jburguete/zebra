@@ -25,6 +25,7 @@ typedef struct
   double roughness;             ///< roughness length.
   double discharge;             ///< current discharge.
   double velocity;              ///< current flow velocity.
+  double dispersion;            ///< dispersion coefficient.
   unsigned int ncells;          ///< number of node cells.
   unsigned int nwalls;          ///< number of mesh walls.
   unsigned int id;              ///< identifier.
