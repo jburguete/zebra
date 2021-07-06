@@ -43,12 +43,12 @@ inlet_maximum_time (Inlet * inlet,      ///< pointer to the inlet struct data.
                     ///< maximum allowed time in seconds since 1970.
 {
   double *date;
-  double t;
+  double t, tmax;
   unsigned int j, k, last, n;
 #if DEBUG_INLET
   fprintf (stderr, "inlet_maximum_time: start\n");
 #endif
-  t = maximum_time;
+  tmax = maximum_time;
   for (j = 0; j < nnutrients; ++j)
     {
       date = inlet->nutrient_time[j];
@@ -57,8 +57,20 @@ inlet_maximum_time (Inlet * inlet,      ///< pointer to the inlet struct data.
       if (current_time >= date[last])
         continue;
       k = array_search (current_time, date, n);
-      if (k < last)
-        t = fmin (t, date[k + 1]);
+      while (k < last)
+        {
+          t = fmin (tmax, date[k + 1]);
+#if DEBUG_INLET
+          fprintf (stderr,
+                   "inlet_maximum_time: nutrient=%u tmax=%.19lg t=%.19lg\n",
+                   j, t, current_time);
+#endif
+          if (t <= current_time)
+            ++k;
+          else
+            break;
+        }
+      tmax = t;
     }
   for (j = 0; j < nspecies; ++j)
     {
@@ -68,8 +80,20 @@ inlet_maximum_time (Inlet * inlet,      ///< pointer to the inlet struct data.
       if (current_time >= date[last])
         continue;
       k = array_search (current_time, date, n);
-      if (k < last)
-        t = fmin (t, date[k + 1]);
+      while (k < last)
+        {
+          t = fmin (tmax, date[k + 1]);
+#if DEBUG_INLET
+          fprintf (stderr,
+                   "inlet_maximum_time: species=%u tmax=%.19lg t=%.19lg\n",
+                   j, t, current_time);
+#endif
+          if (t <= current_time)
+            ++k;
+          else
+            break;
+        }
+      tmax = t;
     }
 #if DEBUG_INLET
   fprintf (stderr, "inlet_maximum_time: t=%lg\n", t);
