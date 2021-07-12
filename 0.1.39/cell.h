@@ -30,7 +30,7 @@ typedef struct
   double discharge;             ///< flow discharge.
   double dispersion;            ///< water dispersion coefficient.
   double roughness;             ///< roughness length.
-  double friction;              ///< friction factor.
+  double friction_factor;       ///< friction factor.
   unsigned int recirculation;   ///< 1 on recirculation flow, 0 otherwise.
 } Cell;
 
@@ -46,13 +46,17 @@ void cell_init (Cell * cell, double position, double distance, double size,
 static inline void
 cell_set_flow (Cell * cell,     ///< pointer to the cell struct data.
                double discharge,        ///< flow discharge.
-               double velocity) ///< flow velocity.
+               double velocity, ///< flow velocity.
+               double friction_factor,  ///< friction factor.
+               double dispersion)       ///< dispersion coefficient.
 {
 #if DEBUG_CELL
   fprintf (stderr, "cell_set_flow: start\n");
 #endif
   cell->discharge = discharge;
   cell->velocity = velocity;
+  cell->friction_factor = friction_factor;
+  cell->dispersion = dispersion;
 #if DEBUG_CELL
   fprintf (stderr, "cell_set_flow: end\n");
 #endif

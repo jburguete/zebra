@@ -39,6 +39,7 @@
 ///< name of the pipe lengths log file.
 #define PROGRAM_NAME "zebra"    ///< program name.
 #define RECIRCULATION_LENGTH 8. ///< length of the recirculation zone.
+#define WATER_VISCOSITY 1.0e-3  ///< water viscosity.
 
 // Epanet labels
 

@@ -61,7 +61,7 @@ simulation_run (Simulation * simulation)
   final_time = simulation->final_time;
   saving_step = simulation->saving_step;
   cfl = simulation->cfl;
-  network_set_discharges (network);
+  network_set_flow (network);
   network_initial (network);
   results_init (results, network, initial_time, final_time, saving_step);
   results_set (results, network);

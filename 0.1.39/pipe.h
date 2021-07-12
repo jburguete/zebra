@@ -25,6 +25,7 @@ typedef struct
   double roughness;             ///< roughness length.
   double discharge;             ///< current discharge.
   double velocity;              ///< current flow velocity.
+  double friction_factor;       ///< friction factor.
   double dispersion;            ///< dispersion coefficient.
   unsigned int ncells;          ///< number of node cells.
   unsigned int nwalls;          ///< number of mesh walls.
@@ -107,54 +108,33 @@ pipe_create_mesh (Pipe * pipe,  ///< pointer to the pipe struct data.
 }
 
 /**
- * function to set the flow discharge in a pipe.
+ * function to set the flow in a pipe.
  */
 static inline void
-pipe_set_discharge (Pipe * pipe,        ///< pointer to the pipe struct data.
-                    double discharge)   ///< flow discharge.
+pipe_set_flow (Pipe * pipe,     ///< pointer to the pipe struct data.
+               double discharge,        ///< flow discharge.
+               double friction_factor)  ///< friction factor.
 {
   Cell *cell;
-  double v;
+  double v, d;
   unsigned int i, n;
 #if DEBUG_PIPE
-  fprintf (stderr, "pipe_set_discharge: start\n");
+  fprintf (stderr, "pipe_set_flow: start\n");
 #endif
   pipe->discharge = discharge;
+  pipe->friction_factor = friction_factor;
   pipe->velocity = v = discharge / pipe->area;
+  pipe->dispersion = d = fmax (WATER_VISCOSITY,
+                               10. * sqrt (0.5 * friction_factor)
+                               * pipe->perimeter * fabs (v));
   cell = pipe->cell;
   n = pipe->ncells;
   for (i = 0; i < n; ++i)
-    cell_set_flow (cell + i, discharge, v);
+    cell_set_flow (cell + i, discharge, v, friction_factor, d);
 #if DEBUG_PIPE
-  fprintf (stderr, "pipe_set_discharge: discharge=%lg velocity=%lg\n",
-           discharge, pipe->velocity);
-  fprintf (stderr, "pipe_set_discharge: end\n");
-#endif
-}
-
-/**
- * function to set the flow velocity in a pipe.
- */
-static inline void
-pipe_set_velocity (Pipe * pipe, ///< pointer to the pipe struct data.
-                   double velocity)     ///< flow velocity.
-{
-  Cell *cell;
-  double q;
-  unsigned int i, n;
-#if DEBUG_PIPE
-  fprintf (stderr, "pipe_set_velocity: start\n");
-#endif
-  pipe->velocity = velocity;
-  pipe->discharge = q = velocity * pipe->area;
-  cell = pipe->cell;
-  n = pipe->ncells;
-  for (i = 0; i < n; ++i)
-    cell_set_flow (cell + i, q, velocity);
-#if DEBUG_PIPE
-  fprintf (stderr, "pipe_set_velocity: discharge=%lg velocity=%lg\n",
-           pipe->discharge, velocity);
-  fprintf (stderr, "pipe_set_velocity: end\n");
+  fprintf (stderr, "pipe_set_flow: discharge=%lg velocity=%lg factor=%lg\n",
+           discharge, pipe->velocity, pipe->friction_factor);
+  fprintf (stderr, "pipe_set_flow: end\n");
 #endif
 }
 

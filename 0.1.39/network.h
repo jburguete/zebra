@@ -66,8 +66,9 @@ typedef struct
  */
 typedef struct
 {
-  Pipe **pipe;                  ///< array of pipe struct data pointers;
-  double *discharge;            ///< array of pipe discharges;
+  Pipe **pipe;                  ///< array of pipe struct data pointers.
+  double *discharge;            ///< array of pipe discharges.
+  double *friction_factor;      ///< array of pipe friction factors.
   double date;                  ///< time in seconds since 1970.
 } NetDischarges;
 
@@ -101,7 +102,7 @@ typedef struct
 void network_null (Network * network);
 void network_destroy (Network * network);
 int network_open_xml (Network * network, char *directory, char *file_name);
-void network_set_discharges (Network * network);
+void network_set_flow (Network * network);
 
 /**
  * function to update the discharges on a network.
@@ -130,7 +131,7 @@ network_update_discharges (Network * network)
       ++i;
     }
   if (i)
-    network_set_discharges (network);
+    network_set_flow (network);
 #if DEBUG_NETWORK
   fprintf (stderr, "network_update_discharges: end\n");
 #endif

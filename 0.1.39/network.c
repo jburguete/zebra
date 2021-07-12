@@ -37,6 +37,7 @@ net_discharges_null (NetDischarges * discharges)
 #endif
   discharges->pipe = NULL;
   discharges->discharge = NULL;
+  discharges->friction_factor = NULL;
 #if DEBUG_NETWORK
   fprintf (stderr, "network_discharges_null: end\n");
 #endif
@@ -52,6 +53,7 @@ net_discharges_destroy (NetDischarges * discharges)
 #if DEBUG_NETWORK
   fprintf (stderr, "network_discharges_destroy: start\n");
 #endif
+  free (discharges->friction_factor);
   free (discharges->discharge);
   free (discharges->pipe);
 #if DEBUG_NETWORK
@@ -577,7 +579,7 @@ network_open_out (Network * network,    ///< pointer to the network struct data.
   unsigned int *set = NULL;
   char *r;
   const char *m;
-  double q;
+  double q, f;
   int error_code = 0;
   unsigned int i, id;
 #if DEBUG_NETWORK
@@ -608,10 +610,12 @@ network_open_out (Network * network,    ///< pointer to the network struct data.
     }
   discharges->pipe = (Pipe **) malloc (network->npipes * sizeof (Pipe *));
   discharges->discharge = (double *) malloc (network->npipes * sizeof (double));
+  discharges->friction_factor
+    = (double *) malloc (network->npipes * sizeof (double));
   set = calloc (network->max_pipe_id + 1, sizeof (unsigned int));
   for (i = 0; i < network->npipes; ++i)
     {
-      if (fscanf (file, "%u%lf%*f%*f%*f", &id, &q) != 2)
+      if (fscanf (file, "%u%lf%*f%*f%lf", &id, &q, &f) != 3)
         {
           m = _("Bad data");
           goto exit_on_error;
@@ -626,6 +630,7 @@ network_open_out (Network * network,    ///< pointer to the network struct data.
       set[id] = 1;
       discharges->pipe[i] = pipe;
       discharges->discharge[i] = q * 0.001;
+      discharges->friction_factor[i] = f;
     }
   error_code = 1;
 exit_on_error:
@@ -817,21 +822,22 @@ exit_on_error:
 }
 
 /**
- * function to set the discharges on a network.
+ * function to set the flow on a network.
  */
 void
-network_set_discharges (Network * network)
-                        ///< pointer to the network struct data.
+network_set_flow (Network * network)
+                  ///< pointer to the network struct data.
 {
   NetDischarges *discharges;
   unsigned int i;
 #if DEBUG_NETWORK
-  fprintf (stderr, "network_set_discharges: start\n");
+  fprintf (stderr, "network_set_flow: start\n");
 #endif
   discharges = network->discharges + network->current_discharges;
   for (i = 0; i < network->npipes; ++i)
-    pipe_set_discharge (discharges->pipe[i], discharges->discharge[i]);
+    pipe_set_flow (discharges->pipe[i], discharges->discharge[i],
+                   discharges->friction_factor[i]);
 #if DEBUG_NETWORK
-  fprintf (stderr, "network_set_discharges: end\n");
+  fprintf (stderr, "network_set_flow: end\n");
 #endif
 }
