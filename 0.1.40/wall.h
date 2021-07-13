@@ -13,14 +13,18 @@
  */
 typedef struct
 {
-  double dn[MAX_NUTRIENTS];
+  double in[MAX_NUTRIENTS];
   ///< array of nutrient concentration differences.
-  double ds[MAX_SPECIES];
+  double is[MAX_SPECIES];
   ///< array of species concentration differences.
+  double dn[MAX_NUTRIENTS];
+  ///< array of nutrient concentration advection differences.
+  double ds[MAX_SPECIES];
+  ///< array of species concentration advection differences.
   double dn2[MAX_NUTRIENTS];
-  ///< array of 2nd order nutrient concentration differences.
+  ///< array of 2nd order nutrient concentration advection differences.
   double ds2[MAX_SPECIES];
-  ///< array of 2nd order species concentration differences.
+  ///< array of 2nd order species concentration advection differences.
   Cell *left2;                  ///< left cell.
   Cell *right2;                 ///< right cell.
   Cell *left;                   ///< left cell.
@@ -58,7 +62,7 @@ wall_set (Wall * wall,          ///< pointer to the mesh wall struct data.
           double vdt)           ///< flow velocity times time step size.
 {
   Cell *left, *right;
-  double *n1, *s1, *n2, *s2, *dn, *ds;
+  double *n1, *s1, *n2, *s2, *dn, *ds, *in, *is;
   unsigned int i;
 #if DEBUG_WALL
   fprintf (stderr, "wall_set: start\n");
@@ -69,13 +73,21 @@ wall_set (Wall * wall,          ///< pointer to the mesh wall struct data.
   s1 = left->species_concentration;
   n2 = right->nutrient_concentration;
   s2 = right->species_concentration;
+  in = wall->in;
+  is = wall->is;
   dn = wall->dn;
   ds = wall->ds;
   wall->vdt = vdt;
   for (i = 0; i < nnutrients; ++i)
-    dn[i] = vdt * (n2[i] - n1[i]);
+    {
+      in[i] = n2[i] - n1[i];
+      dn[i] = vdt * in[i];
+    }
   for (i = 0; i < nspecies; ++i)
-    ds[i] = vdt * (s2[i] - s1[i]);
+    {
+      is[i] = s2[i] - s1[i];
+      ds[i] = vdt * is[i];
+    }
 #if DEBUG_WALL
   fprintf (stderr, "wall_set: vdt=%lg\n", vdt);
   for (i = 0; i < nnutrients; ++i)
@@ -83,9 +95,9 @@ wall_set (Wall * wall,          ///< pointer to the mesh wall struct data.
   for (i = 0; i < nspecies; ++i)
     fprintf (stderr, "wall_set: i=%u s2=%lg s1=%lg\n", i, s2[i], s1[i]);
   for (i = 0; i < nnutrients; ++i)
-    fprintf (stderr, "wall_set: i=%u dn=%lg\n", i, dn[i]);
+    fprintf (stderr, "wall_set: i=%u in=%lg dn=%lg\n", i, in[i], dn[i]);
   for (i = 0; i < nspecies; ++i)
-    fprintf (stderr, "wall_set: i=%u ds=%lg\n", i, ds[i]);
+    fprintf (stderr, "wall_set: i=%u is=%lg ds=%lg\n", i, is[i], ds[i]);
   fprintf (stderr, "wall_set: end\n");
 #endif
 }

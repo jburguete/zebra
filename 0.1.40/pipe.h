@@ -17,6 +17,10 @@ typedef struct
   Point *outlet;                ///< pointer to the outlet point.
   Cell *cell;                   ///< array of node cells.
   Wall *wall;                   ///< array of mesh walls.
+  double *C;                    ///< array of C dispersion coefficients.
+  double *D;                    ///< array of D dispersion coefficients.
+  double *E;                    ///< array of E dispersion coefficients.
+  double *H;                    ///< array of H dispersion coefficients.
   double length;                ///< length.
   double diameter;              ///< diameter.
   double radius;                ///< radius.
@@ -47,6 +51,7 @@ pipe_null (Pipe * pipe)         ///< pointer to the pipe struct data.
   fprintf (stderr, "pipe_null: start\n");
 #endif
   pipe->cell = NULL;
+  pipe->C = pipe->D = pipe->E = pipe->H = NULL;
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_null: end\n");
 #endif
@@ -61,6 +66,10 @@ pipe_destroy (Pipe * pipe)      ///< pointer to the pipe struct data.
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_destroy: start\n");
 #endif
+  free (pipe->H);
+  free (pipe->E);
+  free (pipe->D);
+  free (pipe->C);
   free (pipe->wall);
   free (pipe->cell);
 #if DEBUG_PIPE
@@ -92,6 +101,10 @@ pipe_create_mesh (Pipe * pipe,  ///< pointer to the pipe struct data.
   size = 0.5 * distance;
   pipe->cell = cell = (Cell *) malloc (pipe->ncells * sizeof (Cell));
   pipe->wall = wall = (Wall *) malloc (n * sizeof (Wall));
+  pipe->C = (double *) malloc (n * sizeof (double));
+  pipe->D = (double *) malloc (pipe->ncells * sizeof (double));
+  pipe->E = (double *) malloc (n * sizeof (double));
+  pipe->H = (double *) malloc (pipe->ncells * sizeof (double));
   cell_init (cell, 0., distance, size, pipe->area, pipe->perimeter);
   for (i = 1; i < pipe->ncells - 1; ++i)
     cell_init (cell + i, i * pipe->length / n, distance, distance, area,
@@ -214,6 +227,76 @@ pipe_initial (Pipe * pipe,      ///< pointer to the pipe struct data.
 }
 
 /**
+ * function to calculate the turbulent dispersion in a pipe.
+ */
+static inline void
+pipe_dispersion (Pipe * pipe)   ///< pointer to the pipe struct data.
+{
+  Wall *wall;
+  Cell *cell;
+  double *C, *D, *E, *H;
+  double dx, nudt_dx, k, k2, k3;
+  unsigned int i, j;
+#if DEBUG_PIPE
+  fprintf (stderr, "pipe_dispersion: start\n");
+#endif
+  wall = pipe->wall;
+  cell = pipe->cell;
+  C = pipe->C;
+  D = pipe->D;
+  E = pipe->E;
+  H = pipe->H;
+  dx = wall->size;
+  nudt_dx = pipe->dispersion * time_step / dx;
+  k = fmax (0.5 * nudt_dx, nudt_dx - 0.5 * dx);
+  k2 = 2 * k;
+  k3 = nudt_dx - k;
+  k = -k;
+  C[0] = 0.;
+  for (i = 1; i < pipe->nwalls; ++i)
+    {
+      C[i] = k;
+      E[i - 1] = k;
+    }
+  E[i - 1] = 0.;
+  for (j = 0; j < nnutrients; ++j)
+    {
+      D[0] = 1.;
+      H[0] = cell[0].nutrient_concentration[j];
+      for (i = 1; i < pipe->nwalls; ++i)
+        {
+          D[i] = cell[i].size + k2;
+          H[i] = cell[i].nutrient_concentration[j] * cell[i].size
+            + k3 * (wall[i].in[j] - wall[i - 1].in[j]);
+        }
+      D[i] = 1.;
+      H[i] = cell[i].nutrient_concentration[j];
+      matrix_tridiagonal_solve (C, D, E, H, pipe->ncells);
+      for (i = 1; i < pipe->nwalls; ++i)
+        cell[i].nutrient_concentration[j] = H[i];
+    }
+  for (j = 0; j < nspecies; ++j)
+    {
+      D[0] = 1.;
+      H[0] = cell[0].species_concentration[j];
+      for (i = 1; i < pipe->nwalls; ++i)
+        {
+          D[i] = cell[i].size + k2;
+          H[i] = cell[i].species_concentration[j] * cell[i].size
+            + k3 * (wall[i].is[j] - wall[i - 1].is[j]);
+        }
+      D[i] = 1.;
+      H[i] = cell[i].species_concentration[j];
+      matrix_tridiagonal_solve (C, D, E, H, pipe->ncells);
+      for (i = 1; i < pipe->nwalls; ++i)
+        cell[i].species_concentration[j] = H[i];
+    }
+#if DEBUG_PIPE
+  fprintf (stderr, "pipe_dispersion: end\n");
+#endif
+}
+
+/**
  * function to perform a numerical method step on a pipe.
  */
 static inline void
@@ -269,6 +352,7 @@ pipe_step (Pipe * pipe)         ///< pointer to the pipe struct data.
         for (i = 0; i < n; ++i)
           wall_increments_n (wall + i);
     }
+  pipe_dispersion (pipe);
   cell = pipe->cell;
   n = pipe->ncells;
   for (i = 0; i < n; ++i)
