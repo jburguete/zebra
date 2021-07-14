@@ -254,10 +254,7 @@ pipe_dispersion (Pipe * pipe)   ///< pointer to the pipe struct data.
   k = -k;
   C[0] = 0.;
   for (i = 1; i < pipe->nwalls; ++i)
-    {
-      C[i] = k;
-      E[i - 1] = k;
-    }
+    C[i] = E[i - 1] = k;
   E[i - 1] = 0.;
   for (j = 0; j < nnutrients; ++j)
     {
