@@ -7,6 +7,13 @@
 #ifndef PIPE__H
 #define PIPE__H 1
 
+///> enum to define the dispersion model.
+enum DispersionModel
+{
+  DISPERSION_MODEL_NONE = 0,    ///< no dispersion.
+  DISPERSION_MODEL_RUTHERFORD,  ///< Rutherford's dispersion.
+};
+
 /**
  * \struct Pipe
  * \brief struct to define an irrigation pipe.
@@ -37,6 +44,8 @@ typedef struct
   unsigned int inlet_id;        ///< inlet node identifier.
   unsigned int outlet_id;       ///< outlet node identifier.
 } Pipe;
+
+extern unsigned int dispersion_model;
 
 void pipe_inlet_add_recirculation (Pipe * pipe, double length);
 void pipe_outlet_add_recirculation (Pipe * pipe, double length);
@@ -252,10 +261,10 @@ pipe_dispersion (Pipe * pipe)   ///< pointer to the pipe struct data.
   k2 = 2 * k;
   k3 = nudt_dx - k;
   k = -k;
-  C[0] = 0.;
+  E[0] = 0.;
   for (i = 1; i < pipe->nwalls; ++i)
-    C[i] = E[i - 1] = k;
-  E[i - 1] = 0.;
+    E[i] = C[i - 1] = k;
+  C[i - 1] = 0.;
   for (j = 0; j < nnutrients; ++j)
     {
       D[0] = 1.;
@@ -349,7 +358,8 @@ pipe_step (Pipe * pipe)         ///< pointer to the pipe struct data.
         for (i = 0; i < n; ++i)
           wall_increments_n (wall + i);
     }
-  pipe_dispersion (pipe);
+  if (dispersion_model)
+    pipe_dispersion (pipe);
   cell = pipe->cell;
   n = pipe->ncells;
   for (i = 0; i < n; ++i)

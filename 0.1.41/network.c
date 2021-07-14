@@ -23,8 +23,6 @@
 #include "inlet.h"
 #include "network.h"
 
-unsigned int numerical_order;   ///< accurate order of the numerical method.
-
 /**
  * function to init the pointers of a network discharges struct.
  */

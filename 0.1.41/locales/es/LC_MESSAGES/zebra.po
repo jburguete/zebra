@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 0.1.40\n"
+"Project-Id-Version: 0.1.41\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-12 15:39+0200\n"
+"POT-Creation-Date: 2021-07-14 10:57+0200\n"
 "PO-Revision-Date: 2021-06-15 01:12+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -21,19 +21,19 @@ msgstr ""
 msgid "Nutrient"
 msgstr "Nutriente"
 
-#: nutrient.c:72 species.c:74 network.c:679 simulation.c:69
+#: nutrient.c:72 species.c:74 network.c:677 simulation.c:72
 msgid "Bad input file"
 msgstr "Fichero de entrada incorrecto"
 
-#: nutrient.c:80 species.c:82 network.c:687 results.c:324 simulation.c:77
+#: nutrient.c:80 species.c:82 network.c:685 results.c:324 simulation.c:80
 msgid "No root XML node"
 msgstr "Falta nodo XML raíz"
 
-#: nutrient.c:85 species.c:87 network.c:692 results.c:329 simulation.c:82
+#: nutrient.c:85 species.c:87 network.c:690 results.c:329 simulation.c:85
 msgid "Bad root XML node"
 msgstr "Nodo XML raíz incorrecto"
 
-#: nutrient.c:94 species.c:96 network.c:790 results.c:482
+#: nutrient.c:94 species.c:96 network.c:788 results.c:482
 msgid "Bad XML node"
 msgstr "Nodo XML incorrecto"
 
@@ -125,7 +125,7 @@ msgstr "Falta el nombre de la especie"
 msgid "Unknown species"
 msgstr "Especie desconocida"
 
-#: inlet.c:277 simulation.c:155
+#: inlet.c:277 simulation.c:169
 msgid "No species file"
 msgstr "Falta el fichero de especie"
 
@@ -137,127 +137,127 @@ msgstr "Fichero de entrad de especie incorrecto"
 msgid "Unknown node"
 msgstr "Nodo desconocido"
 
-#: network.c:70
+#: network.c:68
 msgid "Network"
 msgstr "Red"
 
-#: network.c:209
+#: network.c:207
 msgid "Bad Epanet title"
 msgstr "Título de Epanet incorrecto"
 
-#: network.c:217
+#: network.c:215
 msgid "Bad Epanet file"
 msgstr "Fichero de Epanet incorrecto"
 
-#: network.c:243 network.c:257
+#: network.c:241 network.c:255
 msgid "Bad Epanet coordinates section"
 msgstr "Sección de coordenadas de Epanet incorrecta"
 
-#: network.c:272 network.c:286
+#: network.c:270 network.c:284
 msgid "Bad Epanet junctions section"
 msgstr "Sección de intersecciones de Epanet incorrecta"
 
-#: network.c:303 network.c:318
+#: network.c:301 network.c:316
 msgid "Bad Epanet pipes section"
 msgstr "Sección de tubos de Epanet incorrecta"
 
-#: network.c:335 network.c:350
+#: network.c:333 network.c:348
 msgid "Bad Epanet reservoirs section"
 msgstr "Sección de fuentes de Epanet incorrecta"
 
-#: network.c:365
+#: network.c:363
 msgid "No Epanet end section"
 msgstr "Sección final de Epanet incorrecta"
 
-#: network.c:406
+#: network.c:404
 msgid "Duplicated node"
 msgstr "Nodo duplicado"
 
-#: network.c:416
+#: network.c:414
 msgid "Duplicated junction"
 msgstr "Intersección duplicada"
 
-#: network.c:421
+#: network.c:419
 msgid "Unknown node indentifier on junction"
 msgstr "Identificador de nodo de intersección desconocido"
 
-#: network.c:432
+#: network.c:430
 msgid "Duplicated reservoir"
 msgstr "Fuente duplicada"
 
-#: network.c:437
+#: network.c:435
 msgid "Unknown node indentifier on reservoir"
 msgstr "Indentificador de nodo de fuente desconocido"
 
-#: network.c:456
+#: network.c:454
 msgid "Unknown 1st node indentifier on pipe"
 msgstr "Identificador de primer nodo de tubo desconocido"
 
-#: network.c:461
+#: network.c:459
 msgid "No elevation of 1st node"
 msgstr "Falta elevación del primer nodo"
 
-#: network.c:469
+#: network.c:467
 msgid "Unknown 2nd node indentifier on pipe"
 msgstr "Identificador de segundo nodo de tubo desconocido"
 
-#: network.c:474
+#: network.c:472
 msgid "No elevation of 2nd node"
 msgstr "Falta elevación del segundo nodo"
 
-#: network.c:480
+#: network.c:478
 msgid "Same nodes for inlet and outlet"
 msgstr "Mismo nodo para entrada y salida"
 
-#: network.c:591
+#: network.c:589
 msgid "Unable to open the file"
 msgstr "No se pudo abrir el fichero"
 
-#: network.c:599 results.c:151
+#: network.c:597 results.c:151
 msgid "Bad header"
 msgstr "Cabecera incorrecta"
 
-#: network.c:608
+#: network.c:606
 msgid "Bad header line"
 msgstr "Línea de cabecera incorrecta"
 
-#: network.c:620
+#: network.c:618
 msgid "Bad data"
 msgstr "Datos incorrecta"
 
-#: network.c:639
+#: network.c:637
 msgid "File"
 msgstr "Fichero"
 
-#: network.c:705
+#: network.c:703
 msgid "Unknown pipe length model"
 msgstr "Modo de longitud de tubo desconocido"
 
-#: network.c:712
+#: network.c:710
 msgid "No Epanet file"
 msgstr "Falta fichero de Epanet"
 
-#: network.c:720
+#: network.c:718
 msgid "Unable to open the Epanet file"
 msgstr "No se pudo abrir el fichero de Epanet"
 
-#: network.c:751
+#: network.c:749
 msgid "No inlets"
 msgstr "Faltan entradas"
 
-#: network.c:766
+#: network.c:764
 msgid "Bad discharges time"
 msgstr "Tiempo de caudales incorrecto"
 
-#: network.c:771
+#: network.c:769
 msgid "Bad discharges time order"
 msgstr "Orden de tiempos de caudales incorrecto"
 
-#: network.c:777
+#: network.c:775
 msgid "No discharges file"
 msgstr "Falta fichero de caudales"
 
-#: network.c:796
+#: network.c:794
 msgid "No discharges"
 msgstr "Faltan caudales"
 
@@ -269,15 +269,15 @@ msgstr "Resultados"
 msgid "Unable to open the results data base file"
 msgstr "No se pudo abrir el fichero de la base de datos de resultados"
 
-#: results.c:156 simulation.c:96
+#: results.c:156 simulation.c:99
 msgid "Bad final time"
 msgstr "Tiempo final incorrecto"
 
-#: results.c:161 simulation.c:110
+#: results.c:161 simulation.c:113
 msgid "Bad saving time step size"
 msgstr "Tamaño de paso de tiemp de guardado incorrecto"
 
-#: results.c:166 simulation.c:104
+#: results.c:166 simulation.c:107
 msgid "Bad cell size"
 msgstr "Tamaño de celda incorrecto"
 
@@ -381,27 +381,31 @@ msgstr "Fichero de tubo incorrecto"
 msgid "Bad data base"
 msgstr "Base de datos incorrecta"
 
-#: simulation.c:34
+#: simulation.c:37
 msgid "Simulation"
 msgstr "Simulación"
 
-#: simulation.c:90
+#: simulation.c:93
 msgid "Bad initial time"
 msgstr "Tiempo inicial incorrecto"
 
-#: simulation.c:116
+#: simulation.c:119
 msgid "No results file"
 msgstr "Falta fichero de resultados"
 
-#: simulation.c:126
+#: simulation.c:129
 msgid "Bad numerical order"
 msgstr "Orden del método numérico incorrecto"
 
-#: simulation.c:137
+#: simulation.c:139
+msgid "Unknown dispersion model"
+msgstr "Modelo de dispersión desconocido"
+
+#: simulation.c:151
 msgid "No nutrients file"
 msgstr "Falta fichero de nutrientes"
 
-#: simulation.c:173
+#: simulation.c:187
 msgid "No network file"
 msgstr "Falta fichero de red"
 

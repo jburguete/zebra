@@ -64,6 +64,8 @@ zebrapgo: $(objpgo)
 	./zebrapgo ../tests/test1/results.bin ../tests/test1/results.xml
 	./zebrapgo ../tests/test2/simulation.xml
 	./zebrapgo ../tests/test2/results.bin ../tests/test2/results.xml
+	./zebrapgo ../tests/test3/simulation.xml
+	./zebrapgo ../tests/test3/results.bin ../tests/test3/results.xml
 
 tools.pgo: tools.c $(cfg)
 	$(CC) $(CFLAGS) $(pgogen) tools.c -o tools.pgo

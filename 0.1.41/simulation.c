@@ -25,6 +25,9 @@
 #include "results.h"
 #include "simulation.h"
 
+unsigned int numerical_order;   ///< accurate order of the numerical method.
+unsigned int dispersion_model;  ///< dispersion model.
+
 /**
  * function to set an error message opening a simulation input file.
  */
@@ -126,6 +129,17 @@ simulation_open_xml (Simulation * simulation,
       m = _("Bad numerical order");
       goto exit_on_error;
     }
+  buffer = xmlGetProp (node, XML_DISPERSION_MODEL);
+  if (!buffer)
+    dispersion_model = DISPERSION_MODEL_NONE;
+  else if (!xmlStrcmp (buffer, XML_RUTHERFORD))
+    dispersion_model = DISPERSION_MODEL_RUTHERFORD;
+  else
+    {
+      m = _("Unknown dispersion model");
+      goto exit_on_error;
+    }
+  xmlFree (buffer);
 
   // open nutrients
 #if DEBUG_SIMULATION

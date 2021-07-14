@@ -74,6 +74,8 @@
 ///< decay XML label.
 #define XML_DISCHARGES          (const xmlChar *) "discharges"
 ///< discharges XML label.
+#define XML_DISPERSION_MODEL    (const xmlChar *) "dispersion-model"
+///< dispersion-model XML label.
 #define XML_EAT                 (const xmlChar *) "eat"
 ///< eat XML label.
 #define XML_FILE                (const xmlChar *) "file"
@@ -120,6 +122,8 @@
 ///< respiration XML label.
 #define XML_RESULTS             (const xmlChar *) "results"
 ///< results XML label.
+#define XML_RUTHERFORD          (const xmlChar *) "rutherford"
+///< rutherford XML label.
 #define XML_SAVING_STEP         (const xmlChar *) "saving-step"
 ///< saving-step XML label.
 #define XML_SIMULATION          (const xmlChar *) "simulation"
