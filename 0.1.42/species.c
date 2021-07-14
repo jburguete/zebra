@@ -155,7 +155,7 @@ species_open_xml (char *file_name)      ///< input file name.
           m = _("Bad grow coefficient");
           goto exit_on_error;
         }
-      s->decay = xml_node_get_float_with_default (node, XML_DECAY, &k, 0.);
+      s->decay = xml_node_get_float (node, XML_DECAY, &k);
       if (!k || s->decay < 0.)
         {
           m = _("Bad decay coefficient");

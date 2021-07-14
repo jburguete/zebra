@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <species>
-	<species name="zebra-mussel" maximum-velocity="0" cling-pipe="0" cling-water="0" minimum-oxygen="0" respiration="0" eat="0" grow="0"/>
+	<species name="zebra-mussel" maximum-velocity="0" cling-pipe="0" cling-water="0" minimum-oxygen="0" respiration="0" eat="0" grow="0" decay="0"/>
 </species>
