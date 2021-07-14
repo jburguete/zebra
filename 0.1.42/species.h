@@ -105,6 +105,9 @@ zebra_mussel_grow (Species * species,   ///< pointer to the species struct data.
   *oxygen = o2 / volume;
   *organic_matter = om / volume;
 
+  // decay
+  *concentration *= fmax (0., 1. - species->decay * time_step);
+
   // exit
 no_growing:
 #if DEBUG_SPECIES
