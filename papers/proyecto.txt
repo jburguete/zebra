@@ -1,0 +1,73 @@
+Debido a los problemas que la profileración de mejillón cebra ha producido en
+todo el mundo, numerosos trabajos han estudiado, por citar algunos, su ecología
+(Strayer et al. 2020), sus requerimientos climáticos y nutricionales
+(Cohen 2005), tasas de respiración (Alexander & McMahon 2004), nutrición
+(Kirkendall et al. 2021) o mortalidad (Rehmann et al. 2003), mapas
+de riesgo de proliferación (Bosso et al. 2017), cálculo de pérdidas de presión
+en redes presurizadas (Morales-Hernández et al. 2018) o métodos de tratamiento
+de desinfestación (Jiménez-Bello al. 2021). Sin embargo pocos estudios se han
+hecho calculando el movimiento de las larvas desde un punto de vista
+hidráulico. 
+
+En este proyecto pretendemos modelar el movimiento de las larvas a lo largo de
+una red de tuberías de riego presurizado. El modelo será muy similar al
+propuesto para ríos en Huang et al. (2017) aunque con algunas diferencias. Por
+un lado habrá que introducir la complejidad que añaden las confluencias y la
+topología de una red de riego presurizado, pero por otro lado tanto la
+geometría como los caudales y coeficientes de rozamiento de las tuberías están
+mucho mejor caracterizados sin las incertidumbres inherentes a los cauces
+naturales. Además, debido a los tratamientos periódicos de limpieza, se puede
+considerar que no hay adultos en la red, por tanto la producción de larvas es
+una entrada externa, lo que también simplifica considerablemente el modelo. La
+hipótesis fundamental en este modelo consiste en que la capacidad de movimiento
+de las larvas debido a sus facultades natatorias es mucho menor que el
+transporte y la difusión turbulenta, de modo que se puede caracterizar con los
+mismos coeficientes conocidos del transporte y dispersión de solutos en los que
+tenemos amplia experiencia en la modelización computacional en el grupo (p.e.
+Burguete et al. 2009).
+
+Los objetivos que pretendemos para desarrollar este modelo son:
+1) Tratar de poner luz en el hecho comprobado de que algunas zonas de las red
+son mucho más problemáticas y ver si este hecho responde a características del
+movimiento y/o fijado de las larvas en las paredes debido a parámetros
+hidráulicos.
+2) Disponer de una herramienta que nos permita, según las características de
+las tuberías y de las demandas hidráulicas, identificar zonas de posibles
+riesgos de infestación en la red.
+
+El modelo se desarrollará de una forma general, de modo que también pueda
+aplicarse con diferentes tasas de
+respiración/alimentación/supervivencia/fijación/... a otras especies que
+pudieran suponer un problema en el futuro.
+
+Referencias
+
+Alexander Jr JE, McMahon RF (2004). Respiratory response to temperature and
+hypoxia in the zebra mussel Dreissena polymorpha. Comp. Biochem. Physiol. Part
+A 137, 425–434.
+Bosso L, de Conno C, Russo D (2017). Modelling the risk posed by the zebra
+mussel Dreissena polymorpha: Italy as a case study. Environ. Manage. 60,
+304–313.
+Burguete J, Zapata N, García-Navarro P, Maïkaka M, Playán E, Murillo J (2009).
+Fertigation in furrows and level furrow systems. I: Model description and
+numerical tests. J. Irrig. Drain. Eng. 135 (4), 401-412.
+Cohen AN (2005). A review of zebra mussels' environmental requirements. Report
+for the California Department of Water Resources.
+Huang Q, Wang H, Lewis MA (2017). A hybrid continuous/discrete-time model for
+invasion dynamics of zebra mussels in rivers. SIAM J. Appl. Math. 77(3),
+854–880.
+Jiménez‑Bello MA, Alonso Campos JC, Manzano‑Juárez J, Martínez Alzamora F
+(2021). Methodology for flushing pressurised irrigation networks for
+fertigation and operation maintenance purposes. Irrig. Sci.
+https://doi.org/10.1007/s00271-021-00724-4.
+Kirkendall DS, Bunnell DB, Armenio PM, Eaton LA, Trebitz AS, Watson NM (2021).
+Spatial and temporal distributions of Dreissena spp. veligers in Lake Huron:
+Does calcium limit settling success? J. Great Lakes Res. 47, 1040–1049.
+Morales-Hernández M, Playán E, Gimeno Y, Serreta A, Zapata N (2018). Assessing
+zebra mussel colonization of collective pressurized irrigation networks through
+pressure measurements and simulations. Agric. Water Manag. 204, 301–313.
+Rehmann CR, Stoeckel JA, Schneider DW (2003). Effect of turbulence on the
+mortality of zebra mussel veligers. Can. J. Zool. 81, 1063–1069.
+Strayer DL, Fischer DT, Hamilton SK, Malcom HM, Pace ML, Solomon CT (2020).
+Long-term variability and density dependence in Hudson River Dreissena
+populations. Freshw. Biol. 65, 474–489.
