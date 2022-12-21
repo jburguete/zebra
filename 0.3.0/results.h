@@ -27,8 +27,8 @@ typedef struct
 {
   ResultsHeader header[1];      ///< header data.
   double *point_x;              ///< array of point x-coordinates.
-  double *point_y;              ///< array of point x-coordinates.
-  double *point_z;              ///< array of point x-coordinates.
+  double *point_y;              ///< array of point y-coordinates.
+  double *point_z;              ///< array of point z-coordinates.
   double *pipe_length;          ///< array of pipe lengths.
   unsigned int *point_id;       ///< array of point identifiers.
   unsigned int *pipe_id;        ///< array of pipe identifiers.

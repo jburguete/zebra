@@ -15,6 +15,7 @@
 #include "tools.h"
 #include "nutrient.h"
 #include "species.h"
+#include "specimen.h"
 #include "point.h"
 #include "cell.h"
 #include "wall.h"

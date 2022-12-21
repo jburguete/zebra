@@ -2,37 +2,36 @@
 
 all: zebra
 
-hdr = config.h tools.h nutrient.h species.h point.h cell.h wall.h pipe.h \
-	junction.h inlet.h junction.h network.h results.h simulation.h
-src = tools.c nutrient.c species.c cell.c pipe.c inlet.c junction.c network.c \
-	results.c simulation.c main.c
-obj = tools.o nutrient.o species.o cell.o pipe.o inlet.o junction.o network.o \
-	results.o simulation.o main.o
+hdr = config.h tools.h nutrient.h species.h specimen.h point.h cell.h wall.h \
+	pipe.h junction.h inlet.h junction.h network.h results.h simulation.h
+src = tools.c nutrient.c species.c specimen.c cell.c pipe.c inlet.c junction.c \
+	network.c results.c simulation.c main.c
+obj = tools.o nutrient.o species.o specimen.o cell.o pipe.o inlet.o junction.o \
+	network.o results.o simulation.o main.o
 cfg = tools.h config.h Makefile
-spe = species.h nutrient.h $(cfg)
-pip = pipe.h cell.h wall.h point.h $(spe)
+sps = species.h nutrient.h $(cfg)
+spn = specimen.h $(sps)
+pip = pipe.h cell.h wall.h point.h $(spn)
 net = network.h inlet.h junction.h $(pip)
 res = results.h $(net)
 sim = simulation.h $(res)
-libs = libxml-2.0 glib-2.0
 es = locales/es/LC_MESSAGES/
 locales = $(es)zebra.mo
 
-CC = gcc
-#COPT = -O3 -march=native -flto
-COPT = -O3 -flto
-CFLAGS = -c -g -Wall -Wextra $(COPT) `pkg-config --cflags $(libs)`
-LDFLAGS = -g -flto -lm `pkg-config --libs $(libs)`
+CC = @CC@ @ARCH@ @LTO@ -g
+COPT = -O3
+CFLAGS = @CFLAGS@ @XML_CFLAGS@ @GLIB_CFLAGS@ -c -pedantic -Wall -Wextra $(COPT)
+LDFLAGS = @LDFLAGS@ @GLIB_LIBS@ @XML_LIBS@ @LIBS@
 
-PGO = 1
-ifeq ($(PGO), 1)
-	objpgo = tools.pgo nutrient.pgo species.pgo cell.pgo pipe.pgo \
-		inlet.pgo junction.pgo network.pgo results.pgo simulation.pgo \
-		main.pgo
+ifeq (@PGO@, 1)
+	objpgo = tools.pgo nutrient.pgo species.pgo specimen.pgo cell.pgo \
+		pipe.pgo inlet.pgo junction.pgo network.pgo results.pgo \
+		simulation.pgo main.pgo
 	pgogen = -fprofile-generate
 	pgouse = -fprofile-use -fprofile-correction
 	toolsdep = zebrapgo
 	nutrientdep = zebrapgo
+	specimendep = zebrapgo
 	speciesdep = zebrapgo
 	celldep = zebrapgo
 	pipedep = zebrapgo
@@ -45,8 +44,9 @@ ifeq ($(PGO), 1)
 else
 	toolsdep = tools.c $(cfg)
 	nutrientdep = nutrient.c nutrient.h $(cfg)
-	speciesdep = species.c $(spe)
-	celldep = cell.c cell.h point.h $(spe)
+	speciesdep = species.c $(sps)
+	specimendep = specimen.c $(spn)
+	celldep = cell.c cell.h point.h $(spn)
 	pipedep = pipe.c $(pip)
 	inletdep = inlet.c inlet.h $(pip)
 	junctiondep = junction.c junction.h $(pip)
@@ -56,10 +56,10 @@ else
 	maindep = main.c $(sim)
 endif
 
-all: zebra $(locales)
+all: zebra@EXE@ $(locales)
 
-zebrapgo: $(objpgo)
-	$(CC) $(objpgo) $(LDFLAGS) $(pgogen) -o zebrapgo
+zebrapgo@EXE@: $(objpgo)
+	$(CC) $(objpgo) $(LDFLAGS) $(pgogen) -o zebrapgo@EXE@
 	./zebrapgo ../tests/test1/simulation.xml
 	./zebrapgo ../tests/test1/results.bin ../tests/test1/results.xml
 	./zebrapgo ../tests/test2/simulation.xml
@@ -73,10 +73,13 @@ tools.pgo: tools.c $(cfg)
 nutrient.pgo: nutrient.c nutrient.h $(cfg)
 	$(CC) $(CFLAGS) $(pgogen) nutrient.c -o nutrient.pgo
 
-species.pgo: species.c $(spe)
+species.pgo: species.c $(sps)
 	$(CC) $(CFLAGS) $(pgogen) species.c -o species.pgo
 
-cell.pgo: cell.c cell.h point.h $(spe)
+specimen.pgo: specimen.c $(spn)
+	$(CC) $(CFLAGS) $(pgogen) specimen.c -o specimen.pgo
+
+cell.pgo: cell.c cell.h point.h $(spn)
 	$(CC) $(CFLAGS) $(pgogen) cell.c -o cell.pgo
 
 pipe.pgo: pipe.c $(pip)
@@ -100,8 +103,8 @@ simulation.pgo: simulation.c $(sim)
 main.pgo: main.c $(sim)
 	$(CC) $(CFLAGS) $(pgogen) main.c -o main.pgo
 
-zebra: $(obj)
-	$(CC) $(obj) $(LDFLAGS) -o zebra
+zebra@EXE@: $(obj)
+	$(CC) $(obj) $(LDFLAGS) -o zebra@EXE@
 
 tools.o: $(toolsdep)
 	$(CC) $(CFLAGS) $(pgouse) tools.c -o tools.o
@@ -111,6 +114,9 @@ nutrient.o: $(nutrientdep)
 
 species.o: $(speciesdep)
 	$(CC) $(CFLAGS) $(pgouse) species.c -o species.o
+
+specimen.o: $(specimendep)
+	$(CC) $(CFLAGS) $(pgouse) specimen.c -o specimen.o
 
 cell.o: $(celldep)
 	$(CC) $(CFLAGS) $(pgouse) cell.c -o cell.o
@@ -138,7 +144,7 @@ main.o: $(maindep)
 
 locales/zebra.pot: $(src) Makefile
 	test -d locales || mkdir -p locales
-	$(gnu)xgettext -k_ -d zebra -o locales/zebra.pot --from-code=UTF-8 \
+	@GNU@xgettext -k_ -d zebra -o locales/zebra.pot --from-code=UTF-8 \
 		$(src)
 	touch locales/zebra.pot
 
@@ -152,12 +158,12 @@ $(es)zebra.po: locales/zebra.pot
 	vim $(es)zebra.po
 
 $(es)zebra.mo: $(es)zebra.po
-	$(gnu)msgfmt -c -v -o $(es)zebra.mo $(es)zebra.po
+	@GNU@msgfmt -c -v -o $(es)zebra.mo $(es)zebra.po
 	touch $(es)zebra.mo
 
 clean:
 	rm zebra $(obj) $(locales) zebrapgo $(objpgo) *.gcda
 
 strip:
-	make
+	@MAKE@
 	strip zebra

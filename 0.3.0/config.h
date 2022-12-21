@@ -19,6 +19,7 @@
 #define DEBUG_RESULTS 0         ///< macro to debug the results functions.
 #define DEBUG_SIMULATION 0      ///< macro to debug the simulation functions.
 #define DEBUG_SPECIES 0         ///< macro to debug the species functions.
+#define DEBUG_SPECIMEN 0        ///< macro to debug the specimen functions.
 #define DEBUG_WALL 0            ///< macro to debug the wall functions.
 
 // general macros
