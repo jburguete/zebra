@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.1.0\n"
+"Project-Id-Version: 1.1.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-22 15:44+0100\n"
+"POT-Creation-Date: 2023-05-23 08:55+0200\n"
 "PO-Revision-Date: 2021-06-15 01:12+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,383 +17,431 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: solute.c:26
+#: solute.c:33
 msgid "Solute"
 msgstr "Soluto"
 
-#: solute.c:73 species.c:75 network.c:677 simulation.c:73
+#: solute.c:94 species.c:101 network.c:689 simulation.c:74
 msgid "Bad input file"
 msgstr "Fichero de entrada incorrecto"
 
-#: solute.c:81 species.c:83 network.c:685 results.c:325 simulation.c:81
+#: solute.c:102 species.c:109 network.c:697 results.c:331 simulation.c:82
 msgid "No root XML node"
 msgstr "Falta nodo XML raíz"
 
-#: solute.c:86 species.c:88 network.c:690 results.c:330 simulation.c:86
+#: solute.c:107 species.c:114 network.c:702 results.c:336 simulation.c:87
 msgid "Bad root XML node"
 msgstr "Nodo XML raíz incorrecto"
 
-#: solute.c:95 species.c:97 network.c:788 results.c:483
+#: solute.c:120 species.c:127 network.c:800 results.c:498
 msgid "Bad XML node"
 msgstr "Nodo XML incorrecto"
 
-#: solute.c:106 species.c:107
+#: solute.c:127 species.c:134
 msgid "Bad name"
 msgstr "Nombre incorrecto"
 
-#: solute.c:119 species.c:114
+#: solute.c:132 species.c:139
+#, fuzzy
+msgid "Duplicated name"
+msgstr "Nodo duplicado"
+
+#: solute.c:145 species.c:146
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: solute.c:125
-msgid "Bad decay rate"
+#: solute.c:153
+#, fuzzy
+msgid "Bad time decay rate"
 msgstr "Tasa de decaimiento incorrecta"
 
-#: solute.c:134
+#: solute.c:160
+#, fuzzy
+msgid "Bad temperature decay rate"
+msgstr "Tasa de decaimiento incorrecta"
+
+#: solute.c:167
+#, fuzzy
+msgid "Bad surface decay rate"
+msgstr "Tasa de decaimiento incorrecta"
+
+#: solute.c:177
 msgid "No solutes"
 msgstr "Faltan solutos"
 
-#: species.c:28
+#: species.c:34
 msgid "Species"
 msgstr "Especie"
 
-#: species.c:120
+#: species.c:153
 msgid "Bad maximum velocity"
 msgstr "Velocidad máxima incorrecta"
 
-#: species.c:126
-msgid "Bad cling pipe coefficient"
+#: species.c:159
+#, fuzzy
+msgid "Bad cling coefficient"
 msgstr "Coeficiente de anclaje a tubo incorrecto"
 
-#: species.c:132
-msgid "Bad cling water coefficient"
-msgstr "Coeficiente de anclaje de agua incorrecto"
-
-#: species.c:138
+#: species.c:165
 msgid "Bad minimum oxygen"
 msgstr "Mínimo oxígeno disuelto incorrecto"
 
-#: species.c:144
+#: species.c:171
 msgid "Bad respiration coefficient"
 msgstr "Coeficiente de respiración incorrecto"
 
-#: species.c:150
+#: species.c:177
 msgid "Bad eat coefficient"
 msgstr "Coeficiente de comida incorrecto"
 
-#: species.c:156
+#: species.c:183
 msgid "Bad grow coefficient"
 msgstr "Coeficiente de crecimiento incorrecto"
 
-#: species.c:162
+#: species.c:189
 msgid "Bad decay coefficient"
 msgstr "Coeficiente de decaimiento incorrecto"
 
-#: species.c:171
+#: species.c:196
+#, fuzzy
+msgid "Bad minimum temperature"
+msgstr "Mínimo oxígeno disuelto incorrecto"
+
+#: species.c:203
+#, fuzzy
+msgid "Bad optimal temperature"
+msgstr "Tiempo inicial incorrecto"
+
+#: species.c:210
+#, fuzzy
+msgid "Bad maximum temperature"
+msgstr "Velocidad máxima incorrecta"
+
+#: species.c:216
+#, fuzzy
+msgid "Bad minimum chlorine"
+msgstr "Mínimo oxígeno disuelto incorrecto"
+
+#: species.c:222
+#, fuzzy
+msgid "Bad maximum chlorine"
+msgstr "Velocidad máxima incorrecta"
+
+#: species.c:228
+msgid "Bad chlorine decay"
+msgstr ""
+
+#: species.c:235
+#, fuzzy
+msgid "Bad minimum hydrogen peroxide"
+msgstr "Mínimo oxígeno disuelto incorrecto"
+
+#: species.c:242
+#, fuzzy
+msgid "Bad maximum hydrogen peroxide"
+msgstr "Velocidad máxima incorrecta"
+
+#: species.c:249
+msgid "Bad hydrogen peroxide decay"
+msgstr ""
+
+#: species.c:259
 msgid "No species"
 msgstr "Faltan especies"
 
-#: inlet.c:29
+#: inlet.c:32
 msgid "Inlet"
 msgstr "Entrada"
 
-#: inlet.c:181
+#: inlet.c:185
 msgid "Bad node identifier"
 msgstr "Identificador de nodo incorrecto"
 
-#: inlet.c:197
+#: inlet.c:204
 msgid "The node is not assigned to a pipe"
 msgstr "El nodo no está asignado a ningún tubo"
 
-#: inlet.c:232
+#: inlet.c:238
 msgid "No solute name"
 msgstr "Falta el nombre del soluto"
 
-#: inlet.c:239
+#: inlet.c:245
 msgid "Unknown solute"
 msgstr "Soluto desconocido"
 
-#: inlet.c:245
+#: inlet.c:251
 msgid "No solute file"
 msgstr "Falta fichero de solutos"
 
-#: inlet.c:254
+#: inlet.c:260
 msgid "Bad solute input file"
 msgstr "Falta el fichero de entrada de solutos"
 
-#: inlet.c:264
+#: inlet.c:270
 msgid "No species name"
 msgstr "Falta el nombre de la especie"
 
-#: inlet.c:271
+#: inlet.c:277
 msgid "Unknown species"
 msgstr "Especie desconocida"
 
-#: inlet.c:277 simulation.c:170
+#: inlet.c:283 simulation.c:171
 msgid "No species file"
 msgstr "Falta el fichero de especie"
 
-#: inlet.c:286
+#: inlet.c:292
 msgid "Bad species input file"
 msgstr "Fichero de entrada de especie incorrecto"
 
-#: inlet.c:293
+#: inlet.c:299
 msgid "Unknown node"
 msgstr "Nodo desconocido"
 
-#: network.c:68
+#: network.c:70
 msgid "Network"
 msgstr "Red"
 
-#: network.c:207
+#: network.c:211
 msgid "Bad Epanet title"
 msgstr "Título de Epanet incorrecto"
 
-#: network.c:215
+#: network.c:219
 msgid "Bad Epanet file"
 msgstr "Fichero de Epanet incorrecto"
 
-#: network.c:241 network.c:255
+#: network.c:245 network.c:259 network.c:266
 msgid "Bad Epanet coordinates section"
 msgstr "Sección de coordenadas de Epanet incorrecta"
 
-#: network.c:270 network.c:284
+#: network.c:282 network.c:296 network.c:303
 msgid "Bad Epanet junctions section"
 msgstr "Sección de intersecciones de Epanet incorrecta"
 
-#: network.c:301 network.c:316
+#: network.c:321 network.c:336 network.c:343
 msgid "Bad Epanet pipes section"
 msgstr "Sección de tubos de Epanet incorrecta"
 
-#: network.c:333 network.c:348
+#: network.c:361 network.c:376 network.c:383
 msgid "Bad Epanet reservoirs section"
 msgstr "Sección de fuentes de Epanet incorrecta"
 
-#: network.c:363
+#: network.c:399
 msgid "No Epanet end section"
 msgstr "Sección final de Epanet incorrecta"
 
-#: network.c:404
-msgid "Duplicated node"
-msgstr "Nodo duplicado"
+#: network.c:417
+msgid "No EPANET coordinates nodes"
+msgstr ""
 
-#: network.c:414
-msgid "Duplicated junction"
-msgstr "Intersección duplicada"
-
-#: network.c:419
+#: network.c:441
 msgid "Unknown node indentifier on junction"
 msgstr "Identificador de nodo de intersección desconocido"
 
-#: network.c:430
-msgid "Duplicated reservoir"
-msgstr "Fuente duplicada"
-
-#: network.c:435
+#: network.c:453
 msgid "Unknown node indentifier on reservoir"
 msgstr "Indentificador de nodo de fuente desconocido"
 
-#: network.c:454
+#: network.c:477
 msgid "Unknown 1st node indentifier on pipe"
 msgstr "Identificador de primer nodo de tubo desconocido"
 
-#: network.c:459
+#: network.c:483
 msgid "No elevation of 1st node"
 msgstr "Falta elevación del primer nodo"
 
-#: network.c:467
+#: network.c:491
 msgid "Unknown 2nd node indentifier on pipe"
 msgstr "Identificador de segundo nodo de tubo desconocido"
 
-#: network.c:472
+#: network.c:497
 msgid "No elevation of 2nd node"
 msgstr "Falta elevación del segundo nodo"
 
-#: network.c:478
+#: network.c:502
 msgid "Same nodes for inlet and outlet"
 msgstr "Mismo nodo para entrada y salida"
 
-#: network.c:589
+#: network.c:608
 msgid "Unable to open the file"
 msgstr "No se pudo abrir el fichero"
 
-#: network.c:597 results.c:152
+#: network.c:616 results.c:153
 msgid "Bad header"
 msgstr "Cabecera incorrecta"
 
-#: network.c:606
+#: network.c:625
 msgid "Bad header line"
 msgstr "Línea de cabecera incorrecta"
 
-#: network.c:618
+#: network.c:636
 msgid "Bad data"
 msgstr "Datos incorrecta"
 
-#: network.c:637
+#: network.c:649
 msgid "File"
 msgstr "Fichero"
 
-#: network.c:703
+#: network.c:715
 msgid "Unknown pipe length model"
 msgstr "Modo de longitud de tubo desconocido"
 
-#: network.c:710
+#: network.c:722
 msgid "No Epanet file"
 msgstr "Falta fichero de Epanet"
 
-#: network.c:718
+#: network.c:730
 msgid "Unable to open the Epanet file"
 msgstr "No se pudo abrir el fichero de Epanet"
 
-#: network.c:749
+#: network.c:761
 msgid "No inlets"
 msgstr "Faltan entradas"
 
-#: network.c:764
+#: network.c:776
 msgid "Bad discharges time"
 msgstr "Tiempo de caudales incorrecto"
 
-#: network.c:769
+#: network.c:781
 msgid "Bad discharges time order"
 msgstr "Orden de tiempos de caudales incorrecto"
 
-#: network.c:775
+#: network.c:787
 msgid "No discharges file"
 msgstr "Falta fichero de caudales"
 
-#: network.c:794
+#: network.c:806
 msgid "No discharges"
 msgstr "Faltan caudales"
 
-#: results.c:34
+#: results.c:35
 msgid "Results"
 msgstr "Resultados"
 
-#: results.c:144
+#: results.c:145
 msgid "Unable to open the results data base file"
 msgstr "No se pudo abrir el fichero de la base de datos de resultados"
 
-#: results.c:157 simulation.c:100
+#: results.c:158 simulation.c:101
 msgid "Bad final time"
 msgstr "Tiempo final incorrecto"
 
-#: results.c:162 simulation.c:114
+#: results.c:163 simulation.c:115
 msgid "Bad saving time step size"
 msgstr "Tamaño de paso de tiemp de guardado incorrecto"
 
-#: results.c:167 simulation.c:108
+#: results.c:168 simulation.c:109
 msgid "Bad cell size"
 msgstr "Tamaño de celda incorrecto"
 
-#: results.c:172
+#: results.c:173
 msgid "Bad solutes number"
 msgstr "Número de solutos incorrecto"
 
-#: results.c:177
+#: results.c:178
 msgid "Bad species number"
 msgstr "Número de especies incorrecto"
 
-#: results.c:182
+#: results.c:183
 msgid "Bad points number"
 msgstr "Número de puntos incorrecto"
 
-#: results.c:187
+#: results.c:188
 msgid "Bad pipes number"
 msgstr "Número de tubos incorrecto"
 
-#: results.c:196
+#: results.c:197
 msgid "Bad point identifiers"
 msgstr "Identificadores de nodos incorrectos"
 
-#: results.c:202
+#: results.c:203
 msgid "Bad point x-coordinates"
 msgstr "Coordenadas x de puntos incorrectas"
 
-#: results.c:208
+#: results.c:209
 msgid "Bad point y-coordinates"
 msgstr "Coordenadas y de puntos incorrectas"
 
-#: results.c:214
+#: results.c:215
 msgid "Bad point z-coordinates"
 msgstr "Coordenadas z de puntos incorrectas"
 
-#: results.c:221
+#: results.c:222
 msgid "Bad pipe identifiers"
 msgstr "Identificadores de tubos incorrectos"
 
-#: results.c:227
+#: results.c:230
 msgid "Bad pipe inlet identifiers"
 msgstr "Identificadores de entradas de tubos incorrectos"
 
-#: results.c:233
+#: results.c:238
 msgid "Bad pipe outlet identifiers"
 msgstr "Identificadores de salidas de tubos incorrectos"
 
-#: results.c:239
+#: results.c:244
 msgid "Bad pipe lengths"
 msgstr "Lungiudes de tubos incorrectas"
 
-#: results.c:245
+#: results.c:250
 msgid "Bad pipe length"
 msgstr "Longitud de tubo incorrecta"
 
-#: results.c:252
+#: results.c:257
 msgid "Bad cell numbers"
 msgstr "Números de celda incorrectos"
 
-#: results.c:317
+#: results.c:323
 msgid "Bad configuration file"
 msgstr "Fichero de configuración incorrecto"
 
-#: results.c:348
+#: results.c:355
 msgid "Bad point identifier"
 msgstr "Identificador de punto incorrecto"
 
-#: results.c:369
+#: results.c:379
 msgid "Unknown point identifier"
 msgstr "Identificador de punto desconocido"
 
-#: results.c:375
+#: results.c:385
 msgid "No point file"
 msgstr "Falta fichero de punto"
 
-#: results.c:383
+#: results.c:393
 msgid "Bad point file"
 msgstr "Fichero de punto incorrecto"
 
-#: results.c:410
+#: results.c:421
 msgid "Bad pipe identifier"
 msgstr "Identificador de tubo incorrecto"
 
-#: results.c:418
+#: results.c:432
 msgid "Unknown pipe identifier"
 msgstr "Identicador de tubo desconocido"
 
-#: results.c:424
+#: results.c:438
 msgid "Bad pipe time"
 msgstr "Tiempo de tubo incorrecto"
 
-#: results.c:430
+#: results.c:444
 msgid "No pipe file"
 msgstr "Falta el fichero de tubo"
 
-#: results.c:438
+#: results.c:452
 msgid "Bad pipe file"
 msgstr "Fichero de tubo incorrecto"
 
-#: results.c:451
+#: results.c:465
 msgid "Bad data base"
 msgstr "Base de datos incorrecta"
 
-#: simulation.c:38
+#: simulation.c:39
 msgid "Simulation"
 msgstr "Simulación"
 
-#: simulation.c:94
+#: simulation.c:95
 msgid "Bad initial time"
 msgstr "Tiempo inicial incorrecto"
 
-#: simulation.c:120
+#: simulation.c:121
 msgid "No results file"
 msgstr "Falta fichero de resultados"
 
@@ -401,19 +449,19 @@ msgstr "Falta fichero de resultados"
 msgid "Bad numerical order"
 msgstr "Orden del método numérico incorrecto"
 
-#: simulation.c:140
+#: simulation.c:141
 msgid "Unknown dispersion model"
 msgstr "Modelo de dispersión desconocido"
 
-#: simulation.c:152
+#: simulation.c:153
 msgid "No solutes file"
 msgstr "Falta fichero de solutos"
 
-#: simulation.c:188
+#: simulation.c:189
 msgid "No network file"
 msgstr "Falta fichero de red"
 
-#: main.c:132
+#: main.c:133
 msgid ""
 "The syntax is:\n"
 "./zebra simulation_file\n"
@@ -425,6 +473,15 @@ msgstr ""
 "o:\n"
 "./zebra fichero_de_base_de_datos fichero_de_configuración\n"
 
-#: main.c:139
+#: main.c:140
 msgid "ERROR!"
 msgstr "¡ERROR!"
+
+#~ msgid "Bad cling water coefficient"
+#~ msgstr "Coeficiente de anclaje de agua incorrecto"
+
+#~ msgid "Duplicated junction"
+#~ msgstr "Intersección duplicada"
+
+#~ msgid "Duplicated reservoir"
+#~ msgstr "Fuente duplicada"

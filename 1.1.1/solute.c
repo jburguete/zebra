@@ -57,7 +57,8 @@ solute_destroy ()
   for (i = 0; i < nsolutes; ++i)
     xmlFree (solute[i].name);
   free (solute);
-  g_hash_table_destroy (hash_solutes);
+  if (hash_solutes)
+    g_hash_table_destroy (hash_solutes);
   solute_null ();
 #if DEBUG_SOLUTE
   fprintf (stderr, "solute_destroy: end\n");

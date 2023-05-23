@@ -106,8 +106,10 @@ network_destroy (Network * network)     ///< pointer to the network struct data.
   for (i = 0; i < network->ndischarges; ++i)
     net_discharges_destroy (network->discharges + i);
   free (network->discharges);
-  g_hash_table_destroy (network->hash_pipes);
-  g_hash_table_destroy (network->hash_points);
+  if (network->hash_pipes)
+    g_hash_table_destroy (network->hash_pipes);
+  if (network->hash_points)
+    g_hash_table_destroy (network->hash_points);
   for (i = 0; i < network->ninlets; ++i)
     inlet_destroy (network->inlet + i);
   free (network->inlet);

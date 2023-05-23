@@ -123,7 +123,6 @@ simulation_open_xml (Simulation * simulation,
     }
   snprintf (simulation->results, BUFFER_SIZE, "%s/%s", directory,
             (char *) buffer);
-  xmlFree (buffer);
   numerical_order
     = xml_node_get_uint_with_default (node, XML_NUMERICAL_ORDER, &e, 2);
   if (!e || numerical_order < 1 || numerical_order > 2)
@@ -131,6 +130,7 @@ simulation_open_xml (Simulation * simulation,
       m = _("Bad numerical order");
       goto exit_on_error;
     }
+  xmlFree (buffer);
   buffer = xmlGetProp (node, XML_DISPERSION_MODEL);
   if (!buffer)
     dispersion_model = DISPERSION_MODEL_NONE;
@@ -141,12 +141,12 @@ simulation_open_xml (Simulation * simulation,
       m = _("Unknown dispersion model");
       goto exit_on_error;
     }
-  xmlFree (buffer);
 
   // open solutes
 #if DEBUG_SIMULATION
   fprintf (stderr, "simulation_open_xml: open solutes\n");
 #endif
+  xmlFree (buffer);
   buffer = xmlGetProp (node, XML_SOLUTES);
   if (!buffer)
     {
@@ -154,7 +154,6 @@ simulation_open_xml (Simulation * simulation,
       goto exit_on_error;
     }
   snprintf (name, BUFFER_SIZE, "%s/%s", directory, (char *) buffer);
-  xmlFree (buffer);
   if (!solute_open_xml (name))
     {
       m = error_msg;
@@ -165,6 +164,7 @@ simulation_open_xml (Simulation * simulation,
 #if DEBUG_SIMULATION
   fprintf (stderr, "simulation_open_xml: open species\n");
 #endif
+  xmlFree (buffer);
   buffer = xmlGetProp (node, XML_SPECIES);
   if (!buffer)
     {
@@ -172,7 +172,6 @@ simulation_open_xml (Simulation * simulation,
       goto exit_on_error;
     }
   snprintf (name, BUFFER_SIZE, "%s/%s", directory, (char *) buffer);
-  xmlFree (buffer);
   if (!species_open_xml (name))
     {
       m = error_msg;
@@ -183,6 +182,7 @@ simulation_open_xml (Simulation * simulation,
 #if DEBUG_SIMULATION
   fprintf (stderr, "simulation_open_xml: open network\n");
 #endif
+  xmlFree (buffer);
   buffer = xmlGetProp (node, XML_NETWORK);
   if (!buffer)
     {

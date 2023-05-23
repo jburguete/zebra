@@ -64,7 +64,8 @@ species_destroy ()
   for (i = 0; i < nspecies; ++i)
     xmlFree (species[i].name);
   free (species);
-  g_hash_table_destroy (hash_species);
+  if (hash_species)
+    g_hash_table_destroy (hash_species);
   species_null ();
 #if DEBUG_SPECIES
   fprintf (stderr, "species_destroy: end\n");
