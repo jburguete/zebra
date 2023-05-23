@@ -1,4 +1,4 @@
 <?xml version="1.0"?>
 <species>
-	<species name="zebra-mussel" maximum-velocity="0" cling-pipe="0" cling-water="0" minimum-oxygen="0" respiration="0" eat="0" grow="0" decay="0"/>
+	<species name="zebra-mussel" maximum-velocity="0" cling="0" minimum-oxygen="0" minimum-temperature="0" optimal-temperature="20" maximum-temperature="40" minimum-chlorine="0" maximum-chlorine="1" decay-chlorine="0" minimum-hydrogen-peroxide="0" maximum-hydrogen-peroxide="1" decay-hydrogen-peroxide="0" respiration="0" eat="0" grow="0" decay="0"/>
 </species>

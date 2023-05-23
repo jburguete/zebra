@@ -56,7 +56,7 @@ int species_open_xml (char *file_name);
  * \return species index.
  */
 static inline unsigned int
-species_index (const char *id)   ///< identifier label.
+species_index (const char *id)  ///< identifier label.
 {
   Species *s;
   size_t i;

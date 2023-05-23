@@ -353,11 +353,11 @@ results_open_xml (Results * results,
               || xmlStrlen (buffer) >= MAX_LABEL_LENGTH)
             {
               m = _("Bad point identifier");
-	      xmlFree (buffer);
+              xmlFree (buffer);
               goto exit_on_error;
             }
-	  strncpy (id, (const char *) buffer, MAX_LABEL_LENGTH * sizeof (char));
-	  xmlFree (buffer);
+          strncpy (id, (const char *) buffer, MAX_LABEL_LENGTH * sizeof (char));
+          xmlFree (buffer);
           for (i = 0; i < header->npipes; ++i)
             {
               if (!strcmp (id, results->pipe_inlet_id + i * MAX_LABEL_LENGTH))
@@ -419,11 +419,11 @@ results_open_xml (Results * results,
               || xmlStrlen (buffer) >= MAX_LABEL_LENGTH)
             {
               m = _("Bad pipe identifier");
-	      xmlFree (buffer);
+              xmlFree (buffer);
               goto exit_on_error;
             }
-	  strncpy (id, (const char *) buffer, MAX_LABEL_LENGTH * sizeof (char));
-	  xmlFree (buffer);
+          strncpy (id, (const char *) buffer, MAX_LABEL_LENGTH * sizeof (char));
+          xmlFree (buffer);
           for (i = 0; i < header->npipes; ++i)
             if (!strcmp (id, results->pipe_id + i * MAX_LABEL_LENGTH))
               break;
@@ -477,7 +477,7 @@ results_open_xml (Results * results,
                    MAX_LABEL_LENGTH * sizeof (char));
           for (j = 0; j < header->npoints; ++j)
             if (!strcmp (id, results->point_id + j * MAX_LABEL_LENGTH))
-          dx = (results->point_x[j] - x0) / (ncells - 1);
+              dx = (results->point_x[j] - x0) / (ncells - 1);
           dy = (results->point_y[j] - y0) / (ncells - 1);
           dz = (results->point_z[j] - z0) / (ncells - 1);
           for (j = l = 0; j < ncells; ++j)

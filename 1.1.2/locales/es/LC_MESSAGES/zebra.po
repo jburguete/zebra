@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.1.1\n"
+"Project-Id-Version: 1.1.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-05-23 08:55+0200\n"
+"POT-Creation-Date: 2023-05-23 11:16+0200\n"
 "PO-Revision-Date: 2021-06-15 01:12+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -21,51 +21,47 @@ msgstr ""
 msgid "Solute"
 msgstr "Soluto"
 
-#: solute.c:94 species.c:101 network.c:689 simulation.c:74
+#: solute.c:94 species.c:101 network.c:700 simulation.c:74
 msgid "Bad input file"
 msgstr "Fichero de entrada incorrecto"
 
-#: solute.c:102 species.c:109 network.c:697 results.c:331 simulation.c:82
+#: solute.c:102 species.c:110 network.c:708 results.c:331 simulation.c:82
 msgid "No root XML node"
 msgstr "Falta nodo XML raíz"
 
-#: solute.c:107 species.c:114 network.c:702 results.c:336 simulation.c:87
+#: solute.c:107 species.c:115 network.c:713 results.c:336 simulation.c:87
 msgid "Bad root XML node"
 msgstr "Nodo XML raíz incorrecto"
 
-#: solute.c:120 species.c:127 network.c:800 results.c:498
+#: solute.c:121 species.c:128 network.c:811 results.c:498
 msgid "Bad XML node"
 msgstr "Nodo XML incorrecto"
 
-#: solute.c:127 species.c:134
+#: solute.c:128 species.c:135
 msgid "Bad name"
 msgstr "Nombre incorrecto"
 
-#: solute.c:132 species.c:139
-#, fuzzy
+#: solute.c:133 species.c:140
 msgid "Duplicated name"
-msgstr "Nodo duplicado"
+msgstr "Nombre duplicado"
 
-#: solute.c:145 species.c:146
+#: solute.c:146 species.c:147
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: solute.c:153
-#, fuzzy
+#: solute.c:154
 msgid "Bad time decay rate"
-msgstr "Tasa de decaimiento incorrecta"
+msgstr "Tasa de decaimiento temporal incorrecta"
 
-#: solute.c:160
-#, fuzzy
+#: solute.c:161
 msgid "Bad temperature decay rate"
-msgstr "Tasa de decaimiento incorrecta"
+msgstr "Tasa de decaimiento calórico incorrecta"
 
-#: solute.c:167
-#, fuzzy
+#: solute.c:168
 msgid "Bad surface decay rate"
-msgstr "Tasa de decaimiento incorrecta"
+msgstr "Tasa de decaimiento superficial incorrecta"
 
-#: solute.c:177
+#: solute.c:178
 msgid "No solutes"
 msgstr "Faltan solutos"
 
@@ -73,79 +69,71 @@ msgstr "Faltan solutos"
 msgid "Species"
 msgstr "Especie"
 
-#: species.c:153
+#: species.c:154
 msgid "Bad maximum velocity"
 msgstr "Velocidad máxima incorrecta"
 
-#: species.c:159
-#, fuzzy
+#: species.c:160
 msgid "Bad cling coefficient"
-msgstr "Coeficiente de anclaje a tubo incorrecto"
+msgstr "Coeficiente de anclaje incorrecto"
 
-#: species.c:165
+#: species.c:166
 msgid "Bad minimum oxygen"
 msgstr "Mínimo oxígeno disuelto incorrecto"
 
-#: species.c:171
+#: species.c:172
 msgid "Bad respiration coefficient"
 msgstr "Coeficiente de respiración incorrecto"
 
-#: species.c:177
+#: species.c:178
 msgid "Bad eat coefficient"
 msgstr "Coeficiente de comida incorrecto"
 
-#: species.c:183
+#: species.c:184
 msgid "Bad grow coefficient"
 msgstr "Coeficiente de crecimiento incorrecto"
 
-#: species.c:189
+#: species.c:190
 msgid "Bad decay coefficient"
 msgstr "Coeficiente de decaimiento incorrecto"
 
-#: species.c:196
-#, fuzzy
+#: species.c:197
 msgid "Bad minimum temperature"
-msgstr "Mínimo oxígeno disuelto incorrecto"
+msgstr "Temperatura mínima incorrecto"
 
-#: species.c:203
-#, fuzzy
+#: species.c:204
 msgid "Bad optimal temperature"
-msgstr "Tiempo inicial incorrecto"
+msgstr "Temperatura óptima incorrecto"
 
-#: species.c:210
-#, fuzzy
+#: species.c:211
 msgid "Bad maximum temperature"
-msgstr "Velocidad máxima incorrecta"
+msgstr "Temperatura máxima incorrecto"
 
-#: species.c:216
-#, fuzzy
+#: species.c:217
 msgid "Bad minimum chlorine"
-msgstr "Mínimo oxígeno disuelto incorrecto"
+msgstr "Cloro mínimo incorrecto"
 
-#: species.c:222
-#, fuzzy
+#: species.c:223
 msgid "Bad maximum chlorine"
-msgstr "Velocidad máxima incorrecta"
+msgstr "Cloro máximo incorrecto"
 
-#: species.c:228
+#: species.c:229
 msgid "Bad chlorine decay"
-msgstr ""
+msgstr "Decaimiento de cloro incorrecto"
 
-#: species.c:235
-#, fuzzy
+#: species.c:236
 msgid "Bad minimum hydrogen peroxide"
-msgstr "Mínimo oxígeno disuelto incorrecto"
+msgstr "Peróxido de hidógeno mínimo incorrecto"
 
-#: species.c:242
-#, fuzzy
+#: species.c:243
 msgid "Bad maximum hydrogen peroxide"
-msgstr "Velocidad máxima incorrecta"
+msgstr "Peróxido de hidrógeno máximo incorrecto"
 
-#: species.c:249
+#: species.c:250
 msgid "Bad hydrogen peroxide decay"
-msgstr ""
+msgstr "Decaimiento de peróxido de hidrógeno incorrecto"
 
-#: species.c:259
+#: species.c:260
 msgid "No species"
 msgstr "Faltan especies"
 
@@ -227,89 +215,89 @@ msgstr "Sección de fuentes de Epanet incorrecta"
 
 #: network.c:399
 msgid "No Epanet end section"
-msgstr "Sección final de Epanet incorrecta"
+msgstr "Falta la sección final de Epanet"
 
 #: network.c:417
 msgid "No EPANET coordinates nodes"
-msgstr ""
+msgstr "Falta nodos de coordenadas de EPANET"
 
-#: network.c:441
+#: network.c:438
 msgid "Unknown node indentifier on junction"
 msgstr "Identificador de nodo de intersección desconocido"
 
-#: network.c:453
+#: network.c:455
 msgid "Unknown node indentifier on reservoir"
 msgstr "Indentificador de nodo de fuente desconocido"
 
-#: network.c:477
+#: network.c:483
 msgid "Unknown 1st node indentifier on pipe"
 msgstr "Identificador de primer nodo de tubo desconocido"
 
-#: network.c:483
+#: network.c:489
 msgid "No elevation of 1st node"
 msgstr "Falta elevación del primer nodo"
 
-#: network.c:491
+#: network.c:497
 msgid "Unknown 2nd node indentifier on pipe"
 msgstr "Identificador de segundo nodo de tubo desconocido"
 
-#: network.c:497
+#: network.c:503
 msgid "No elevation of 2nd node"
 msgstr "Falta elevación del segundo nodo"
 
-#: network.c:502
+#: network.c:508
 msgid "Same nodes for inlet and outlet"
 msgstr "Mismo nodo para entrada y salida"
 
-#: network.c:608
+#: network.c:619
 msgid "Unable to open the file"
 msgstr "No se pudo abrir el fichero"
 
-#: network.c:616 results.c:153
+#: network.c:627 results.c:153
 msgid "Bad header"
 msgstr "Cabecera incorrecta"
 
-#: network.c:625
+#: network.c:636
 msgid "Bad header line"
 msgstr "Línea de cabecera incorrecta"
 
-#: network.c:636
+#: network.c:647
 msgid "Bad data"
 msgstr "Datos incorrecta"
 
-#: network.c:649
+#: network.c:660
 msgid "File"
 msgstr "Fichero"
 
-#: network.c:715
+#: network.c:726
 msgid "Unknown pipe length model"
 msgstr "Modo de longitud de tubo desconocido"
 
-#: network.c:722
+#: network.c:733
 msgid "No Epanet file"
 msgstr "Falta fichero de Epanet"
 
-#: network.c:730
+#: network.c:741
 msgid "Unable to open the Epanet file"
 msgstr "No se pudo abrir el fichero de Epanet"
 
-#: network.c:761
+#: network.c:772
 msgid "No inlets"
 msgstr "Faltan entradas"
 
-#: network.c:776
+#: network.c:787
 msgid "Bad discharges time"
 msgstr "Tiempo de caudales incorrecto"
 
-#: network.c:781
+#: network.c:792
 msgid "Bad discharges time order"
 msgstr "Orden de tiempos de caudales incorrecto"
 
-#: network.c:787
+#: network.c:798
 msgid "No discharges file"
 msgstr "Falta fichero de caudales"
 
-#: network.c:806
+#: network.c:817
 msgid "No discharges"
 msgstr "Faltan caudales"
 

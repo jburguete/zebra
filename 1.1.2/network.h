@@ -225,41 +225,52 @@ network_step (Network * network,        ///< pointer to the network struct data.
   tb = current_time;
   do
     {
-      td = tb;
       tbf = fmin (next_time, tb + biological_step);
+      td = tb;
       do
         {
           tdf = fmin (tbf, td + diffusion_step);
           ta = td;
-	  do
-	    {
-	      taf = fmin (tdf, ta + advection_step);
+          do
+            {
+              taf = fmin (tdf, ta + advection_step);
               for (i = 0; i < npipes; ++i)
-	        pipe_advection_step (pipe + i, taf - ta);
+                pipe_advection_step (pipe + i, taf - ta);
               for (i = 0; i < njunctions; ++i)
                 junction_set (junction + i);
               inlet = network->inlet;
               for (i = 0; i < ninlets; ++i)
                 inlet_set (inlet + i, taf);
-	    }
-	  while (ta < tdf);
+#if DEBUG_NETWORK
+              fprintf (stderr, "network_step: taf=%.14lg tdf=%.14lg\n",
+                       taf, tdf);
+#endif
+            }
+          while (taf < tdf);
           if (dispersion_model)
             for (i = 0; i < npipes; ++i)
-	      pipe_dispersion_step (pipe + i, tdf - td);
+              pipe_dispersion_step (pipe + i, tdf - td);
           for (i = 0; i < njunctions; ++i)
             junction_set (junction + i);
           inlet = network->inlet;
           for (i = 0; i < ninlets; ++i)
             inlet_set (inlet + i, taf);
-	  td = tdf;
-	}
-      while (td < tbf);
+          td = tdf;
+#if DEBUG_NETWORK
+          fprintf (stderr, "network_step: tdf=%.14lg tbf=%.14lg\n", tdf, tbf);
+#endif
+        }
+      while (tdf < tbf);
       bdt = tbf - tb;
       for (i = 0; i < npipes; ++i)
         pipe_biological_step (pipe + i, rng, bdt);
       tb = tbf;
+#if DEBUG_NETWORK
+      fprintf (stderr, "network_step: tbf=%.14lg next_time=%.14lg\n",
+               tbf, next_time);
+#endif
     }
-  while (tb < next_time);
+  while (tbf < next_time);
   for (i = 0; i < npipes; ++i)
     pipe_infestations (pipe + i);
 #if DEBUG_NETWORK

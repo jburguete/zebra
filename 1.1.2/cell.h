@@ -73,10 +73,10 @@ cell_cling (Cell * cell,        ///< pointer to the cell struct data.
   fprintf (stderr, "cell_cling: start\n");
 #endif
   for (i = 0; i < nspecies; ++i)
-     specimen_cling (cell->list_specimens + i, species + i, rng,
-                     cell->species_concentration + i, cell->volume,
-		     cell->lateral_area, cell->velocity, step,
-		     cell->recirculation);
+    specimen_cling (cell->list_specimens + i, species + i, rng,
+                    cell->species_concentration + i, cell->volume,
+                    cell->lateral_area, cell->velocity, step,
+                    cell->recirculation);
 #if DEBUG_CELL
   fprintf (stderr, "cell_cling: end\n");
 #endif
@@ -222,8 +222,8 @@ cell_infestations (Cell * cell) ///< pointer to the cell struct data.
       for (list = cell->list_specimens[i]; list; list = list->next)
         {
           specimen = (Specimen *) list->data;
-	  cell->species_infestation[i] += specimen->size;
-	}
+          cell->species_infestation[i] += specimen->size;
+        }
       cell->species_infestation[i] /= cell->lateral_area;
     }
 }

@@ -103,6 +103,7 @@ species_open_xml (char *file_name)      ///< input file name.
     }
 
   // open root XML node
+  hash_species = g_hash_table_new (g_str_hash, g_str_equal);
   node = xmlDocGetRootElement (doc);
   if (!node)
     {
@@ -134,7 +135,7 @@ species_open_xml (char *file_name)      ///< input file name.
           m = _("Bad name");
           goto exit_on_error;
         }
-      if (hash_species && g_hash_table_contains (hash_species, s->name))
+      if (g_hash_table_contains (hash_species, s->name))
         {
           m = _("Duplicated name");
           goto exit_on_error;
@@ -249,7 +250,7 @@ species_open_xml (char *file_name)      ///< input file name.
           m = _("Bad hydrogen peroxide decay");
           goto exit_on_error;
         }
-      g_hash_table_insert (hash_species, s->name, s);
+      g_hash_table_insert (hash_species, s->name, NULL);
       if (nspecies == MAX_SPECIES)
         break;
     }
@@ -260,6 +261,12 @@ species_open_xml (char *file_name)      ///< input file name.
       goto exit_on_error;
     }
 
+  // hash table of species
+  g_hash_table_remove_all (hash_species);
+  for (i = 0; i < nspecies; ++i)
+    g_hash_table_insert (hash_species, species[i].name, species + i);
+
+  // free memory
   xmlFreeDoc (doc);
 
   // exit on success

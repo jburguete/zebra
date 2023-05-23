@@ -100,8 +100,8 @@ simulation_run (Simulation * simulation)
 
 #if DEBUG_SIMULATION
           fprintf (stderr,
-                   "simulation_run: current_time=%.14lg next_time=%.14lgn"
-                   "time_step=%lg\n", current_time, next_time);
+                   "simulation_run: current_time=%.14lg next_time=%.14lg\n",
+                   current_time, next_time);
 #endif
         }
 

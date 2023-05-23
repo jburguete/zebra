@@ -50,29 +50,32 @@ cell_init (Cell * cell,         ///< pointer to the cell struct data.
       cell->list_specimens[i] = NULL;
     }
   // init solute concentrations
-  va_start (list, nsolutes);
-  i = 0;
-  if (flags_solutes & SOLUTE_TYPE_CHLORINE)
+  if (nsolutes)
     {
-      solute = va_arg (list, double *);
-      cell->solute_concentration[i++] = *solute;
+      va_start (list, nsolutes);
+      i = 0;
+      if (flags_solutes & SOLUTE_TYPE_CHLORINE)
+        {
+          solute = va_arg (list, double *);
+          cell->solute_concentration[i++] = *solute;
+        }
+      if (flags_solutes & SOLUTE_TYPE_HYDROGEN_PEROXIDE)
+        {
+          solute = va_arg (list, double *);
+          cell->solute_concentration[i++] = *solute;
+        }
+      if (flags_solutes & SOLUTE_TYPE_ORGANIC_MATTER)
+        {
+          solute = va_arg (list, double *);
+          cell->solute_concentration[i++] = *solute;
+        }
+      if (flags_solutes & SOLUTE_TYPE_OXYGEN)
+        {
+          solute = va_arg (list, double *);
+          cell->solute_concentration[i++] = *solute;
+        }
+      va_end (list);
     }
-  if (flags_solutes & SOLUTE_TYPE_HYDROGEN_PEROXIDE)
-    {
-      solute = va_arg (list, double *);
-      cell->solute_concentration[i++] = *solute;
-    }
-  if (flags_solutes & SOLUTE_TYPE_ORGANIC_MATTER)
-    {
-      solute = va_arg (list, double *);
-      cell->solute_concentration[i++] = *solute;
-    }
-  if (flags_solutes & SOLUTE_TYPE_OXYGEN)
-    {
-      solute = va_arg (list, double *);
-      cell->solute_concentration[i++] = *solute;
-    }
-  va_end (list);
 #if DEBUG_CELL
   fprintf (stderr, "cell_init: end\n");
 #endif

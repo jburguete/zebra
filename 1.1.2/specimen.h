@@ -38,7 +38,7 @@ specimen_init (Specimen * specimen,
  */
 static inline void
 specimen_cling (GList ** list_specimens,
-		///< pointer ot the list of specimens.
+                ///< pointer ot the list of specimens.
                 Species * species,      ///< pointer to the species struct data.
                 gsl_rng * rng,  ///< GSL random number generator.
                 double *concentration,  ///< specimen larvae concentration.
@@ -67,7 +67,7 @@ specimen_cling (GList ** list_specimens,
       specimen = (Specimen *) malloc (sizeof (Specimen));
       specimen_init (specimen, species);
       *list_specimens = g_list_prepend (*list_specimens, specimen);
-      cling -= r; 
+      cling -= r;
     }
   *concentration = fmax (0., *concentration - n / volume);
 
@@ -78,7 +78,7 @@ no_cling:
 #endif
 
   return;
-}        
+}
 
 /**
  * function to calculate specimen growing.
@@ -133,7 +133,7 @@ specimen_grow (Specimen * specimen,
   *oxygen = fmax (o2d, *oxygen - o2 / volume);
   *organic_matter = fmax (0., *organic_matter - om / volume);
   specimen->size += om * species->grow;
-  specimen->size = fmax (specimen->size, species->maximum_size); 
+  specimen->size = fmax (specimen->size, species->maximum_size);
 
   // exit
 no_growing:
@@ -150,7 +150,7 @@ no_growing:
 static inline int
 specimen_dead (Specimen * specimen,
                ///< pointer to the specimen struct data.
-	       gsl_rng * rng,   ///< GSL random numbers generator.
+               gsl_rng * rng,   ///< GSL random numbers generator.
                double velocity, ///< flow velocity.
                double step,     ///< time step size.
                unsigned int recirculation,      ///< flow recirculation zone.

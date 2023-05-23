@@ -110,9 +110,13 @@ pipe_create_mesh (Pipe * pipe,  ///< pointer to the pipe struct data.
   pipe->radius = 0.5 * pipe->diameter;
   pipe->perimeter = perimeter = M_PI * pipe->diameter;
   pipe->area = area = 0.5 * perimeter * pipe->radius;
-  pipe->ncells = (unsigned int) ceil (pipe->length / cell_size);
-  pipe->ncells = (2 > pipe->ncells) ? 2 : pipe->ncells;
-  pipe->nwalls = n = pipe->ncells - 1;
+  n = (unsigned int) ceil (pipe->length / cell_size);
+  pipe->ncells = n = (2 > n) ? 2 : n;
+  pipe->nwalls = --n;
+#if DEBUG_PIPE
+  fprintf (stderr, "pipe_create_mesh: ncells=%u nwallw=%u\n",
+           pipe->ncells, pipe->nwalls);
+#endif
   distance = pipe->length / n;
   size = 0.5 * distance;
   pipe->cell = cell = (Cell *) malloc (pipe->ncells * sizeof (Cell));
@@ -122,7 +126,7 @@ pipe_create_mesh (Pipe * pipe,  ///< pointer to the pipe struct data.
   pipe->E = (double *) malloc (n * sizeof (double));
   pipe->H = (double *) malloc (pipe->ncells * sizeof (double));
   // init solute concentrations
-  cell_init (cell, 0., distance, size, pipe->area, pipe->perimeter, 0);
+  cell_init (cell, 0., distance, size, area, perimeter, 0);
   for (i = 1; i < pipe->ncells - 1; ++i)
     cell_init (cell + i, i * pipe->length / n, distance, distance, area,
                perimeter, 0);
@@ -181,9 +185,9 @@ pipe_node_cell (Pipe * pipe,    ///< pointer to the pipe struct data.
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_node_cell: start\n");
 #endif
-  if (!strcmp(id, pipe->inlet_id))
+  if (!strcmp (id, pipe->inlet_id))
     cell = pipe->cell;
-  if (!strcmp(id, pipe->outlet_id))
+  if (!strcmp (id, pipe->outlet_id))
     cell = pipe->cell + pipe->ncells - 1;
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_node_cell: end\n");

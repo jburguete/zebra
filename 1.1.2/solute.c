@@ -109,6 +109,7 @@ solute_open_xml (const char *file_name) ///< input file name.
     }
 
   // reading solute
+  hash_solutes = g_hash_table_new (g_str_hash, g_str_equal);
   for (node = node->children; node; node = node->next)
     {
       i = nsolutes;
@@ -127,7 +128,7 @@ solute_open_xml (const char *file_name) ///< input file name.
           m = _("Bad name");
           goto exit_on_error;
         }
-      if (hash_solutes && g_hash_table_contains (hash_solutes, s->name))
+      if (g_hash_table_contains (hash_solutes, s->name))
         {
           m = _("Duplicated name");
           goto exit_on_error;
@@ -167,7 +168,7 @@ solute_open_xml (const char *file_name) ///< input file name.
           m = _("Bad surface decay rate");
           goto exit_on_error;
         }
-      g_hash_table_insert (hash_solutes, s->name, s);
+      g_hash_table_insert (hash_solutes, s->name, NULL);
       if (nsolutes == MAX_SOLUTES)
         break;
     }
@@ -178,6 +179,12 @@ solute_open_xml (const char *file_name) ///< input file name.
       goto exit_on_error;
     }
 
+  // hash table of solutes
+  g_hash_table_remove_all (hash_solutes);
+  for (i = 0; i < nsolutes; ++i)
+    g_hash_table_insert (hash_solutes, solute[i].name, solute + i);
+
+  // free memory
   xmlFreeDoc (doc);
 
   // exit on success

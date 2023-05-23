@@ -12,13 +12,13 @@
 #define DEBUG_CELL 0            ///< macro to debug the cell functions.
 #define DEBUG_INLET 0           ///< macro to debug the inlet functions.
 #define DEBUG_JUNCTION 0        ///< macro to debug the junction functions.
-#define DEBUG_MAIN 0            ///< macro to debug the main functions.
-#define DEBUG_NETWORK 0         ///< macro to debug the network functions.
+#define DEBUG_MAIN 1            ///< macro to debug the main functions.
+#define DEBUG_NETWORK 1         ///< macro to debug the network functions.
 #define DEBUG_PIPE 0            ///< macro to debug the pipe functions.
-#define DEBUG_RESULTS 0         ///< macro to debug the results functions.
-#define DEBUG_SIMULATION 0      ///< macro to debug the simulation functions.
-#define DEBUG_SOLUTE 0          ///< macro to debug the solute functions.
-#define DEBUG_SPECIES 0         ///< macro to debug the species functions.
+#define DEBUG_RESULTS 1         ///< macro to debug the results functions.
+#define DEBUG_SIMULATION 1      ///< macro to debug the simulation functions.
+#define DEBUG_SOLUTE 1          ///< macro to debug the solute functions.
+#define DEBUG_SPECIES 1         ///< macro to debug the species functions.
 #define DEBUG_SPECIMEN 0        ///< macro to debug the specimen functions.
 #define DEBUG_WALL 0            ///< macro to debug the wall functions.
 
@@ -79,7 +79,7 @@
 #define XML_DECAY_CHLORINE      (const xmlChar *) "decay-chlorine"
 ///< decay-chlorine XML label.
 #define XML_DECAY_HYDROGEN_PEROXIDE \
-  (const xmlChar *) "decay-hdrogen-peroxide"
+  (const xmlChar *) "decay-hydrogen-peroxide"
 ///< decay-hdrogen-peroxide XML label.
 #define XML_DECAY_SURFACE       (const xmlChar *) "decay-surface"
 ///< decay-surface XML label.

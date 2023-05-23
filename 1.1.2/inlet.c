@@ -187,7 +187,7 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
       goto exit_on_error;
     }
   snprintf (inlet->id, MAX_LABEL_LENGTH, "%s", (char *) buffer);
-  
+
   for (i = 0; i < npipes; ++i)
     {
       cell = pipe_node_cell (pipe + i, inlet->id);

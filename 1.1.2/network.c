@@ -259,9 +259,9 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
                   m = _("Bad Epanet coordinates section");
                   goto exit_on_error;
                 }
-	      if (!hash_nodes)
-	        hash_nodes = g_hash_table_new (g_str_hash, g_str_equal);
-	      else if (g_hash_table_contains (hash_nodes, node[i].id))
+              if (!hash_nodes)
+                hash_nodes = g_hash_table_new (g_str_hash, g_str_equal);
+              else if (g_hash_table_contains (hash_nodes, node[i].id))
                 {
                   m = _("Bad Epanet coordinates section");
                   goto exit_on_error;
@@ -296,9 +296,9 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
                   m = _("Bad Epanet junctions section");
                   goto exit_on_error;
                 }
-	      if (!hash_junctions)
-	        hash_junctions = g_hash_table_new (g_str_hash, g_str_equal);
-	      else if (g_hash_table_contains (hash_junctions, junction[i].id))
+              if (!hash_junctions)
+                hash_junctions = g_hash_table_new (g_str_hash, g_str_equal);
+              else if (g_hash_table_contains (hash_junctions, junction[i].id))
                 {
                   m = _("Bad Epanet junctions section");
                   goto exit_on_error;
@@ -336,9 +336,9 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
                   m = _("Bad Epanet pipes section");
                   goto exit_on_error;
                 }
-	      if (!hash_pipes)
-	        hash_pipes = g_hash_table_new (g_str_hash, g_str_equal);
-	      else if (g_hash_table_contains (hash_pipes, pipe[i].id))
+              if (!hash_pipes)
+                hash_pipes = g_hash_table_new (g_str_hash, g_str_equal);
+              else if (g_hash_table_contains (hash_pipes, pipe[i].id))
                 {
                   m = _("Bad Epanet pipes section");
                   goto exit_on_error;
@@ -376,9 +376,9 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
                   m = _("Bad Epanet reservoirs section");
                   goto exit_on_error;
                 }
-	      if (!hash_reservoirs)
-	        hash_reservoirs = g_hash_table_new (g_str_hash, g_str_equal);
-	      else if (g_hash_table_contains (hash_reservoirs, reservoir[i].id))
+              if (!hash_reservoirs)
+                hash_reservoirs = g_hash_table_new (g_str_hash, g_str_equal);
+              else if (g_hash_table_contains (hash_reservoirs, reservoir[i].id))
                 {
                   m = _("Bad Epanet reservoirs section");
                   goto exit_on_error;
@@ -419,9 +419,6 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
     }
 
   // building graph
-#if DEBUG_NETWORK
-  fprintf (stderr, "network_open_inp: max_point_id=%u\n", maxid);
-#endif
   se = (unsigned int *) malloc (nnodes * sizeof (unsigned int));
   network->npoints = nnodes;
   network->point = (Point *) malloc (nnodes * sizeof (Point));
@@ -444,10 +441,15 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
       id = ((size_t) p1 - (size_t) network->point) / sizeof (Point);
       se[id] = 1;
       network->point[id].z = junction[i].elevation;
+#if DEBUG_NETWORK
+      fprintf (stderr, "network_open_inp: point=%u id=%s elevation=%lg\n",
+               id, junction[i].id, junction[i].elevation);
+#endif
     }
   for (i = 0; i < nreservoirs; ++i)
     {
-      p1 = (Point *) g_hash_table_lookup (network->hash_points, junction[i].id);
+      p1 = (Point *)
+        g_hash_table_lookup (network->hash_points, reservoir[i].id);
       if (!p1)
         {
           m = _("Unknown node indentifier on reservoir");
@@ -456,6 +458,10 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
       id = ((size_t) p1 - (size_t) network->point) / sizeof (Point);
       se[id] = 1;
       network->point[id].z = reservoir[i].head;
+#if DEBUG_NETWORK
+      fprintf (stderr, "network_open_inp: point=%u id=%s elevation=%lg\n",
+               id, reservoir[i].id, reservoir[i].head);
+#endif
     }
 #if PIPE_LENGTHS_SAVE
   file_log = fopen (PIPE_LENGTHS_FILE, "w");
@@ -523,7 +529,12 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
 #endif
       pipe_create_mesh (network->pipe + i, network->cell_size);
     }
-  for (i = 0; i <= nnodes; ++i)
+#if DEBUG_NETWORK
+  for (i = 0; i < nnodes; ++i)
+    fprintf (stderr, "network_open_inp: pj=%u ninlets=%u noutlets=%u\n",
+             i, pj[i].ninlets, pj[i].noutlets);
+#endif
+  for (i = 0; i < nnodes; ++i)
     {
       k = pj[i].ninlets + pj[i].noutlets;
       if (k > 1)
