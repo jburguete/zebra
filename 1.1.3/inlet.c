@@ -183,7 +183,6 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
   if (!buffer || !xmlStrlen (buffer) || xmlStrlen (buffer) >= MAX_LABEL_LENGTH)
     {
       m = _("Bad node identifier");
-      xmlFree (buffer);
       goto exit_on_error;
     }
   snprintf (inlet->id, MAX_LABEL_LENGTH, "%s", (char *) buffer);
@@ -232,6 +231,7 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
     {
       if (!xmlStrcmp (node->name, XML_SOLUTE))
         {
+          xmlFree (buffer);
           buffer = xmlGetProp (node, XML_NAME);
           if (!buffer)
             {
@@ -239,12 +239,12 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
               goto exit_on_error;
             }
           i = solute_index ((const char *) buffer);
-          xmlFree (buffer);
           if (i == nsolutes)
             {
               m = _("Unknown solute");
               goto exit_on_error;
             }
+          xmlFree (buffer);
           buffer = xmlGetProp (node, XML_FILE);
           if (!buffer)
             {
@@ -260,10 +260,10 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
               m = _("Bad solute input file");
               goto exit_on_error;
             }
-          xmlFree (buffer);
         }
       else if (!xmlStrcmp (node->name, XML_SPECIES))
         {
+          xmlFree (buffer);
           buffer = xmlGetProp (node, XML_NAME);
           if (!buffer)
             {
@@ -271,12 +271,12 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
               goto exit_on_error;
             }
           i = species_index ((const char *) buffer);
-          xmlFree (buffer);
           if (i == nspecies)
             {
               m = _("Unknown species");
               goto exit_on_error;
             }
+          xmlFree (buffer);
           buffer = xmlGetProp (node, XML_FILE);
           if (!buffer)
             {
@@ -292,7 +292,6 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
               m = _("Bad species input file");
               goto exit_on_error;
             }
-          xmlFree (buffer);
         }
       else
         {
@@ -300,6 +299,9 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
           goto exit_on_error;
         }
     }
+
+  // free memory
+  xmlFree (buffer);
 
   // exit on success
 #if DEBUG_INLET
@@ -314,6 +316,7 @@ exit_on_error:
   inlet_error (inlet, m);
 
   // free memory on error
+  xmlFree (buffer);
   inlet_destroy (inlet);
 
   // end

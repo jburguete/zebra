@@ -134,6 +134,33 @@ network_update_discharges (Network * network)
 }
 
 /**
+ * function to calculate the maximum time step size allowed by a network.
+ *
+ * \return time step size.
+ */
+static inline double
+network_step_size (Network * network,
+                   ///< pointer to the network struct data.
+                   double cfl)  ///< CFL number.
+{
+  Pipe *pipe;
+  double dt;
+  unsigned int i;
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_step_size: start\n");
+#endif
+  dt = INFINITY;
+  pipe = network->pipe;
+  for (i = 0; i < network->npipes; ++i)
+    dt = fmin (dt, pipe_step_size (pipe + i, cfl));
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_step_size: dt=%.14lg\n", dt);
+  fprintf (stderr, "network_step_size: end\n");
+#endif
+  return dt;
+}
+
+/**
  * function to calculate the maximum next time allowed by a network.
  *
  * \return maximum allowed next time in seconds since 1970.
@@ -141,24 +168,16 @@ network_update_discharges (Network * network)
 static inline double
 network_maximum_time (Network * network,
                       ///< pointer to the network struct data.
-                      double final_time,
+                      double final_time)
                       ///< final time in seconds since 1970.
-                      double cfl)       ///< CFL number.
 {
   Inlet *inlet;
-  Pipe *pipe;
   double t;
   unsigned int i;
 #if DEBUG_NETWORK
   fprintf (stderr, "network_maximum_time: start\n");
 #endif
   t = final_time;
-  pipe = network->pipe;
-  for (i = 0; i < network->npipes; ++i)
-    t = fmin (t, pipe_maximum_time (pipe + i, cfl));
-#if DEBUG_NETWORK
-  fprintf (stderr, "network_maximum_time: t=%.14lg\n", t);
-#endif
   if (network->current_discharges < network->ndischarges - 1)
     t = fmin (t, network->discharges[network->current_discharges + 1].date);
 #if DEBUG_NETWORK
@@ -229,7 +248,7 @@ network_step (Network * network,        ///< pointer to the network struct data.
       td = tb;
       do
         {
-          tdf = fmin (tbf, td + diffusion_step);
+          tdf = fmin (tbf, td + dispersion_step);
           ta = td;
           do
             {

@@ -114,6 +114,7 @@ results_set (Results * results,
         }
     }
 #if DEBUG_RESULTS
+  fprintf (stderr, "results_set: k=%u\n", k);
   fprintf (stderr, "results_set: end\n");
 #endif
 }

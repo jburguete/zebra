@@ -18,6 +18,7 @@ typedef struct
   double initial_time;          ///< initial time in seconds since 1970.
   double final_time;            ///< final time in seconds since 1970.
   double cfl;                   ///< CFL number.
+  double dispersion_cfl;        ///< dispersion CFL number.
   double saving_step;           ///< time step size to save results.
 } Simulation;
 
@@ -51,7 +52,8 @@ simulation_run (Simulation * simulation)
   Network *network;
   gsl_rng *rng;
   FILE *file;
-  double initial_time, final_time, cfl, saving_time, saving_step;
+  double initial_time, final_time, cfl, dispersion_cfl, saving_time,
+    saving_step;
 #if DEBUG_SIMULATION
   fprintf (stderr, "simulation_run: start\n");
 #endif
@@ -64,8 +66,9 @@ simulation_run (Simulation * simulation)
   network = simulation->network;
   initial_time = simulation->initial_time;
   final_time = simulation->final_time;
-  saving_step = simulation->saving_step;
+  biological_step = saving_step = simulation->saving_step;
   cfl = simulation->cfl;
+  dispersion_cfl = simulation->dispersion_cfl;
   network_set_flow (network);
   network_initial (network);
   results_init (results, network, initial_time, final_time, saving_step);
@@ -92,8 +95,10 @@ simulation_run (Simulation * simulation)
           // update discharges and velocities
           network_update_discharges (network);
 
-          // calculate time step size
-          next_time = network_maximum_time (network, saving_time, cfl);
+          // calculate time step sizes
+          advection_step = network_step_size (network, cfl);
+          dispersion_step = dispersion_cfl * advection_step;
+          next_time = network_maximum_time (network, saving_time);
 
           // perform numerical method
           network_step (network, rng);

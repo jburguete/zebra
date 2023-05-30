@@ -133,6 +133,8 @@ results_init (Results * results,
   results->nvariables = j *= nsolutes + 2 * nspecies;
   results->variable = (double *) malloc (j * sizeof (double));
 #if DEBUG_RESULTS
+  fprintf (stderr, "results_init: nvariables=%u nsolutes=%u nspecies=%u\n",
+           j, nsolutes, nspecies);
   fprintf (stderr, "results_init: end\n");
 #endif
 }
@@ -178,6 +180,8 @@ results_write_variables (Results * results,
 {
 #if DEBUG_RESULTS
   fprintf (stderr, "results_write_variables: start\n");
+  fprintf (stderr, "results_write_variables: nvariables=%u\n",
+           results->nvariables);
 #endif
   fwrite (results->variable, sizeof (double), results->nvariables, file);
 #if DEBUG_RESULTS

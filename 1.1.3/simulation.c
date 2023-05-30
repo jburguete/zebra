@@ -103,6 +103,19 @@ simulation_open_xml (Simulation * simulation,
     }
   simulation->cfl
     = xml_node_get_float_with_default (node, XML_CFL, &e, DEFAULT_CFL);
+  if (!e || simulation->cfl <= 0.)
+    {
+      m = _("Bad CFL number");
+      goto exit_on_error;
+    }
+  simulation->dispersion_cfl
+    = xml_node_get_float_with_default (node, XML_DISPERSION_CFL, &e,
+                                       DEFAULT_DISPERSION_CFL);
+  if (!e || simulation->dispersion_cfl < 1.)
+    {
+      m = _("Bad dispersion CFL number");
+      goto exit_on_error;
+    }
   network->cell_size = xml_node_get_float (node, XML_CELL_SIZE, &e);
   if (!e || network->cell_size <= 0.)
     {

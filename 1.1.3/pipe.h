@@ -48,7 +48,7 @@ typedef struct
 extern double current_time;
 extern double next_time;
 extern double advection_step;
-extern double diffusion_step;
+extern double dispersion_step;
 extern double biological_step;
 extern unsigned int dispersion_model;
 
@@ -196,25 +196,25 @@ pipe_node_cell (Pipe * pipe,    ///< pointer to the pipe struct data.
 }
 
 /**
- * function to return the maximum next time allowed by a pipe.
+ * function to return the time step size allowed by a pipe.
  *
- * \return maximum time in seconds since 1970.
+ * \return time step size.
  */
 static inline double
-pipe_maximum_time (Pipe * pipe, ///< pointer to the pipe struct data.
-                   double cfl)  ///< CFL number.
+pipe_step_size (Pipe * pipe,    ///< pointer to the pipe struct data.
+                double cfl)     ///< CFL number.
 {
-  double t, v;
+  double dt, v;
 #if DEBUG_PIPE
-  fprintf (stderr, "pipe_maximum_time: start\n");
+  fprintf (stderr, "pipe_step_size: start\n");
 #endif
   v = fabs (pipe->velocity);
-  t = current_time + cfl * pipe->cell->size / v;
+  dt = cfl * pipe->cell->size / v;
 #if DEBUG_PIPE
-  fprintf (stderr, "pipe_maximum_time: t=%.14lg v=%lg\n", t, v);
-  fprintf (stderr, "pipe_maximum_time: end\n");
+  fprintf (stderr, "pipe_step_size: dt=%.14lg v=%lg\n", dt, v);
+  fprintf (stderr, "pipe_step_size: end\n");
 #endif
-  return t;
+  return dt;
 }
 
 /**

@@ -13,12 +13,12 @@
 #define DEBUG_INLET 0           ///< macro to debug the inlet functions.
 #define DEBUG_JUNCTION 0        ///< macro to debug the junction functions.
 #define DEBUG_MAIN 1            ///< macro to debug the main functions.
-#define DEBUG_NETWORK 1         ///< macro to debug the network functions.
+#define DEBUG_NETWORK 0         ///< macro to debug the network functions.
 #define DEBUG_PIPE 0            ///< macro to debug the pipe functions.
 #define DEBUG_RESULTS 1         ///< macro to debug the results functions.
 #define DEBUG_SIMULATION 1      ///< macro to debug the simulation functions.
-#define DEBUG_SOLUTE 1          ///< macro to debug the solute functions.
-#define DEBUG_SPECIES 1         ///< macro to debug the species functions.
+#define DEBUG_SOLUTE 0          ///< macro to debug the solute functions.
+#define DEBUG_SPECIES 0         ///< macro to debug the species functions.
 #define DEBUG_SPECIMEN 0        ///< macro to debug the specimen functions.
 #define DEBUG_WALL 0            ///< macro to debug the wall functions.
 
@@ -26,6 +26,7 @@
 
 #define BUFFER_SIZE 512         ///< size of string buffers.
 #define DEFAULT_CFL 0.9         ///< default CFL value.
+#define DEFAULT_DISPERSION_CFL 1.       ///< default dispersion CFL value.
 #define FLUX_LIMITER 3
 ///< flux limiter (0:null, 1:upwind, 2:centred, 3:monotonized central)
 #define FMTL "%16s"             ///< format of identifier labels.
@@ -87,6 +88,8 @@
 ///< decay-temperature XML label.
 #define XML_DISCHARGES          (const xmlChar *) "discharges"
 ///< discharges XML label.
+#define XML_DISPERSION_CFL      (const xmlChar *) "dispersion-cfl"
+///< dispersion-cfl XML label.
 #define XML_DISPERSION_MODEL    (const xmlChar *) "dispersion-model"
 ///< dispersion-model XML label.
 #define XML_EAT                 (const xmlChar *) "eat"

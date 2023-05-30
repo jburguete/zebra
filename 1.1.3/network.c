@@ -427,7 +427,7 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
     {
       se[i] = 0;
       point_net_copy (network->point + i, node + i);
-      g_hash_table_insert (network->hash_points, node[i].id,
+      g_hash_table_insert (network->hash_points, network->point[i].id,
                            network->point + i);
     }
   for (i = 0; i < njunctions; ++i)
@@ -476,7 +476,8 @@ network_open_inp (Network * network,    ///< pointer to the network struct data.
     {
       pipe_null (network->pipe + i);
       pipe_net_copy (network->pipe + i, pipe + i);
-      g_hash_table_insert (network->hash_pipes, pipe[i].id, network->pipe + i);
+      g_hash_table_insert (network->hash_pipes, network->pipe[i].id,
+                           network->pipe + i);
       p1 = (Point *) g_hash_table_lookup (network->hash_points, pipe[i].node1);
       if (!p1)
         {

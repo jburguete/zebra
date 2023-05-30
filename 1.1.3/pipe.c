@@ -22,7 +22,7 @@
 
 double time_step;               ///< time step size.
 double advection_step;          ///< advection step size.
-double diffusion_step;          ///< diffusion step size.
+double dispersion_step;         ///< dispersion step size.
 double biological_step;         ///< biological step size.
 double current_time;            ///< current time.
 double next_time;               ///< next time.
