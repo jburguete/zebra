@@ -170,6 +170,8 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
   double **c, **t;
   unsigned int *n;
   const char *m;
+  double x;
+  int e;
   unsigned int i, j;
 
   // start
@@ -245,6 +247,14 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
               goto exit_on_error;
             }
           xmlFree (buffer);
+	  x = xml_node_get_float_with_default (node, XML_INITIAL_CONDITIONS, &e,
+                                               0.);
+	  if (!e || x < 0.)
+            {
+              m = _("Bad initial conditions");
+	      goto exit_on_error;
+	    }
+	  solute[i].initial_conditions = x;
           buffer = xmlGetProp (node, XML_FILE);
           if (!buffer)
             {

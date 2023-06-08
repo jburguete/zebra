@@ -148,103 +148,115 @@ species_open_xml (char *file_name)      ///< input file name.
           goto exit_on_error;
         }
       flags_species |= s->type;
-      s->maximum_velocity = xml_node_get_float (node, XML_MAXIMUM_VELOCITY, &k);
+      s->maximum_velocity
+        = xml_node_get_float_with_default (node, XML_MAXIMUM_VELOCITY, &k, 0.);
       if (!k || s->maximum_velocity < 0.)
         {
           m = _("Bad maximum velocity");
           goto exit_on_error;
         }
-      s->cling = xml_node_get_float (node, XML_CLING, &k);
+      s->cling = xml_node_get_float_with_default (node, XML_CLING, &k, 0.);
       if (!k || s->cling < 0.)
         {
           m = _("Bad cling coefficient");
           goto exit_on_error;
         }
-      s->minimum_oxygen = xml_node_get_float (node, XML_MINIMUM_OXYGEN, &k);
+      s->minimum_oxygen
+        = xml_node_get_float_with_default (node, XML_MINIMUM_OXYGEN, &k, 0.);
       if (!k || s->minimum_oxygen < 0.)
         {
           m = _("Bad minimum oxygen");
           goto exit_on_error;
         }
-      s->respiration = xml_node_get_float (node, XML_RESPIRATION, &k);
+      s->respiration
+        = xml_node_get_float_with_default (node, XML_RESPIRATION, &k, 0.);
       if (!k || s->respiration < 0.)
         {
           m = _("Bad respiration coefficient");
           goto exit_on_error;
         }
-      s->eat = xml_node_get_float (node, XML_EAT, &k);
+      s->eat = xml_node_get_float_with_default (node, XML_EAT, &k, 0.);
       if (!k || s->eat < 0.)
         {
           m = _("Bad eat coefficient");
           goto exit_on_error;
         }
-      s->grow = xml_node_get_float (node, XML_GROW, &k);
+      s->grow = xml_node_get_float_with_default (node, XML_GROW, &k, 0.);
       if (!k || s->grow < 0.)
         {
           m = _("Bad grow coefficient");
           goto exit_on_error;
         }
-      s->decay = xml_node_get_float (node, XML_DECAY, &k);
+      s->decay = xml_node_get_float_with_default (node, XML_DECAY, &k, 0.);
       if (!k || s->decay < 0.)
         {
           m = _("Bad decay coefficient");
           goto exit_on_error;
         }
       s->minimum_temperature
-        = xml_node_get_float (node, XML_MINIMUM_TEMPERATURE, &k);
+        = xml_node_get_float_with_default (node, XML_MINIMUM_TEMPERATURE, &k,
+                                           0.);
       if (!k)
         {
           m = _("Bad minimum temperature");
           goto exit_on_error;
         }
       s->optimal_temperature
-        = xml_node_get_float (node, XML_OPTIMAL_TEMPERATURE, &k);
+        = xml_node_get_float_with_default (node, XML_OPTIMAL_TEMPERATURE, &k,
+                                           0.);
       if (!k || s->optimal_temperature < s->minimum_temperature)
         {
           m = _("Bad optimal temperature");
           goto exit_on_error;
         }
       s->maximum_temperature
-        = xml_node_get_float (node, XML_MAXIMUM_TEMPERATURE, &k);
+        = xml_node_get_float_with_default (node, XML_MAXIMUM_TEMPERATURE, &k,
+                                           0.);
       if (!k || s->maximum_temperature < s->optimal_temperature)
         {
           m = _("Bad maximum temperature");
           goto exit_on_error;
         }
-      s->minimum_chlorine = xml_node_get_float (node, XML_MINIMUM_CHLORINE, &k);
+      s->minimum_chlorine
+        = xml_node_get_float_with_default (node, XML_MINIMUM_CHLORINE, &k, 0.);
       if (!k || s->minimum_chlorine < 0.)
         {
           m = _("Bad minimum chlorine");
           goto exit_on_error;
         }
-      s->maximum_chlorine = xml_node_get_float (node, XML_MAXIMUM_CHLORINE, &k);
+      s->maximum_chlorine
+        = xml_node_get_float_with_default (node, XML_MAXIMUM_CHLORINE, &k, 0.);
       if (!k || s->maximum_chlorine < s->minimum_chlorine)
         {
           m = _("Bad maximum chlorine");
           goto exit_on_error;
         }
-      s->decay_chlorine = xml_node_get_float (node, XML_DECAY_CHLORINE, &k);
+      s->decay_chlorine
+        = xml_node_get_float_with_default (node, XML_DECAY_CHLORINE, &k, 0.);
       if (!k || s->decay_chlorine < 0.)
         {
           m = _("Bad chlorine decay");
           goto exit_on_error;
         }
       s->minimum_hydrogen_peroxide
-        = xml_node_get_float (node, XML_MINIMUM_HYDROGEN_PEROXIDE, &k);
+        = xml_node_get_float_with_default (node, XML_MINIMUM_HYDROGEN_PEROXIDE,
+                                           &k, 0.);
       if (!k || s->minimum_hydrogen_peroxide < 0.)
         {
           m = _("Bad minimum hydrogen peroxide");
           goto exit_on_error;
         }
       s->maximum_hydrogen_peroxide
-        = xml_node_get_float (node, XML_MAXIMUM_HYDROGEN_PEROXIDE, &k);
+        = xml_node_get_float_with_default (node, XML_MAXIMUM_HYDROGEN_PEROXIDE,
+                                           &k, 0.);
       if (!k || s->maximum_hydrogen_peroxide < s->minimum_hydrogen_peroxide)
         {
           m = _("Bad maximum hydrogen peroxide");
           goto exit_on_error;
         }
       s->decay_hydrogen_peroxide
-        = xml_node_get_float (node, XML_DECAY_HYDROGEN_PEROXIDE, &k);
+        = xml_node_get_float_with_default (node, XML_DECAY_HYDROGEN_PEROXIDE,
+                                           &k, 0.);
       if (!k || s->decay_hydrogen_peroxide < 0.)
         {
           m = _("Bad hydrogen peroxide decay");

@@ -25,6 +25,7 @@ typedef struct
   double time_decay;            ///< time decay rate.
   double decay_temperature;     ///< temperature decay rate.
   double decay_surface;         ///< surface decay rate.
+  double initial_conditions;    ///< initial conditions concentration.
   unsigned int type;            ///< type.
 } Solute;
 

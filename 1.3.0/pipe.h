@@ -125,12 +125,13 @@ pipe_create_mesh (Pipe * pipe,  ///< pointer to the pipe struct data.
   pipe->D = (double *) malloc (pipe->ncells * sizeof (double));
   pipe->E = (double *) malloc (n * sizeof (double));
   pipe->H = (double *) malloc (pipe->ncells * sizeof (double));
-  // init solute concentrations
-  cell_init (cell, 0., distance, size, area, perimeter, 0);
+  // init cells
+  cell_init (cell, 0., distance, size, area, perimeter);
   for (i = 1; i < pipe->ncells - 1; ++i)
     cell_init (cell + i, i * pipe->length / n, distance, distance, area,
-               perimeter, 0);
-  cell_init (cell + i, pipe->length, distance, size, area, perimeter, 0);
+               perimeter);
+  cell_init (cell + i, pipe->length, distance, size, area, perimeter);
+  // init walls
   for (i = 0; i < pipe->nwalls; ++i)
     wall_init (wall + i, cell + i, cell + i + 1);
   if (numerical_order > 1)

@@ -104,6 +104,8 @@
 ///< hydrogen-peroxide XML label.
 #define XML_ID                  (const xmlChar *) "id"
 ///< id XML label.
+#define XML_INITIAL_CONDITIONS  (const xmlChar *) "initial-conditions"
+///< initial-conditions XML label.
 #define XML_INITIAL_TIME        (const xmlChar *) "initial-time"
 ///< initial-time XML label.
 #define XML_INLET               (const xmlChar *) "inlet"

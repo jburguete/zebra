@@ -16,13 +16,13 @@ typedef struct
   char id[MAX_LABEL_LENGTH];    ///< node identifier.
   Cell **cell;                  ///< array of pointers to cells.
   double **solute_concentration;
-  ///< array of pointers to array of solute concentrations.
+  ///< array of pointers to arrays of solute concentration.
   double **solute_time;
-  ///< array of pointers to array of solute times.
+  ///< array of pointers to arrays of solute time.
   double **species_concentration;
-  ///< array of pointers to array of species concentrations.
+  ///< array of pointers to arrays of species concentration.
   double **species_time;
-  ///< array of pointers to array of species times.
+  ///< array of pointers to arrays of species time.
   unsigned int *nsolute_times;  ///< array of numbers of solute times.
   unsigned int *nspecies_times; ///< array of numbers of species times.
   unsigned int ncells;          ///< number of cells.

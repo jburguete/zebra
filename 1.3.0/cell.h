@@ -36,7 +36,7 @@ typedef struct
 } Cell;
 
 void cell_init (Cell * cell, double position, double distance, double size,
-                double area, double perimeter, unsigned int nsolutes, ...);
+                double area, double perimeter);
 
 /**
  * function to set the flow properties on a cell.
