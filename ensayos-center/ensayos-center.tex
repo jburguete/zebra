@@ -1,0 +1,166 @@
+\documentclass[a4paper]{article}
+
+\usepackage[utf8]{inputenc}
+\usepackage{graphicx}
+\usepackage[spanish]{babel}
+
+\title{Ensayos del CENTER}
+
+\author{J. Burguete, N. Zapata, E. Playán, ...}
+
+\date{\today}
+
+\begin{document}
+
+\maketitle
+
+\newcommand{\EQ}[1]{\begin{equation}#1\end{equation}}
+\newcommand{\FIG}[3]
+{
+  \begin{figure}[ht!]
+    \centering
+    \includegraphics{#1}
+    \caption{#2\label{#3}}
+  \end{figure}
+}
+\newcommand{\FIGIV}[6]
+{
+  \begin{figure}[ht!]
+    \centering
+    \begin{tabular}{cc}
+      \includegraphics{#1} & \includegraphics{#2}\\
+      \includegraphics{#3} & \includegraphics{#4}
+    \end{tabular}
+    \caption{#5\label{#6}}
+  \end{figure}
+}
+\newcommand{\PA}[1]{\left(#1\right)}
+\newcommand{\PARTIAL}[2]{\frac{\partial#1}{\partial#2}}
+
+\section{Análisis adimensional}
+
+En una tubería prismática de longitud infinita, para flujo incompresible y
+estacionario, las ecuaciones de Navier-Stokes que rigen el movimiento del fluido
+se reducen a:
+\[Q=\mathrm{const.}\]
+\EQ{\frac1{\rho}\,\PARTIAL{p}{x}=g\,\PA{S_0-S_f}}
+con $Q$ el caudal, $\rho$ la densidad del fluido, $p$ la presión, $g$
+la constante de gravedad, $S_0$ la pendiente y $S_f$ la pendiente asociada al
+esfuerzo de rozamiento. Expresando esta última ecuación en función del esfuerzo
+de rozamiento $\tau_f$: 
+\EQ{\PARTIAL{p}{x}=g\,\rho\,S_0-\frac{P\,\tau_f}{A}}
+con $P$ el perímetro y $A$ el área de sección de la tubería. Si la tubería es
+horizontal $\PA{S_0=0}$, la única causa de pérdida de carga es el rozamiento:
+\EQ{\PARTIAL{p}{x}=-\frac{P\,\tau_f}{A}}
+que en tuberías de sección circular de diámetro $D$ es:
+\EQ{\PARTIAL{p}{x}=-\frac{4\,\tau_f}{D}}
+
+Uno de los modelos más antiguos para expresar el esfuerzo de fricción en
+formulación adimensional es el modelo de Darcy-Weisbach, que expresa este
+esfuerzo como un factor por la presión de ariete:
+\EQ{\tau_f=f\,\frac12\,\rho\,U^2}
+con $U$ la velocidad media y $f$ el factor de fricción adimensional de
+Darcy-Weisbach. Aplicando el modelo a la pérdida de carga:
+\EQ{\PARTIAL{p}{x}=-\frac{2\,f\,\rho\,U^2}{D}}
+En una tubería de longitud $L$ la pérdida de carga es:
+\EQ{\Delta p=\int_0^L\PARTIAL{p}{x}\,dx=L\,\PARTIAL{p}{x}}
+de donde se puede extraer el factor de fricción a partir de la pérdida de carga:
+\EQ{f=-\frac{\Delta p\,D}{2\,\rho\,U^2\,L}}
+En principio $f$ depende de la velocidad, el diámetro, la viscosidad del fluido
+$(\nu)$ y la rugosidad del material, que caracterizaremos con una longitud
+característica $l$. Aplicando el teorema Pi esta función dependerá únicamente de
+2 números adimensionales:
+\EQ
+{
+  f=f(D,\,U,\;\nu,\;l)=f(\mathrm{Rl},\;\mathrm{Re}),\quad
+  \mathrm{Rl}=\frac{l}{D},\quad
+  \mathrm{Re}=\frac{U\,D}{\nu}
+}
+con Rl la rugosidad relativa y Re el número de Reynolds adimensionales.
+
+Para flujos laminares (Re $<2000$) el factor de fricción sigue la fórmula de
+Poiseuille:
+\EQ{\mathrm{Re}<2000\Rightarrow\;f=\frac{64}{\mathrm{Re}}}
+Para flujos netamente turbulentos (Re $>4000$) la fórmula más usada es la de
+Colebrook-White:
+\EQ
+{
+  \mathrm{Re}>4000\Rightarrow\;
+  \frac1{\sqrt{f}}=-2\,\log_{10}\PA{\frac{\mathrm{Rl}}{3.7}
+  +\frac{2.51}{\mathrm{Re}\,\sqrt{f}}}
+}\label{EqColebrookWhite}
+que en caso de rugosidades relativas altas y números de Reynolds altos puede
+simplificarse puesto que el primer sumando de la fórmula de Colebrook-White es
+mucho mayor que el segundo:
+\[
+  \mathrm{Rl,\,Re}\,\uparrow\uparrow\,\Rightarrow\;
+  \frac1{\sqrt{f}}\approx-2\,\log_{10}\PA{\frac{\mathrm{Rl}}{3.7}}
+  =2\,\PA{\log_{10}3.7-\log_{10}\mathrm{Rl}}\Rightarrow\;
+\]
+\EQ
+{
+  f\approx\frac1{4\PA{\log_{10}3.7-\log_{10}\mathrm{Rl}}^2}
+  \label{EqColebrookWhiteSimplified}
+}
+En esta aproximación también puede obtenerse la rugosidad relativa a partir
+del factor de fricción:
+\EQ{\mathrm{Rl}=3.7\,\cdot\,10^{-0.5/\sqrt{f}}\label{EqRl}}
+
+\section{Ensayos realizados}
+
+En la \figurename~\ref{FigRlRe} presentamos todo el espacio barrido por los
+experimentos en los números adimensionales Rl y Re. Puede verse que se ha hecho
+un recorrido bastante exhaustivo de ambos parámetros en los números que suelen
+caracterizar las tuberías de riego por aspersión y de las rugosidades asociadas
+a presencia de mejillón cebra.
+\FIG{rl-re.eps}{Espacio barrido experimentalmente en Re y Rl.}{FigRlRe}
+
+En las \figurename{s}~\ref{Figf0}-\ref{Figf45} se representa el factor $f$ de
+Darcy-Weisbach en todos los experimentos realizados. De acuerdo a la fórmula
+(\ref{EqColebrookWhiteSimplified}) este factor debería ser aproximadamente
+constante en flujos netamente turbulentos y rugosidades altas, lo que sucede en
+todos experimentos realizados con tornillos (la aproximación en cambio no es
+aplicable al caso con tuberías lisas). En la tubería lisa $f$ parece tener un
+comportamiento aproximande constante, con tendencia a disminuir a mayores velocidades, para DN200. Para DN250 el comportamiento es más errático, probablemente
+porque las pérdidas son tan bajas que entramos en problemas de precisión de la
+medida. Para los casos con tornillos $f$ ha resultado bastante constante en
+general, para misma longitud y densidad de tornillos, aunque alguna serie de
+experimentos muestra también un comportamiento algo errático, sobre todo con los
+caudales más bajos, por lo que creemos que pudieron tener algún fallo en la
+medida de presión.
+\FIG{f0.eps}{$f$ en función de $H_f$ para tuberías sin tornillos.}{Figf0}
+\FIG{f20.eps}{$f$ en función de $H_f$ para tuberías con tornillos a 20 mm.}
+{Figf20}
+\FIG{f25.eps}{$f$ en función de $H_f$ para tuberías con tornillos a 25 mm.}
+{Figf25}
+\FIG{f30.eps}{$f$ en función de $H_f$ para tuberías con tornillos a 30 mm.}
+{Figf30}
+\FIG{f35.eps}{$f$ en función de $H_f$ para tuberías con tornillos a 35 mm.}
+{Figf35}
+\FIG{f40.eps}{$f$ en función de $H_f$ para tuberías con tornillos a 40 mm.}
+{Figf40}
+\FIG{f45.eps}{$f$ en función de $H_f$ para tuberías con tornillos a 45 mm.}
+{Figf45}
+
+Finalmente, en las \figurename{s}~\ref{Figl20}-\ref{Figl45} se representa la
+longitud característica de rugosidad obtenida a partir de $f$ mediante la
+aproximación (\ref{EqRl}) y se compara frente a la longitud de los tornillos.
+Salvo algún caso con comportamiento errático, en general se obtiene una
+longitud de rugosidad característica inferior a la longitud de los tornillos,
+siendo menor cuando se disminuyó la densidad.
+\FIG{l20.eps}{$l$ en función de $H_f$ para tuberías con tornillos a 20 mm.}
+{Figl20}
+\FIG{l25.eps}{$l$ en función de $H_f$ para tuberías con tornillos a 25 mm.}
+{Figl25}
+\FIG{l30.eps}{$l$ en función de $H_f$ para tuberías con tornillos a 30 mm.}
+{Figl30}
+\FIG{l35.eps}{$l$ en función de $H_f$ para tuberías con tornillos a 35 mm.}
+{Figl35}
+\FIG{l40.eps}{$l$ en función de $H_f$ para tuberías con tornillos a 40 mm.}
+{Figl40}
+\FIG{l45.eps}{$l$ en función de $H_f$ para tuberías con tornillos a 45 mm.}
+{Figl45}
+
+\section{Conclusiones}
+
+\end{document}
