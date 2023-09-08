@@ -194,6 +194,27 @@ network_maximum_time (Network * network,
 }
 
 /**
+ * function to calculate the network infestations by species.
+ */
+static inline void
+network_infestations (Network * network)
+                      ///< pointer to the network struct data.
+{
+  unsigned int i, npipes;
+  Pipe *pipe;
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_infestations: start\n");
+#endif
+  pipe = network->pipe;
+  npipes = network->npipes;
+  for (i = 0; i < npipes; ++i)
+    pipe_infestations (pipe + i);
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_infestations: end\n");
+#endif
+}
+
+/**
  * function to set the initial conditions on a network.
  */
 static inline void
@@ -203,6 +224,7 @@ network_initial (Network * network)     ///< pointer to the network struct data.
   double species_concentration[MAX_SPECIES];
   Inlet *inlet;
   Pipe *pipe;
+  double *c;
   unsigned int i, n;
 #if DEBUG_NETWORK
   fprintf (stderr, "network_initial: start\n");
@@ -210,12 +232,25 @@ network_initial (Network * network)     ///< pointer to the network struct data.
   inlet = network->inlet;
   pipe = network->pipe;
   n = network->npipes;
-  for (i = 0; i < nsolutes; ++i)
-    solute_concentration[i] = *(inlet->solute_concentration[i]);
-  for (i = 0; i < nspecies; ++i)
-    species_concentration[i] = *(inlet->species_concentration[i]);
+  for (i = 0; i < MAX_SOLUTES; ++i)
+    {
+      c = inlet->solute_concentration[i];
+      if (c)
+        solute_concentration[i] = *c;
+      else
+        solute_concentration[i] = 0.;
+    }
+  for (i = 0; i < MAX_SPECIES; ++i)
+    {
+      c = inlet->species_concentration[i];
+      if (c)
+        species_concentration[i] = *c;
+      else
+        species_concentration[i] = 0.;
+    }
   for (i = 0; i < n; ++i)
     pipe_initial (pipe + i, solute_concentration, species_concentration);
+  network_infestations (network);
 #if DEBUG_NETWORK
   fprintf (stderr, "network_initial: end\n");
 #endif
@@ -290,8 +325,7 @@ network_step (Network * network,        ///< pointer to the network struct data.
 #endif
     }
   while (tbf < next_time);
-  for (i = 0; i < npipes; ++i)
-    pipe_infestations (pipe + i);
+  network_infestations (network);
 #if DEBUG_NETWORK
   fprintf (stderr, "network_step: end\n");
 #endif

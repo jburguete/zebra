@@ -40,13 +40,13 @@ cell_init (Cell * cell,         ///< pointer to the cell struct data.
   cell->volume = area * size;
   cell->perimeter = perimeter;
   cell->lateral_area = perimeter * size;
-  for (i = 0; i < nspecies; ++i)
+  for (i = 0; i < MAX_SPECIES; ++i)
     {
       cell->species_concentration[i] = 0.;
       cell->list_specimens[i] = NULL;
     }
   // init solute concentrations
-  for (i = 0; i < nsolutes; ++i)
+  for (i = 0; i < MAX_SOLUTES; ++i)
     cell->solute_concentration[i] = solute[i].initial_conditions;
 #if DEBUG_CELL
   fprintf (stderr, "cell_init: end\n");

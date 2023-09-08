@@ -641,6 +641,9 @@ network_open_out (Network * network,    ///< pointer to the network struct data.
   discharges->discharge = (double *) malloc (network->npipes * sizeof (double));
   discharges->friction_factor
     = (double *) malloc (network->npipes * sizeof (double));
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_open_out: npipes=%u\n", network->npipes);
+#endif
   for (i = 0; i < network->npipes; ++i)
     {
       if (fscanf (file, FMTL "%lf%*f%*f%lf", id, &q, &f) != 3)
@@ -648,6 +651,9 @@ network_open_out (Network * network,    ///< pointer to the network struct data.
           m = _("Bad data");
           goto exit_on_error;
         }
+#if DEBUG_NETWORK
+      fprintf (stderr, "network_open_out: id=%s q=%lg f=%lf\n", id, q, f);
+#endif
       pipe = (Pipe *) g_hash_table_lookup (network->hash_pipes, id);
       if (!pipe)
         goto exit_on_error;

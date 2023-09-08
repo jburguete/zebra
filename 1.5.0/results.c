@@ -42,7 +42,7 @@ static inline void
 results_null (Results * results)
 {
 #if DEBUG_RESULTS
-  fprintf (stderr, "results_destroy: start\n");
+  fprintf (stderr, "results_null: start\n");
 #endif
   results->point_x = results->point_y = results->point_z = results->pipe_length
     = results->variable = NULL;
@@ -50,7 +50,7 @@ results_null (Results * results)
     = results->pipe_outlet_id = NULL;
   results->pipe_cell = NULL;
 #if DEBUG_RESULTS
-  fprintf (stderr, "results_destroy: end\n");
+  fprintf (stderr, "results_null: end\n");
 #endif
 }
 
@@ -91,7 +91,8 @@ results_set (Results * results,
   double *variable;
   unsigned int i, j, k, npipes, ncells;
 #if DEBUG_RESULTS
-  fprintf (stderr, "results_set: end\n");
+  unsigned int l;
+  fprintf (stderr, "results_set: start\n");
 #endif
   variable = results->variable;
   pipe = network->pipe;
@@ -102,15 +103,31 @@ results_set (Results * results,
       ncells = pipe->ncells;
       for (j = 0; j < ncells; ++j, ++cell)
         {
+#if DEBUG_RESULTS
+          fprintf (stderr, "results_set: pipe=%u cell=%u\n", i, j);
+	  for (l = 0; l < MAX_SOLUTES; ++l)
+            fprintf (stderr, "results_set: solute=%u concentration=%lg\n",
+                     l, cell->solute_concentration[l]);
+#endif
           memcpy (variable + k, cell->solute_concentration,
-                  nsolutes * sizeof (double));
-          k += nsolutes;
+                  MAX_SOLUTES * sizeof (double));
+          k += MAX_SOLUTES;
+#if DEBUG_RESULTS
+	  for (l = 0; l < MAX_SPECIES; ++l)
+            fprintf (stderr, "results_set: species=%u concentration=%lg\n",
+                     l, cell->species_concentration[l]);
+#endif
           memcpy (variable + k, cell->species_concentration,
-                  nspecies * sizeof (double));
-          k += nspecies;
+                  MAX_SPECIES * sizeof (double));
+          k += MAX_SPECIES;
+#if DEBUG_RESULTS
+	  for (l = 0; l < MAX_SPECIES; ++l)
+            fprintf (stderr, "results_set: species=%u infestation=%lg\n",
+                     l, cell->species_infestation[l]);
+#endif
           memcpy (variable + k, cell->species_infestation,
-                  nspecies * sizeof (double));
-          k += nspecies;
+                  MAX_SPECIES * sizeof (double));
+          k += MAX_SPECIES;
         }
     }
 #if DEBUG_RESULTS
@@ -316,6 +333,9 @@ results_open_xml (Results * results,
   fprintf (stderr, "results_open_xml: start\n");
 #endif
 
+  // init results file
+  file = NULL;
+
   // open file
   directory = g_path_get_dirname (file_name);
   doc = xmlParseFile (file_name);
@@ -359,6 +379,9 @@ results_open_xml (Results * results,
             }
           strncpy (id, (const char *) buffer, MAX_LABEL_LENGTH * sizeof (char));
           xmlFree (buffer);
+#if DEBUG_RESULTS
+          fprintf (stderr, "results_open_xml: point id=%s\n", id);
+#endif
           for (i = 0; i < header->npipes; ++i)
             {
               if (!strcmp (id, results->pipe_inlet_id + i * MAX_LABEL_LENGTH))
@@ -478,9 +501,18 @@ results_open_xml (Results * results,
                    MAX_LABEL_LENGTH * sizeof (char));
           for (j = 0; j < header->npoints; ++j)
             if (!strcmp (id, results->point_id + j * MAX_LABEL_LENGTH))
-              dx = (results->point_x[j] - x0) / (ncells - 1);
-          dy = (results->point_y[j] - y0) / (ncells - 1);
-          dz = (results->point_z[j] - z0) / (ncells - 1);
+	      {
+                dx = (results->point_x[j] - x0) / (ncells - 1);
+                dy = (results->point_y[j] - y0) / (ncells - 1);
+                dz = (results->point_z[j] - z0) / (ncells - 1);
+		break;
+	      }
+	  if (j == header->npoints)
+            {
+              fprintf (stderr, "ID=%s\n", id);
+              m = _("Bad point identifier");
+              goto exit_on_error;
+            }
           for (j = l = 0; j < ncells; ++j)
             {
               x = x0 + j * dx;
@@ -502,6 +534,9 @@ results_open_xml (Results * results,
     }
 
   // free memory
+#if DEBUG_RESULTS
+  fprintf (stderr, "results_open_xml: free memory\n");
+#endif
   free (variable);
   xmlFreeDoc (doc);
   g_free (directory);
@@ -517,13 +552,20 @@ results_open_xml (Results * results,
 exit_on_error:
 
   // set error message
+#if DEBUG_RESULTS
+  fprintf (stderr, "results_open_xml: exit on error (%s)\n", m);
+#endif
   results_error (m);
 
   // free memory
+#if DEBUG_RESULTS
+  fprintf (stderr, "results_open_xml: free memory\n");
+#endif
   free (variable);
   xmlFreeDoc (doc);
   g_free (directory);
-  fclose (file);
+  if (file)
+    fclose (file);
 
 #if DEBUG_RESULTS
   fprintf (stderr, "results_open_xml: end\n");

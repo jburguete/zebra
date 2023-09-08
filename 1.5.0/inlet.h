@@ -13,18 +13,20 @@
  */
 typedef struct
 {
+  double *solute_concentration[MAX_SOLUTES];
+  ///< array of pointers to arrays of solute concentration.
+  double *solute_time[MAX_SOLUTES];
+  ///< array of pointers to arrays of solute time.
+  double *species_concentration[MAX_SPECIES];
+  ///< array of pointers to arrays of species concentration.
+  double *species_time[MAX_SPECIES];
+  ///< array of pointers to arrays of species time.
+  unsigned int nsolute_times[MAX_SOLUTES];
+  ///< array of numbers of solute times.
+  unsigned int nspecies_times[MAX_SPECIES];
+  ///< array of numbers of species times.
   char id[MAX_LABEL_LENGTH];    ///< node identifier.
   Cell **cell;                  ///< array of pointers to cells.
-  double **solute_concentration;
-  ///< array of pointers to arrays of solute concentration.
-  double **solute_time;
-  ///< array of pointers to arrays of solute time.
-  double **species_concentration;
-  ///< array of pointers to arrays of species concentration.
-  double **species_time;
-  ///< array of pointers to arrays of species time.
-  unsigned int *nsolute_times;  ///< array of numbers of solute times.
-  unsigned int *nspecies_times; ///< array of numbers of species times.
   unsigned int ncells;          ///< number of cells.
 } Inlet;
 
@@ -49,10 +51,12 @@ inlet_maximum_time (Inlet * inlet,      ///< pointer to the inlet struct data.
   fprintf (stderr, "inlet_maximum_time: start\n");
 #endif
   tmax = maximum_time;
-  for (j = 0; j < nsolutes; ++j)
+  for (j = 0; j < MAX_SOLUTES; ++j)
     {
       date = inlet->solute_time[j];
       n = inlet->nsolute_times[j];
+      if (!n)
+        continue;
       last = n - 1;
       if (current_time >= date[last])
         continue;
@@ -72,10 +76,12 @@ inlet_maximum_time (Inlet * inlet,      ///< pointer to the inlet struct data.
         }
       tmax = t;
     }
-  for (j = 0; j < nspecies; ++j)
+  for (j = 0; j < MAX_SPECIES; ++j)
     {
       date = inlet->species_time[j];
       n = inlet->nspecies_times[j];
+      if (!n)
+        continue;
       last = n - 1;
       if (current_time >= date[last])
         continue;
@@ -118,21 +124,37 @@ inlet_set (Inlet * inlet,       ///< pointer to the inlet struct data.
 #endif
   cell = inlet->cell;
   ncells = inlet->ncells;
-  for (i = 0; i < nsolutes; ++i)
+  for (i = 0; i < MAX_SOLUTES; ++i)
     {
       n = inlet->nsolute_times[i];
-      v = inlet->solute_concentration[i];
-      t = inlet->solute_time[i];
-      variable = array_interpolate (time, t, v, n);
+#if DEBUG_INLET
+      fprintf (stderr, "inlet_set: solute=%u nsolute_times=%u\n", i, n);
+#endif
+      if (n)
+        {
+          v = inlet->solute_concentration[i];
+          t = inlet->solute_time[i];
+          variable = array_interpolate (time, t, v, n);
+	}
+      else
+        variable = 0.;
       for (j = 0; j < ncells; ++j)
         cell[j]->solute_concentration[i] = variable;
     }
-  for (i = 0; i < nspecies; ++i)
+  for (i = 0; i < MAX_SPECIES; ++i)
     {
       n = inlet->nspecies_times[i];
-      v = inlet->species_concentration[i];
-      t = inlet->species_time[i];
-      variable = array_interpolate (time, t, v, n);
+#if DEBUG_INLET
+      fprintf (stderr, "inlet_set: species=%u nspecies_times=%u\n", i, n);
+#endif
+      if (n)
+        {
+          v = inlet->species_concentration[i];
+          t = inlet->species_time[i];
+          variable = array_interpolate (time, t, v, n);
+	}
+      else
+        variable = 0.;
       for (j = 0; j < ncells; ++j)
         cell[j]->species_concentration[i] = variable;
     }

@@ -12,11 +12,11 @@
 #define DEBUG_CELL 0            ///< macro to debug the cell functions.
 #define DEBUG_INLET 0           ///< macro to debug the inlet functions.
 #define DEBUG_JUNCTION 0        ///< macro to debug the junction functions.
-#define DEBUG_MAIN 1            ///< macro to debug the main functions.
+#define DEBUG_MAIN 0            ///< macro to debug the main functions.
 #define DEBUG_NETWORK 0         ///< macro to debug the network functions.
 #define DEBUG_PIPE 0            ///< macro to debug the pipe functions.
-#define DEBUG_RESULTS 1         ///< macro to debug the results functions.
-#define DEBUG_SIMULATION 1      ///< macro to debug the simulation functions.
+#define DEBUG_RESULTS 0         ///< macro to debug the results functions.
+#define DEBUG_SIMULATION 0      ///< macro to debug the simulation functions.
 #define DEBUG_SOLUTE 0          ///< macro to debug the solute functions.
 #define DEBUG_SPECIES 0         ///< macro to debug the species functions.
 #define DEBUG_SPECIMEN 0        ///< macro to debug the specimen functions.
@@ -164,6 +164,8 @@
 ///< saving-step XML label.
 #define XML_SIMULATION          (const xmlChar *) "simulation"
 ///< simulation XML label.
+#define XML_SOLUBILITY          (const xmlChar *) "solubility"
+///< solubility XML label.
 #define XML_SPECIES             (const xmlChar *) "species"
 ///< species XML label.
 #define XML_TIME                (const xmlChar *) "time"

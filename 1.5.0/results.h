@@ -65,11 +65,21 @@ results_header_init (ResultsHeader * header,
   header->final_time = final_time;
   header->saving_step = saving_step;
   header->cell_size = network->cell_size;
-  header->nsolutes = nsolutes;
-  header->nspecies = nspecies;
+  header->nsolutes = MAX_SOLUTES;
+  header->nspecies = MAX_SPECIES;
   header->npoints = network->npoints;
   header->npipes = network->npipes;
 #if DEBUG_RESULTS
+  fprintf (stderr, "results_header_init: initial_time=%lg\n",
+           header->initial_time);
+  fprintf (stderr, "results_header_init: final_time=%lg\n", header->final_time);
+  fprintf (stderr, "results_header_init: saving_step=%lg\n",
+           header->saving_step);
+  fprintf (stderr, "results_header_init: cell_size=%lg\n", header->cell_size);
+  fprintf (stderr, "results_header_init: nsolutes=%u\n", header->nsolutes);
+  fprintf (stderr, "results_header_init: nspecies=%u\n", header->nspecies);
+  fprintf (stderr, "results_header_init: npoints=%u\n", header->npoints);
+  fprintf (stderr, "results_header_init: npipes=%u\n", header->npipes);
   fprintf (stderr, "results_header_init: end\n");
 #endif
 }
@@ -130,11 +140,11 @@ results_init (Results * results,
       results->pipe_length[i] = pipe[i].length;
       results->pipe_cell[i + 1] = j += pipe[i].ncells;
     }
-  results->nvariables = j *= nsolutes + 2 * nspecies;
+  results->nvariables = j *= MAX_SOLUTES + 2 * MAX_SPECIES;
   results->variable = (double *) malloc (j * sizeof (double));
 #if DEBUG_RESULTS
   fprintf (stderr, "results_init: nvariables=%u nsolutes=%u nspecies=%u\n",
-           j, nsolutes, nspecies);
+           j, MAX_SOLUTES, MAX_SPECIES);
   fprintf (stderr, "results_init: end\n");
 #endif
 }
@@ -155,14 +165,14 @@ results_write_header (Results * results,
   header = results->header;
   fwrite (header, sizeof (ResultsHeader), 1, file);
   n = header->npoints;
-  fwrite (results->point_id, sizeof (unsigned int), n, file);
+  fwrite (results->point_id, MAX_LABEL_LENGTH * sizeof (char), n, file);
   fwrite (results->point_x, sizeof (double), n, file);
   fwrite (results->point_y, sizeof (double), n, file);
   fwrite (results->point_z, sizeof (double), n, file);
   n = header->npipes;
-  fwrite (results->pipe_id, sizeof (unsigned int), n, file);
-  fwrite (results->pipe_inlet_id, sizeof (unsigned int), n, file);
-  fwrite (results->pipe_outlet_id, sizeof (unsigned int), n, file);
+  fwrite (results->pipe_id, MAX_LABEL_LENGTH * sizeof (char), n, file);
+  fwrite (results->pipe_inlet_id, MAX_LABEL_LENGTH * sizeof (char), n, file);
+  fwrite (results->pipe_outlet_id, MAX_LABEL_LENGTH * sizeof (char), n, file);
   fwrite (results->pipe_length, sizeof (double), n, file);
   fwrite (results->pipe_cell, sizeof (unsigned int), n + 1, file);
 #if DEBUG_RESULTS

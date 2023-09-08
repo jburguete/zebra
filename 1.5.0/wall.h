@@ -78,25 +78,25 @@ wall_set (Wall * wall,          ///< pointer to the mesh wall struct data.
   dn = wall->dn;
   ds = wall->ds;
   wall->vdt = vdt;
-  for (i = 0; i < nsolutes; ++i)
+  for (i = 0; i < MAX_SOLUTES; ++i)
     {
       in[i] = n2[i] - n1[i];
       dn[i] = vdt * in[i];
     }
-  for (i = 0; i < nspecies; ++i)
+  for (i = 0; i < MAX_SPECIES; ++i)
     {
       is[i] = s2[i] - s1[i];
       ds[i] = vdt * is[i];
     }
 #if DEBUG_WALL
   fprintf (stderr, "wall_set: vdt=%lg\n", vdt);
-  for (i = 0; i < nsolutes; ++i)
+  for (i = 0; i < MAX_SOLUTES; ++i)
     fprintf (stderr, "wall_set: i=%u n2=%lg n1=%lg\n", i, n2[i], n1[i]);
-  for (i = 0; i < nspecies; ++i)
+  for (i = 0; i < MAX_SPECIES; ++i)
     fprintf (stderr, "wall_set: i=%u s2=%lg s1=%lg\n", i, s2[i], s1[i]);
-  for (i = 0; i < nsolutes; ++i)
+  for (i = 0; i < MAX_SOLUTES; ++i)
     fprintf (stderr, "wall_set: i=%u in=%lg dn=%lg\n", i, in[i], dn[i]);
-  for (i = 0; i < nspecies; ++i)
+  for (i = 0; i < MAX_SPECIES; ++i)
     fprintf (stderr, "wall_set: i=%u is=%lg ds=%lg\n", i, is[i], ds[i]);
   fprintf (stderr, "wall_set: end\n");
 #endif
@@ -122,9 +122,9 @@ wall_increments_p (Wall * wall)
   dn = wall->dn;
   ds = wall->ds;
   dx = right->size;
-  for (i = 0; i < nsolutes; ++i)
+  for (i = 0; i < MAX_SOLUTES; ++i)
     n[i] -= dn[i] / dx;
-  for (i = 0; i < nspecies; ++i)
+  for (i = 0; i < MAX_SPECIES; ++i)
     s[i] -= ds[i] / dx;
 #if DEBUG_WALL
   fprintf (stderr, "wall_increments_p: end\n");
@@ -151,9 +151,9 @@ wall_increments_n (Wall * wall)
   dn = wall->dn;
   ds = wall->ds;
   dx = left->size;
-  for (i = 0; i < nsolutes; ++i)
+  for (i = 0; i < MAX_SOLUTES; ++i)
     n[i] -= dn[i] / dx;
-  for (i = 0; i < nspecies; ++i)
+  for (i = 0; i < MAX_SPECIES; ++i)
     s[i] -= ds[i] / dx;
 #if DEBUG_WALL
   fprintf (stderr, "wall_increments_n: end\n");
@@ -200,9 +200,9 @@ wall_set_2p (Wall * wall,       ///< pointer to the wall struct data.
   dn2 = wall->dn2;
   ds2 = wall->ds2;
   k = 0.5 * (1. - wall->vdt / wall->size);
-  for (i = 0; i < nsolutes; ++i)
+  for (i = 0; i < MAX_SOLUTES; ++i)
     dn2[i] = k * flux_limited (dnl[i], dnr[i]);
-  for (i = 0; i < nspecies; ++i)
+  for (i = 0; i < MAX_SPECIES; ++i)
     ds2[i] = k * flux_limited (dsl[i], dsr[i]);
 #if DEBUG_WALL
   fprintf (stderr, "wall_set_2n: end\n");
@@ -229,9 +229,9 @@ wall_set_2n (Wall * wall,       ///< pointer to the wall struct data.
   dn2 = wall->dn2;
   ds2 = wall->ds2;
   k = 0.5 * (1. + wall->vdt / wall->size);
-  for (i = 0; i < nsolutes; ++i)
+  for (i = 0; i < MAX_SOLUTES; ++i)
     dn2[i] = k * flux_limited (dnr[i], dnl[i]);
-  for (i = 0; i < nspecies; ++i)
+  for (i = 0; i < MAX_SPECIES; ++i)
     ds2[i] = k * flux_limited (dsr[i], dsl[i]);
 #if DEBUG_WALL
   fprintf (stderr, "wall_set_2n: end\n");
@@ -262,12 +262,12 @@ wall_increments_2p (Wall * wall)
   ds2 = wall->ds2;
   dx = left->size;
   dx2 = right->size;
-  for (i = 0; i < nsolutes; ++i)
+  for (i = 0; i < MAX_SOLUTES; ++i)
     {
       n[i] -= dn2[i] / dx;
       n2[i] += dn2[i] / dx2;
     }
-  for (i = 0; i < nspecies; ++i)
+  for (i = 0; i < MAX_SPECIES; ++i)
     {
       s[i] -= ds2[i] / dx;
       s2[i] += ds2[i] / dx2;
@@ -301,12 +301,12 @@ wall_increments_2n (Wall * wall)
   ds2 = wall->ds2;
   dx = left->size;
   dx2 = right->size;
-  for (i = 0; i < nsolutes; ++i)
+  for (i = 0; i < MAX_SOLUTES; ++i)
     {
       n[i] -= dn2[i] / dx;
       n2[i] += dn2[i] / dx2;
     }
-  for (i = 0; i < nspecies; ++i)
+  for (i = 0; i < MAX_SPECIES; ++i)
     {
       s[i] -= ds2[i] / dx;
       s2[i] += ds2[i] / dx2;

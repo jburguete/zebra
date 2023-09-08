@@ -72,7 +72,7 @@ cell_cling (Cell * cell,        ///< pointer to the cell struct data.
 #if DEBUG_CELL
   fprintf (stderr, "cell_cling: start\n");
 #endif
-  for (i = 0; i < nspecies; ++i)
+  for (i = 0; i < MAX_SPECIES; ++i)
     specimen_cling (cell->list_specimens + i, species + i, rng,
                     cell->species_concentration + i, cell->volume,
                     cell->lateral_area, cell->velocity, step,
@@ -90,48 +90,14 @@ cell_grow (Cell * cell,         ///< pointer to the cell struct data.
            double step)         ///< time step size.
 {
   GList *list;
-  double *nc[MAX_SOLUTES];
-  unsigned int i, n, ns;
+  unsigned int i;
 #if DEBUG_CELL
   fprintf (stderr, "cell_grow: start\n");
 #endif
-  n = ns = 0;
-  if (flags_solutes & SOLUTE_TYPE_CHLORINE)
-    ++ns;
-  if (flags_solutes & SOLUTE_TYPE_HYDROGEN_PEROXIDE)
-    ++ns;
-  if (flags_solutes & SOLUTE_TYPE_ORGANIC_MATTER)
-    {
-      nc[n] = cell->solute_concentration + ns;
-      ++n;
-      ++ns;
-    }
-  if (flags_solutes & SOLUTE_TYPE_OXYGEN)
-    {
-      nc[n] = cell->solute_concentration + ns;
-      ++n;
-      ++ns;
-    }
-  switch (n)
-    {
-    case 0:
-      for (i = 0; i < nspecies; ++i)
-        for (list = cell->list_specimens[i]; list; list = list->next)
-          specimen_grow (list->data, cell->volume, cell->velocity, step,
-                         cell->recirculation, 0);
-      break;
-    case 1:
-      for (i = 0; i < nspecies; ++i)
-        for (list = cell->list_specimens[i]; list; list = list->next)
-          specimen_grow (list->data, cell->volume, cell->velocity, step,
-                         cell->recirculation, 1, nc[0]);
-      break;
-    case 2:
-      for (i = 0; i < nspecies; ++i)
-        for (list = cell->list_specimens[i]; list; list = list->next)
-          specimen_grow (list->data, cell->volume, cell->velocity, step,
-                         cell->recirculation, 2, nc[0], nc[1]);
-    }
+  for (i = 0; i < MAX_SPECIES; ++i)
+    for (list = cell->list_specimens[i]; list; list = list->next)
+      specimen_grow (list->data, cell->volume, cell->velocity, step,
+                     cell->recirculation, cell->solute_concentration);
 #if DEBUG_CELL
   fprintf (stderr, "cell_grow: end\n");
 #endif
@@ -146,62 +112,15 @@ cell_dead (Cell * cell,         ///< pointer to the cell struct data.
            double step)         ///< time step size.
 {
   GList *list;
-  double *nc[MAX_SOLUTES];
-  unsigned int i, n, ns;
+  unsigned int i;
 #if DEBUG_CELL
   fprintf (stderr, "cell_dead: start\n");
 #endif
-  n = ns = 0;
-  if (flags_solutes & SOLUTE_TYPE_CHLORINE)
-    {
-      nc[n] = cell->solute_concentration + ns;
-      ++n;
-      ++ns;
-    }
-  if (flags_solutes & SOLUTE_TYPE_HYDROGEN_PEROXIDE)
-    {
-      nc[n] = cell->solute_concentration + ns;
-      ++n;
-      ++ns;
-    }
-  if (flags_solutes & SOLUTE_TYPE_ORGANIC_MATTER)
-    ++ns;
-  if (flags_solutes & SOLUTE_TYPE_OXYGEN)
-    {
-      nc[n] = cell->solute_concentration + ns;
-      ++n;
-      ++ns;
-    }
-  switch (n)
-    {
-    case 0:
-      for (i = 0; i < nspecies; ++i)
-        for (list = cell->list_specimens[i]; list; list = list->next)
-          if (specimen_dead (list->data, rng, cell->velocity, step,
-                             cell->recirculation, 0))
-            list = g_list_remove (list, list->data);
-      break;
-    case 1:
-      for (i = 0; i < nspecies; ++i)
-        for (list = cell->list_specimens[i]; list; list = list->next)
-          if (specimen_dead (list->data, rng, cell->velocity, step,
-                             cell->recirculation, 1, nc[0]))
-            list = g_list_remove (list, list->data);
-      break;
-    case 2:
-      for (i = 0; i < nspecies; ++i)
-        for (list = cell->list_specimens[i]; list; list = list->next)
-          if (specimen_dead (list->data, rng, cell->velocity, step,
-                             cell->recirculation, 2, nc[0], nc[1]))
-            list = g_list_remove (list, list->data);
-      break;
-    case 3:
-      for (i = 0; i < nspecies; ++i)
-        for (list = cell->list_specimens[i]; list; list = list->next)
-          if (specimen_dead (list->data, rng, cell->velocity, step,
-                             cell->recirculation, 3, nc[0], nc[1], nc[2]))
-            list = g_list_remove (list, list->data);
-    }
+  for (i = 0; i < MAX_SPECIES; ++i)
+    for (list = cell->list_specimens[i]; list; list = list->next)
+      if (specimen_dead (list->data, rng, cell->velocity, step,
+                         cell->recirculation, cell->solute_concentration))
+        list = g_list_remove (list, list->data);
 #if DEBUG_CELL
   fprintf (stderr, "cell_dead: end\n");
 #endif
@@ -213,10 +132,13 @@ cell_dead (Cell * cell,         ///< pointer to the cell struct data.
 static inline void
 cell_infestations (Cell * cell) ///< pointer to the cell struct data.
 {
+#if DEBUG_CELL
+  fprintf (stderr, "cell_infestations: start\n");
+#endif
   Specimen *specimen;
   GList *list;
   unsigned int i;
-  for (i = 0; i < nspecies; ++i)
+  for (i = 0; i < MAX_SPECIES; ++i)
     {
       cell->species_infestation[i] = 0.;
       for (list = cell->list_specimens[i]; list; list = list->next)
@@ -226,6 +148,9 @@ cell_infestations (Cell * cell) ///< pointer to the cell struct data.
         }
       cell->species_infestation[i] /= cell->lateral_area;
     }
+#if DEBUG_CELL
+  fprintf (stderr, "cell_infestations: end\n");
+#endif
 }
 
 #endif
