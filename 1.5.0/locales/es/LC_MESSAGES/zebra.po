@@ -51,7 +51,7 @@ msgstr "Desconocido"
 
 #: solute.c:160
 msgid "Bad solubility"
-msgstr ""
+msgstr "Solubilidad incorrecta"
 
 #: solute.c:167
 msgid "Bad time decay rate"
