@@ -73,6 +73,9 @@ simulation_run (Simulation * simulation)
   network_initial (network);
   results_init (results, network, initial_time, final_time, saving_step);
   results_set (results, network);
+#if DEBUG_SIMULATION
+  fprintf (stderr, "simulation_run: results file=%s\n", simulation->results);
+#endif
   file = fopen (simulation->results, "wb");
   results_write_header (results, file);
 

@@ -13,7 +13,7 @@
  */
 typedef struct
 {
-  Species *species;             ///< species.
+  Species *species;             ///< pointer to the species struct data.
   double size;                  ///< size.
   double age;                   ///< age.
 } Specimen;
@@ -90,11 +90,8 @@ specimen_grow (Specimen * specimen,
                double velocity, ///< flow velocity.
                double step,     ///< time step size.
                unsigned int recirculation,      ///< flow recirculation zone.
-               unsigned int n,  ///< number of solutes.
-               ...)
+               double *solute)  ///< array of solute concentrations.
 {
-  static double z = 0.;
-  va_list list;
   Species *species;
   double *organic_matter, *oxygen;
   double v, o2, o2d, om;
@@ -104,15 +101,8 @@ specimen_grow (Specimen * specimen,
 #endif
 
   // get solute concentrations
-  va_start (list, n);
-  if (flags_solutes & SOLUTE_TYPE_ORGANIC_MATTER)
-    organic_matter = va_arg (list, double *);
-  else
-    organic_matter = &z;
-  if (flags_solutes & SOLUTE_TYPE_OXYGEN)
-    oxygen = va_arg (list, double *);
-  else
-    oxygen = &z;
+  organic_matter = solute + SOLUTE_TYPE_ORGANIC_MATTER;
+  oxygen = solute + SOLUTE_TYPE_OXYGEN;
 
   // get species
   species = specimen->species;
@@ -137,7 +127,6 @@ specimen_grow (Specimen * specimen,
 
   // exit
 no_growing:
-  va_end (list);
 #if DEBUG_SPECIMEN
   fprintf (stderr, "specimen_grow: end\n");
 #endif
@@ -154,10 +143,8 @@ specimen_dead (Specimen * specimen,
                double velocity, ///< flow velocity.
                double step,     ///< time step size.
                unsigned int recirculation,      ///< flow recirculation zone.
-               unsigned int n,  ///< number of solutes.
-               ...)
+               double *solute)  ///< array of solute concentrations.
 {
-  va_list list;
   Species *species;
   double *chlorine, *hydrogen_peroxide, *oxygen;
 
@@ -170,43 +157,30 @@ specimen_dead (Specimen * specimen,
 
   // check maximum velocity and flow recirculation
   if (velocity > species->maximum_velocity && !recirculation)
-    goto dead0;
+    goto dead;
 
   // check solute limitants 
-  va_start (list, n);
-  if (flags_solutes & SOLUTE_TYPE_CHLORINE)
-    {
-      chlorine = va_arg (list, double *);
-      if (*chlorine > species->maximum_chlorine)
-        goto dead;
-    }
-  if (flags_solutes & SOLUTE_TYPE_HYDROGEN_PEROXIDE)
-    {
-      hydrogen_peroxide = va_arg (list, double *);
-      if (*hydrogen_peroxide > species->maximum_hydrogen_peroxide)
-        goto dead;
-    }
-  if (flags_solutes & SOLUTE_TYPE_OXYGEN)
-    {
-      oxygen = va_arg (list, double *);
-      if (*oxygen < species->minimum_oxygen)
-        goto dead;
-    }
+  chlorine = solute + SOLUTE_TYPE_CHLORINE;
+  if (*chlorine > species->maximum_chlorine)
+    goto dead;
+  hydrogen_peroxide = solute + SOLUTE_TYPE_HYDROGEN_PEROXIDE;
+  if (*hydrogen_peroxide > species->maximum_hydrogen_peroxide)
+    goto dead;
+  oxygen = solute + SOLUTE_TYPE_OXYGEN;
+  if (*oxygen < species->minimum_oxygen)
+    goto dead;
 
   // decay
   if (gsl_rng_uniform (rng) < species->decay * step)
     goto dead;
 
   // exit
-  va_end (list);
 #if DEBUG_SPECIMEN
   fprintf (stderr, "specimen_dead: end\n");
 #endif
   return 0;
 
 dead:
-  va_end (list);
-dead0:
 #if DEBUG_SPECIMEN
   fprintf (stderr, "specimen_dead: end\n");
 #endif

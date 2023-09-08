@@ -235,8 +235,8 @@ pipe_initial (Pipe * pipe,      ///< pointer to the pipe struct data.
   fprintf (stderr, "pipe_initial: start\n");
 #endif
   n = pipe->ncells;
-  sn = nsolutes * sizeof (double);
-  ss = nspecies * sizeof (double);
+  sn = MAX_SOLUTES * sizeof (double);
+  ss = MAX_SPECIES * sizeof (double);
   for (i = 0; i < n; ++i)
     {
       cell = pipe->cell + i;
@@ -340,7 +340,7 @@ pipe_dispersion_step (Pipe * pipe,      ///< pointer to the pipe struct data.
   for (i = 1; i < pipe->nwalls; ++i)
     E[i] = C[i - 1] = k;
   C[i - 1] = 0.;
-  for (j = 0; j < nsolutes; ++j)
+  for (j = 0; j < MAX_SOLUTES; ++j)
     {
       D[0] = 1.;
       H[0] = cell[0].solute_concentration[j];
@@ -356,7 +356,7 @@ pipe_dispersion_step (Pipe * pipe,      ///< pointer to the pipe struct data.
       for (i = 1; i < pipe->nwalls; ++i)
         cell[i].solute_concentration[j] = H[i];
     }
-  for (j = 0; j < nspecies; ++j)
+  for (j = 0; j < MAX_SPECIES; ++j)
     {
       D[0] = 1.;
       H[0] = cell[0].species_concentration[j];
@@ -410,10 +410,17 @@ static inline void
 pipe_infestations (Pipe * pipe) ///< pointer to the pipe struct data.
 {
   Cell *cell;
-  unsigned int i;
+  unsigned int i, ncells;
+#if DEBUG_PIPE
+  fprintf (stderr, "pipe_infestations: start\n");
+#endif
+  ncells = pipe->ncells;
   cell = pipe->cell;
-  for (i = 0; i < nspecies; ++i)
+  for (i = 0; i < ncells; ++i)
     cell_infestations (cell + i);
+#if DEBUG_PIPE
+  fprintf (stderr, "pipe_infestations: end\n");
+#endif
 }
 
 #endif

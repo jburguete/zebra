@@ -10,7 +10,7 @@
 ///> enum to define the species types.
 enum SpeciesType
 {
-  SPECIES_TYPE_ZEBRA_MUSSEL = 1,        ///< zebra mussel.
+  SPECIES_TYPE_ZEBRA_MUSSEL = 0,        ///< zebra mussel.
 };
 
 /**
@@ -42,34 +42,10 @@ typedef struct
   unsigned int type;            ///< type.
 } Species;
 
-extern Species *species;
-extern GHashTable *hash_species;
-extern unsigned int nspecies;
-extern unsigned int flags_species;
+extern Species species[MAX_SPECIES];
 
 void species_destroy ();
+unsigned int species_index (const xmlChar *name);
 int species_open_xml (char *file_name);
-
-/**
- * function to get the index of a species.
- *
- * \return species index.
- */
-static inline unsigned int
-species_index (const char *id)  ///< identifier label.
-{
-  Species *s;
-  size_t i;
-#if DEBUG_SPECIES
-  fprintf (stderr, "species_index: start\n");
-#endif
-  s = (Species *) g_hash_table_lookup (hash_species, id);
-  i = ((size_t) s - (size_t) species) / sizeof (Species);
-#if DEBUG_SPECIES
-  fprintf (stderr, "species_index: index=%lu\n", i);
-  fprintf (stderr, "species_index: end\n");
-#endif
-  return (unsigned int) i;
-}
 
 #endif

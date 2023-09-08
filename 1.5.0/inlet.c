@@ -38,13 +38,21 @@ inlet_error (Inlet * inlet,     ///< pointer to the inlet struct data.
 static inline void
 inlet_null (Inlet * inlet)      ///< pointer to the inlet struct data.
 {
+  unsigned int i;
 #if DEBUG_INLET
   fprintf (stderr, "inlet_null: start\n");
 #endif
   inlet->cell = NULL;
-  inlet->solute_concentration = inlet->solute_time
-    = inlet->species_concentration = inlet->species_time = NULL;
-  inlet->nsolute_times = inlet->nspecies_times = NULL;
+  for (i = 0; i < MAX_SOLUTES; ++i)
+    {
+      inlet->nsolute_times[i] = 0;
+      inlet->solute_concentration[i] = inlet->solute_time[i] = NULL;
+    }
+  for (i = 0; i < MAX_SPECIES; ++i)
+    {
+      inlet->nspecies_times[i] = 0;
+      inlet->species_concentration[i] = inlet->species_time[i] = NULL;
+    }
   inlet->ncells = 0;
   inlet->id[0] = 0;
 #if DEBUG_INLET
@@ -62,33 +70,17 @@ inlet_destroy (Inlet * inlet)   ///< pointer to the inlet struct data.
 #if DEBUG_INLET
   fprintf (stderr, "inlet_destroy: start\n");
 #endif
+  for (i = 0; i < MAX_SOLUTES; ++i)
+    {
+      free (inlet->solute_concentration[i]);
+      free (inlet->solute_time[i]);
+    }
+  for (i = 0; i < MAX_SPECIES; ++i)
+    {
+      free (inlet->species_concentration[i]);
+      free (inlet->species_time[i]);
+    }
   free (inlet->cell);
-  if (inlet->solute_concentration)
-    {
-      for (i = 0; i < nsolutes; ++i)
-        free (inlet->solute_concentration[i]);
-      free (inlet->solute_concentration);
-    }
-  if (inlet->solute_time)
-    {
-      for (i = 0; i < nsolutes; ++i)
-        free (inlet->solute_time[i]);
-      free (inlet->solute_time);
-    }
-  free (inlet->nsolute_times);
-  if (inlet->species_concentration)
-    {
-      for (i = 0; i < nspecies; ++i)
-        free (inlet->species_concentration[i]);
-      free (inlet->species_concentration);
-    }
-  if (inlet->species_time)
-    {
-      for (i = 0; i < nspecies; ++i)
-        free (inlet->species_time[i]);
-      free (inlet->species_time);
-    }
-  free (inlet->nspecies_times);
   inlet_null (inlet);
 #if DEBUG_INLET
   fprintf (stderr, "inlet_destroy: end\n");
@@ -167,8 +159,6 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
   char name[BUFFER_SIZE];
   Cell *cell;
   xmlChar *buffer;
-  double **c, **t;
-  unsigned int *n;
   const char *m;
   double x;
   int e;
@@ -206,28 +196,6 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
       goto exit_on_error;
     }
 
-  // allocating arrays
-  inlet->solute_concentration = c
-    = (double **) malloc (nsolutes * sizeof (double *));
-  inlet->solute_time = t = (double **) malloc (nsolutes * sizeof (double *));
-  inlet->nsolute_times = n
-    = (unsigned int *) malloc (nsolutes * sizeof (unsigned int));
-  for (i = 0; i < nsolutes; ++i)
-    {
-      c[i] = t[i] = NULL;
-      n[i] = 0;
-    }
-  inlet->species_concentration = c
-    = (double **) malloc (nspecies * sizeof (double *));
-  inlet->species_time = t = (double **) malloc (nspecies * sizeof (double *));
-  inlet->nspecies_times = n
-    = (unsigned int *) malloc (nspecies * sizeof (unsigned int));
-  for (i = 0; i < nspecies; ++i)
-    {
-      c[i] = t[i] = NULL;
-      n[i] = 0;
-    }
-
   // reading inlet
   for (node = node->children; node; node = node->next)
     {
@@ -240,21 +208,21 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
               m = _("No solute name");
               goto exit_on_error;
             }
-          i = solute_index ((const char *) buffer);
-          if (i == nsolutes)
+          i = solute_index (buffer);
+          if (i == MAX_SOLUTES)
             {
               m = _("Unknown solute");
               goto exit_on_error;
             }
           xmlFree (buffer);
-	  x = xml_node_get_float_with_default (node, XML_INITIAL_CONDITIONS, &e,
+          x = xml_node_get_float_with_default (node, XML_INITIAL_CONDITIONS, &e,
                                                0.);
-	  if (!e || x < 0.)
+          if (!e || x < 0.)
             {
               m = _("Bad initial conditions");
-	      goto exit_on_error;
-	    }
-	  solute[i].initial_conditions = x;
+              goto exit_on_error;
+            }
+          solute[i].initial_conditions = x;
           buffer = xmlGetProp (node, XML_FILE);
           if (!buffer)
             {
@@ -280,8 +248,8 @@ inlet_open_xml (Inlet * inlet,  ///< pointer to the inlet struct data.
               m = _("No species name");
               goto exit_on_error;
             }
-          i = species_index ((const char *) buffer);
-          if (i == nspecies)
+          i = species_index (buffer);
+          if (i == MAX_SPECIES)
             {
               m = _("Unknown species");
               goto exit_on_error;

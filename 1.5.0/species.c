@@ -15,10 +15,7 @@
 #include "solute.h"
 #include "species.h"
 
-Species *species;               ///< array of species struct data.
-GHashTable *hash_species;       ///< hash table of species names.
-unsigned int nspecies;          ///< number of species.
-unsigned int flags_species;     ///< species flags.
+Species species[MAX_SPECIES];   ///< array of species struct data.
 
 /**
  * function to set an error message opening a species input file.
@@ -27,28 +24,11 @@ static inline void
 species_error (Species * s,     ///< species struct data.
                const char *msg) ///< error message.
 {
-  char *name;
+  const char *name;
   name = NULL;
   if (s && s->name)
-    name = (char *) s->name;
+    name = (const char *) s->name;
   error_message (_("Species"), name, (char *) g_strdup (msg));
-}
-
-/**
- * function to init null species data.
- */
-static void
-species_null ()
-{
-#if DEBUG_SPECIES
-  fprintf (stderr, "species_null: start\n");
-#endif
-  species = NULL;
-  hash_species = NULL;
-  nspecies = flags_species = 0;
-#if DEBUG_SPECIES
-  fprintf (stderr, "species_null: end\n");
-#endif
 }
 
 /**
@@ -61,15 +41,33 @@ species_destroy ()
 #if DEBUG_SPECIES
   fprintf (stderr, "species_destroy: start\n");
 #endif
-  for (i = 0; i < nspecies; ++i)
+  for (i = 0; i < MAX_SPECIES; ++i)
     xmlFree (species[i].name);
-  free (species);
-  if (hash_species)
-    g_hash_table_destroy (hash_species);
-  species_null ();
 #if DEBUG_SPECIES
   fprintf (stderr, "species_destroy: end\n");
 #endif
+}
+
+/**
+ * function to get the index of a species.
+ *
+ * \return species index.
+ */
+unsigned int
+species_index (const xmlChar *name)     ///< species name.
+{
+  unsigned int i;
+#if DEBUG_SOLUTE
+  fprintf (stderr, "species_index: start\n");
+#endif
+  if (!xmlStrcmp (name, XML_ZEBRA_MUSSEL))
+    i = SPECIES_TYPE_ZEBRA_MUSSEL;
+  else
+    i = MAX_SPECIES;
+#if DEBUG_SOLUTE
+  fprintf (stderr, "species_index: end\n");
+#endif
+  return i;
 }
 
 /**
@@ -83,6 +81,8 @@ species_open_xml (char *file_name)      ///< input file name.
   Species *s;
   xmlDoc *doc;
   xmlNode *node;
+  xmlChar *name;
+  GHashTable *hash;
   const char *m;
   int k;
   unsigned int i;
@@ -91,8 +91,9 @@ species_open_xml (char *file_name)      ///< input file name.
 #if DEBUG_SPECIES
   fprintf (stderr, "species_open_xml: start\n");
 #endif
-  species_null ();
-  s = NULL;
+  for (i = 0; i < MAX_SPECIES; ++i)
+    species[i].name = NULL;
+  hash = NULL;
 
   // open file
   doc = xmlParseFile (file_name);
@@ -103,7 +104,6 @@ species_open_xml (char *file_name)      ///< input file name.
     }
 
   // open root XML node
-  hash_species = g_hash_table_new (g_str_hash, g_str_equal);
   node = xmlDocGetRootElement (doc);
   if (!node)
     {
@@ -117,37 +117,37 @@ species_open_xml (char *file_name)      ///< input file name.
     }
 
   // reading species
+  hash = g_hash_table_new (g_str_hash, g_str_equal);
   for (node = node->children; node; node = node->next)
     {
-      i = nspecies;
-      ++nspecies;
-      species = (Species *) realloc (species, nspecies * sizeof (Species));
-      s = species + i;
+      s = NULL;
       if (xmlStrcmp (node->name, XML_SPECIES))
         {
           m = _("Bad XML node");
-          s->name = NULL;
           goto exit_on_error;
         }
-      s->name = xmlGetProp (node, XML_NAME);
-      if (!s->name)
+      name = xmlGetProp (node, XML_NAME);
+      if (!name)
         {
           m = _("Bad name");
           goto exit_on_error;
         }
-      if (g_hash_table_contains (hash_species, s->name))
+      if (g_hash_table_contains (hash, name))
         {
           m = _("Duplicated name");
+	  xmlFree (name);
           goto exit_on_error;
         }
-      if (!xmlStrcmp (s->name, XML_ZEBRA_MUSSEL))
-        s->type = SPECIES_TYPE_ZEBRA_MUSSEL;
-      else
+      i = species_index (name);
+      if (i == MAX_SPECIES)
         {
           m = _("Unknown");
+	  xmlFree (name);
           goto exit_on_error;
         }
-      flags_species |= s->type;
+      s = species + i;
+      s->name = name;
+      s->type = i;
       s->maximum_velocity
         = xml_node_get_float_with_default (node, XML_MAXIMUM_VELOCITY, &k, 0.);
       if (!k || s->maximum_velocity < 0.)
@@ -262,23 +262,17 @@ species_open_xml (char *file_name)      ///< input file name.
           m = _("Bad hydrogen peroxide decay");
           goto exit_on_error;
         }
-      g_hash_table_insert (hash_species, s->name, NULL);
-      if (nspecies == MAX_SPECIES)
-        break;
+      g_hash_table_insert (hash, name, NULL);
     }
 
-  if (!nspecies)
+  if (!g_hash_table_size (hash))
     {
       m = _("No species");
       goto exit_on_error;
     }
 
-  // hash table of species
-  g_hash_table_remove_all (hash_species);
-  for (i = 0; i < nspecies; ++i)
-    g_hash_table_insert (hash_species, species[i].name, species + i);
-
   // free memory
+  g_hash_table_destroy (hash);
   xmlFreeDoc (doc);
 
   // exit on success
@@ -294,6 +288,8 @@ exit_on_error:
   species_error (s, m);
 
   // free memory on error
+  if (hash)
+    g_hash_table_destroy (hash);
   xmlFreeDoc (doc);
   species_destroy ();
 

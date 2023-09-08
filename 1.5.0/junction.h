@@ -170,27 +170,27 @@ junction_set (Junction * junction)
   fprintf (stderr, "junction_set: start\n");
 #endif
   n = junction->ncells;
-  for (j = 0; j < nsolutes; ++j)
+  for (j = 0; j < MAX_SOLUTES; ++j)
     nc[j] = 0.;
-  for (j = 0; j < nspecies; ++j)
+  for (j = 0; j < MAX_SPECIES; ++j)
     sc[j] = 0.;
   for (i = 0; i < n; ++i)
     {
       cell = junction->cell[i];
-      for (j = 0; j < nsolutes; ++j)
+      for (j = 0; j < MAX_SOLUTES; ++j)
         nc[j] += cell->volume * cell->solute_concentration[j];
-      for (j = 0; j < nspecies; ++j)
+      for (j = 0; j < MAX_SPECIES; ++j)
         sc[j] += cell->volume * cell->species_concentration[j];
     }
-  for (j = 0; j < nsolutes; ++j)
+  for (j = 0; j < MAX_SOLUTES; ++j)
     nc[j] /= junction->volume;
-  for (j = 0; j < nspecies; ++j)
+  for (j = 0; j < MAX_SPECIES; ++j)
     sc[j] /= junction->volume;
   for (i = 0; i < n; ++i)
     {
       cell = junction->cell[i];
-      memcpy (cell->solute_concentration, nc, nsolutes * sizeof (double));
-      memcpy (cell->species_concentration, sc, nspecies * sizeof (double));
+      memcpy (cell->solute_concentration, nc, MAX_SOLUTES * sizeof (double));
+      memcpy (cell->species_concentration, sc, MAX_SPECIES * sizeof (double));
     }
 #if DEBUG_JUNCTION
   fprintf (stderr, "junction_set: end\n");
