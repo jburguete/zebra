@@ -18,7 +18,7 @@ fi
 aclocal
 autoconf
 automake --add-missing
-./configure $a1 $a2 $a3
+./configure $a1 $a2
 if test -x "`command -v gmake`"; then
 	gmake $a3
 else
