@@ -64,10 +64,18 @@ specimen_cling (GList ** list_specimens,
   cling = species->cling * (*concentration) * lateral_area * step;
   for (n = 0; (r = gsl_rng_uniform (rng)) < cling; ++n)
     {
+#if DEBUG_SPECIMEN
+      fprintf (stderr, "specimen_cling: specimen-list=%lu\n",
+               (size_t) *list_specimens);
+#endif
       specimen = (Specimen *) malloc (sizeof (Specimen));
       specimen_init (specimen, species);
       *list_specimens = g_list_prepend (*list_specimens, specimen);
       cling -= r;
+#if DEBUG_SPECIMEN
+      fprintf (stderr, "specimen_cling: specimen-list=%lu\n",
+               (size_t) *list_specimens);
+#endif
     }
   *concentration = fmax (0., *concentration - n / volume);
 
@@ -156,32 +164,53 @@ specimen_dead (Specimen * specimen,
   species = specimen->species;
 
   // check maximum velocity and flow recirculation
+#if DEBUG_SPECIMEN
+  fprintf (stderr, "specimen_dead: velocity=%lg maximum=%lg recirculation=%u\n",
+           velocity, species->maximum_velocity, recirculation);
+#endif
   if (velocity > species->maximum_velocity && !recirculation)
     goto dead;
 
   // check solute limitants 
   chlorine = solute + SOLUTE_TYPE_CHLORINE;
+#if DEBUG_SPECIMEN
+  fprintf (stderr, "specimen_dead: chlorine=%lg maximum=%lg\n",
+           *chlorine, species->maximum_chlorine);
+#endif
   if (*chlorine > species->maximum_chlorine)
     goto dead;
   hydrogen_peroxide = solute + SOLUTE_TYPE_HYDROGEN_PEROXIDE;
+#if DEBUG_SPECIMEN
+  fprintf (stderr, "specimen_dead: hydrogen-peroxide=%lg maximum=%lg\n",
+           *hydrogen_peroxide, species->maximum_chlorine);
+#endif
   if (*hydrogen_peroxide > species->maximum_hydrogen_peroxide)
     goto dead;
   oxygen = solute + SOLUTE_TYPE_OXYGEN;
+#if DEBUG_SPECIMEN
+  fprintf (stderr, "specimen_dead: oxygen=%lg minimum=%lg\n",
+           *oxygen, species->minimum_oxygen);
+#endif
   if (*oxygen < species->minimum_oxygen)
     goto dead;
 
   // decay
+#if DEBUG_SPECIMEN
+  fprintf (stderr, "specimen_dead: decay=%lg step=%lg\n", species->decay, step);
+#endif
   if (gsl_rng_uniform (rng) < species->decay * step)
     goto dead;
 
   // exit
 #if DEBUG_SPECIMEN
+  fprintf (stderr, "specimen_dead: alive\n");
   fprintf (stderr, "specimen_dead: end\n");
 #endif
   return 0;
 
 dead:
 #if DEBUG_SPECIMEN
+  fprintf (stderr, "specimen_dead: dead\n");
   fprintf (stderr, "specimen_dead: end\n");
 #endif
   return 1;

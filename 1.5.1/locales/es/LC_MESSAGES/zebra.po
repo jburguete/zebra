@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.0\n"
+"Project-Id-Version: 1.5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-05 01:18+0200\n"
+"POT-Creation-Date: 2023-09-13 15:38+0200\n"
 "PO-Revision-Date: 2021-06-15 01:12+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -25,15 +25,15 @@ msgstr "Soluto"
 msgid "Bad input file"
 msgstr "Fichero de entrada incorrecto"
 
-#: solute.c:115 species.c:110 network.c:715 results.c:352 simulation.c:82
+#: solute.c:115 species.c:110 network.c:715 results.c:360 simulation.c:82
 msgid "No root XML node"
 msgstr "Falta nodo XML raíz"
 
-#: solute.c:120 species.c:115 network.c:720 results.c:357 simulation.c:87
+#: solute.c:120 species.c:115 network.c:720 results.c:365 simulation.c:87
 msgid "Bad root XML node"
 msgstr "Nodo XML raíz incorrecto"
 
-#: solute.c:131 species.c:126 network.c:818 results.c:531
+#: solute.c:131 species.c:126 network.c:818 results.c:539
 msgid "Bad XML node"
 msgstr "Nodo XML incorrecto"
 
@@ -261,7 +261,7 @@ msgstr "Mismo nodo para entrada y salida"
 msgid "Unable to open the file"
 msgstr "No se pudo abrir el fichero"
 
-#: network.c:628 results.c:171
+#: network.c:628 results.c:179
 msgid "Bad header"
 msgstr "Cabecera incorrecta"
 
@@ -313,119 +313,119 @@ msgstr "Faltan caudales"
 msgid "Results"
 msgstr "Resultados"
 
-#: results.c:163
+#: results.c:171
 msgid "Unable to open the results data base file"
 msgstr "No se pudo abrir el fichero de la base de datos de resultados"
 
-#: results.c:176 simulation.c:101
+#: results.c:184 simulation.c:101
 msgid "Bad final time"
 msgstr "Tiempo final incorrecto"
 
-#: results.c:181 simulation.c:128
+#: results.c:189 simulation.c:128
 msgid "Bad saving time step size"
 msgstr "Tamaño de paso de tiemp de guardado incorrecto"
 
-#: results.c:186 simulation.c:122
+#: results.c:194 simulation.c:122
 msgid "Bad cell size"
 msgstr "Tamaño de celda incorrecto"
 
-#: results.c:191
+#: results.c:199
 msgid "Bad solutes number"
 msgstr "Número de solutos incorrecto"
 
-#: results.c:196
+#: results.c:204
 msgid "Bad species number"
 msgstr "Número de especies incorrecto"
 
-#: results.c:201
+#: results.c:209
 msgid "Bad points number"
 msgstr "Número de puntos incorrecto"
 
-#: results.c:206
+#: results.c:214
 msgid "Bad pipes number"
 msgstr "Número de tubos incorrecto"
 
-#: results.c:215
+#: results.c:223
 msgid "Bad point identifiers"
 msgstr "Identificadores de nodos incorrectos"
 
-#: results.c:221
+#: results.c:229
 msgid "Bad point x-coordinates"
 msgstr "Coordenadas x de puntos incorrectas"
 
-#: results.c:227
+#: results.c:235
 msgid "Bad point y-coordinates"
 msgstr "Coordenadas y de puntos incorrectas"
 
-#: results.c:233
+#: results.c:241
 msgid "Bad point z-coordinates"
 msgstr "Coordenadas z de puntos incorrectas"
 
-#: results.c:240
+#: results.c:248
 msgid "Bad pipe identifiers"
 msgstr "Identificadores de tubos incorrectos"
 
-#: results.c:248
+#: results.c:256
 msgid "Bad pipe inlet identifiers"
 msgstr "Identificadores de entradas de tubos incorrectos"
 
-#: results.c:256
+#: results.c:264
 msgid "Bad pipe outlet identifiers"
 msgstr "Identificadores de salidas de tubos incorrectos"
 
-#: results.c:262
+#: results.c:270
 msgid "Bad pipe lengths"
 msgstr "Lungiudes de tubos incorrectas"
 
-#: results.c:268
+#: results.c:276
 msgid "Bad pipe length"
 msgstr "Longitud de tubo incorrecta"
 
-#: results.c:275
+#: results.c:283
 msgid "Bad cell numbers"
 msgstr "Números de celda incorrectos"
 
-#: results.c:344
+#: results.c:352
 msgid "Bad configuration file"
 msgstr "Fichero de configuración incorrecto"
 
-#: results.c:376 results.c:513
+#: results.c:384 results.c:521
 msgid "Bad point identifier"
 msgstr "Identificador de punto incorrecto"
 
-#: results.c:403
+#: results.c:411
 msgid "Unknown point identifier"
 msgstr "Identificador de punto desconocido"
 
-#: results.c:409
+#: results.c:417
 msgid "No point file"
 msgstr "Falta fichero de punto"
 
-#: results.c:417
+#: results.c:425
 msgid "Bad point file"
 msgstr "Fichero de punto incorrecto"
 
-#: results.c:445
+#: results.c:453
 msgid "Bad pipe identifier"
 msgstr "Identificador de tubo incorrecto"
 
-#: results.c:456
+#: results.c:464
 msgid "Unknown pipe identifier"
 msgstr "Identicador de tubo desconocido"
 
-#: results.c:462
+#: results.c:470
 msgid "Bad pipe time"
 msgstr "Tiempo de tubo incorrecto"
 
-#: results.c:468
+#: results.c:476
 msgid "No pipe file"
 msgstr "Falta el fichero de tubo"
 
-#: results.c:476
+#: results.c:484
 msgid "Bad pipe file"
 msgstr "Fichero de tubo incorrecto"
 
-#: results.c:489
+#: results.c:497
 msgid "Bad data base"
 msgstr "Base de datos incorrecta"
 

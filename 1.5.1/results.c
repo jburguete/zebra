@@ -122,10 +122,18 @@ results_set (Results * results,
           k += MAX_SPECIES;
 #if DEBUG_RESULTS
 	  for (l = 0; l < MAX_SPECIES; ++l)
-            fprintf (stderr, "results_set: species=%u infestation=%lg\n",
-                     l, cell->species_infestation[l]);
+            fprintf (stderr, "results_set: species=%u infestation-number=%lg\n",
+                     l, cell->species_infestation_number[l]);
 #endif
-          memcpy (variable + k, cell->species_infestation,
+          memcpy (variable + k, cell->species_infestation_number,
+                  MAX_SPECIES * sizeof (double));
+          k += MAX_SPECIES;
+#if DEBUG_RESULTS
+	  for (l = 0; l < MAX_SPECIES; ++l)
+            fprintf (stderr, "results_set: species=%u infestation-volume=%lg\n",
+                     l, cell->species_infestation_volume[l]);
+#endif
+          memcpy (variable + k, cell->species_infestation_volume,
                   MAX_SPECIES * sizeof (double));
           k += MAX_SPECIES;
         }
@@ -279,7 +287,7 @@ results_open_bin (Results * results,
   // check identifiers
 
   // saving data
-  results->nvariables = (header->nsolutes + 2 * header->nspecies)
+  results->nvariables = (header->nsolutes + 3 * header->nspecies)
     * results->pipe_cell[header->npipes];
   results->header_position = ftell (file);
   results->file = file;
@@ -359,7 +367,7 @@ results_open_xml (Results * results,
     }
 
   header = results->header;
-  n = header->nsolutes + 2 * header->nspecies;
+  n = header->nsolutes + 3 * header->nspecies;
 
   for (node = node->children; node; node = node->next)
     {

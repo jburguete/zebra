@@ -15,11 +15,13 @@ typedef struct
 {
   double solute_concentration[MAX_SOLUTES];
   ///< array of solute concentrations.
+  GList *list_specimens[MAX_SPECIES];   ///< array of specimen lists.
   double species_concentration[MAX_SPECIES];
   ///< array of species concentrations.
-  double species_infestation[MAX_SPECIES];
-  ///< array of species infestations.
-  GList *list_specimens[MAX_SPECIES];   ///< array of specimen lists.
+  double species_infestation_volume[MAX_SPECIES];
+  ///< array of species infestation volumes.
+  double species_infestation_number[MAX_SPECIES];
+  ///< array of species infestation numbers.
   double position;              ///< longitudinal position in the pipe.
   double size;                  ///< longitudinal size.
   double distance;              ///< longitudinal distance to the next cell.
@@ -73,10 +75,20 @@ cell_cling (Cell * cell,        ///< pointer to the cell struct data.
   fprintf (stderr, "cell_cling: start\n");
 #endif
   for (i = 0; i < MAX_SPECIES; ++i)
-    specimen_cling (cell->list_specimens + i, species + i, rng,
-                    cell->species_concentration + i, cell->volume,
-                    cell->lateral_area, cell->velocity, step,
-                    cell->recirculation);
+    {
+#if DEBUG_CELL
+      fprintf (stderr, "cell_cling: species=%u specimen-list=%lu\n",
+               i, (size_t) cell->list_specimens[i]);
+#endif
+      specimen_cling (cell->list_specimens + i, species + i, rng,
+                      cell->species_concentration + i, cell->volume,
+                      cell->lateral_area, cell->velocity, step,
+                      cell->recirculation);
+#if DEBUG_CELL
+      fprintf (stderr, "cell_cling: species=%u specimen-list=%lu\n",
+               i, (size_t) cell->list_specimens[i]);
+#endif
+    }
 #if DEBUG_CELL
   fprintf (stderr, "cell_cling: end\n");
 #endif
@@ -111,16 +123,43 @@ cell_dead (Cell * cell,         ///< pointer to the cell struct data.
            gsl_rng * rng,       ///< GSL random numbers generator.
            double step)         ///< time step size.
 {
-  GList *list;
-  unsigned int i;
+  GList *list[1];
+  unsigned int i, j;
 #if DEBUG_CELL
   fprintf (stderr, "cell_dead: start\n");
 #endif
   for (i = 0; i < MAX_SPECIES; ++i)
-    for (list = cell->list_specimens[i]; list; list = list->next)
-      if (specimen_dead (list->data, rng, cell->velocity, step,
-                         cell->recirculation, cell->solute_concentration))
-        list = g_list_remove (list, list->data);
+    {
+#if DEBUG_CELL
+      fprintf (stderr, "cell_dead: species=%u specimen-list=%lu\n",
+               i, (size_t) cell->list_specimens[i]);
+#endif
+      for (j = 0, list[0] = cell->list_specimens[i]; list[0];
+           list[0] = list[0]->next)
+        {
+          if (specimen_dead (list[0]->data, rng, cell->velocity, step,
+                             cell->recirculation, cell->solute_concentration))
+            {
+              list[0] = g_list_remove (list[0], list[0]->data);
+	      if (!j)
+	        {
+#if DEBUG_CELL
+                  fprintf (stderr, "cell_dead: list1=%lu list2=%lu\n",
+                           (size_t) cell->list_specimens[i], (size_t) list[0]);
+#endif
+                  cell->list_specimens[i] = list[0];
+		}
+	      if (!list[0])
+                break;
+	    }
+	  else
+            ++j;
+	}
+#if DEBUG_CELL
+      fprintf (stderr, "cell_dead: species=%u specimen-list=%lu\n",
+               i, (size_t) cell->list_specimens[i]);
+#endif
+    }
 #if DEBUG_CELL
   fprintf (stderr, "cell_dead: end\n");
 #endif
@@ -137,16 +176,20 @@ cell_infestations (Cell * cell) ///< pointer to the cell struct data.
 #endif
   Specimen *specimen;
   GList *list;
-  unsigned int i;
+  double v;
+  unsigned int i, n;
   for (i = 0; i < MAX_SPECIES; ++i)
     {
-      cell->species_infestation[i] = 0.;
+      v = 0.;
+      n = 0;
       for (list = cell->list_specimens[i]; list; list = list->next)
         {
           specimen = (Specimen *) list->data;
-          cell->species_infestation[i] += specimen->size;
+	  ++n;
+          v += specimen->size;
         }
-      cell->species_infestation[i] /= cell->lateral_area;
+      cell->species_infestation_volume[i] = v / cell->lateral_area;
+      cell->species_infestation_number[i] = ((double) n) / cell->lateral_area;
     }
 #if DEBUG_CELL
   fprintf (stderr, "cell_infestations: end\n");
