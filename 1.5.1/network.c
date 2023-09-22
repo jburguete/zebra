@@ -610,7 +610,7 @@ network_open_out (Network * network,    ///< pointer to the network struct data.
   const char *m;
   double q, f;
   int error_code = 0;
-  unsigned int i;
+  unsigned int i, rpt;
 #if DEBUG_NETWORK
   fprintf (stderr, "network_open_out: start\n");
 #endif
@@ -629,7 +629,15 @@ network_open_out (Network * network,    ///< pointer to the network struct data.
           goto exit_on_error;
         }
       if (!strncmp (buffer, PIPE_LINE, PIPE_LENGTH))
-        break;
+        {
+          rpt = 0;
+	  break;
+	}
+      if (!strncmp (buffer, PIPE_LINE_RPT, PIPE_LENGTH_RPT))
+        {
+          rpt = 1;
+	  break;
+	}
     }
   while (1);
   if (!fgets (buffer, BUFFER_SIZE, file))
@@ -644,22 +652,45 @@ network_open_out (Network * network,    ///< pointer to the network struct data.
 #if DEBUG_NETWORK
   fprintf (stderr, "network_open_out: npipes=%u\n", network->npipes);
 #endif
-  for (i = 0; i < network->npipes; ++i)
+  if (rpt)
     {
-      if (fscanf (file, FMTL "%lf%*f%*f%lf", id, &q, &f) != 3)
+      for (i = 0; i < network->npipes; ++i)
         {
-          m = _("Bad data");
-          goto exit_on_error;
+          if (fscanf (file, FMTL "%lf%*f%lf", id, &q, &f) != 3)
+            {
+              m = _("Bad data");
+              goto exit_on_error;
+            }
+    #if DEBUG_NETWORK
+          fprintf (stderr, "network_open_out: id=%s q=%lg f=%lf\n", id, q, f);
+    #endif
+          pipe = (Pipe *) g_hash_table_lookup (network->hash_pipes, id);
+          if (!pipe)
+            goto exit_on_error;
+          discharges->pipe[i] = pipe;
+          discharges->discharge[i] = q / 3600.;
+          discharges->friction_factor[i] = 0.001 * f / pipe->length;
         }
-#if DEBUG_NETWORK
-      fprintf (stderr, "network_open_out: id=%s q=%lg f=%lf\n", id, q, f);
-#endif
-      pipe = (Pipe *) g_hash_table_lookup (network->hash_pipes, id);
-      if (!pipe)
-        goto exit_on_error;
-      discharges->pipe[i] = pipe;
-      discharges->discharge[i] = q * 0.001;
-      discharges->friction_factor[i] = f;
+    }
+  else
+    {
+      for (i = 0; i < network->npipes; ++i)
+        {
+          if (fscanf (file, FMTL "%lf%*f%*f%lf", id, &q, &f) != 3)
+            {
+              m = _("Bad data");
+              goto exit_on_error;
+            }
+    #if DEBUG_NETWORK
+          fprintf (stderr, "network_open_out: id=%s q=%lg f=%lf\n", id, q, f);
+    #endif
+          pipe = (Pipe *) g_hash_table_lookup (network->hash_pipes, id);
+          if (!pipe)
+            goto exit_on_error;
+          discharges->pipe[i] = pipe;
+          discharges->discharge[i] = q * 0.001;
+          discharges->friction_factor[i] = f;
+        }
     }
   error_code = 1;
 exit_on_error:

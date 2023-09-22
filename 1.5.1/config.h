@@ -36,7 +36,11 @@
 #define MAX_SPECIES 1           ///< maximum number of species.
 #define PIPE_LINE "  Link                  L/s       m/s    /1000m          "
 ///< pipe line of Epanet output file.
+#define PIPE_LINE_RPT "  Link                 m3/h       m/s    /1000m"
+///< pipe line of Epanet output file (RPT format).
 #define PIPE_LENGTH 57          ///< length of the Epanet output file pipe line.
+#define PIPE_LENGTH_RPT 47
+///< length of the Epanet output file pipe line (RPT format).
 #define PIPE_LENGTHS_SAVE 0
 ///< macro to save the pipe lengths on a log file.
 #define PIPE_LENGTHS_FILE "pipe-lengths.log"

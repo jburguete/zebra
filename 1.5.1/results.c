@@ -434,7 +434,7 @@ results_open_xml (Results * results,
               time_string (name, BUFFER_SIZE, t);
               fprintf (file, "%.14lg %s", t - header->initial_time, name);
               for (j = 0; j < n; ++j)
-                fprintf (file, " %lg", variable[j]);
+                fprintf (file, " %.9lg", variable[j]);
               fprintf (file, "\n");
               if (fseek (results->file,
                          (results->nvariables - n) * sizeof (double), SEEK_CUR)
@@ -526,9 +526,9 @@ results_open_xml (Results * results,
               x = x0 + j * dx;
               y = y0 + j * dy;
               z = z0 + j * dz;
-              fprintf (file, "%lg %lg %lg", x, y, z);
+              fprintf (file, "%.9lg %.9lg %.9lg", x, y, z);
               for (k = 0; k < n; ++k, ++l)
-                fprintf (file, " %lg", variable[l]);
+                fprintf (file, " %.9lg", variable[l]);
               fprintf (file, "\n");
             }
         }

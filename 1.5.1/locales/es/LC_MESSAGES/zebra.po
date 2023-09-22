@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.5.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-13 15:38+0200\n"
+"POT-Creation-Date: 2023-09-21 19:28+0200\n"
 "PO-Revision-Date: 2021-06-15 01:12+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -21,19 +21,19 @@ msgstr ""
 msgid "Solute"
 msgstr "Soluto"
 
-#: solute.c:107 species.c:102 network.c:707 simulation.c:74
+#: solute.c:107 species.c:102 network.c:738 simulation.c:74
 msgid "Bad input file"
 msgstr "Fichero de entrada incorrecto"
 
-#: solute.c:115 species.c:110 network.c:715 results.c:360 simulation.c:82
+#: solute.c:115 species.c:110 network.c:746 results.c:360 simulation.c:82
 msgid "No root XML node"
 msgstr "Falta nodo XML raíz"
 
-#: solute.c:120 species.c:115 network.c:720 results.c:365 simulation.c:87
+#: solute.c:120 species.c:115 network.c:751 results.c:365 simulation.c:87
 msgid "Bad root XML node"
 msgstr "Nodo XML raíz incorrecto"
 
-#: solute.c:131 species.c:126 network.c:818 results.c:539
+#: solute.c:131 species.c:126 network.c:849 results.c:539
 msgid "Bad XML node"
 msgstr "Nodo XML incorrecto"
 
@@ -265,47 +265,47 @@ msgstr "No se pudo abrir el fichero"
 msgid "Bad header"
 msgstr "Cabecera incorrecta"
 
-#: network.c:637
+#: network.c:645
 msgid "Bad header line"
 msgstr "Línea de cabecera incorrecta"
 
-#: network.c:651
+#: network.c:661 network.c:681
 msgid "Bad data"
 msgstr "Datos incorrectos"
 
-#: network.c:667
+#: network.c:698
 msgid "File"
 msgstr "Fichero"
 
-#: network.c:733
+#: network.c:764
 msgid "Unknown pipe length model"
 msgstr "Modo de longitud de tubo desconocido"
 
-#: network.c:740
+#: network.c:771
 msgid "No Epanet file"
 msgstr "Falta fichero de Epanet"
 
-#: network.c:748
+#: network.c:779
 msgid "Unable to open the Epanet file"
 msgstr "No se pudo abrir el fichero de Epanet"
 
-#: network.c:779
+#: network.c:810
 msgid "No inlets"
 msgstr "Faltan entradas"
 
-#: network.c:794
+#: network.c:825
 msgid "Bad discharges time"
 msgstr "Tiempo de caudales incorrecto"
 
-#: network.c:799
+#: network.c:830
 msgid "Bad discharges time order"
 msgstr "Orden de tiempos de caudales incorrecto"
 
-#: network.c:805
+#: network.c:836
 msgid "No discharges file"
 msgstr "Falta fichero de caudales"
 
-#: network.c:824
+#: network.c:855
 msgid "No discharges"
 msgstr "Faltan caudales"
 
