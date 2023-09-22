@@ -1,4 +1,4 @@
-Zebra (1.5.1 versión española)
+Zebra (1.5.2 versión española)
 ==============================
 
 :uk:[english](README.md) :es:[español](README.es.md)
@@ -15,7 +15,7 @@ FICHEROS
 
 * README\*.md: ficheros básicos de ayuda
 * license.md: fichero de licencia
-* 1.5.1/\*.h: ficheros de cabecera
-* 1.5.1/\*.c: ficheros fuente
-* 1.5.1/Makefile: fichero de configuración para generar el ejecutable
-* 1.5.1/Doxyfile: fichero de configuración para generar la documentación doxygen
+* 1.5.2/\*.h: ficheros de cabecera
+* 1.5.2/\*.c: ficheros fuente
+* 1.5.2/Makefile: fichero de configuración para generar el ejecutable
+* 1.5.2/Doxyfile: fichero de configuración para generar la documentación doxygen
