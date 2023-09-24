@@ -23,6 +23,10 @@ typedef struct
   unsigned int npipes;          ///< number of pipes.
 } ResultsHeader;
 
+/**
+ * \struct Results
+ * \brief struct to define the results data base.
+ */
 typedef struct
 {
   ResultsHeader header[1];      ///< header data.

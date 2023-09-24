@@ -7,6 +7,7 @@
 #ifndef SOLUTE__H
 #define SOLUTE__H 1
 
+///> enum to define the solute types.
 enum SoluteType
 {
   SOLUTE_TYPE_CHLORINE = 0,     ///< chlorine.
@@ -33,7 +34,7 @@ typedef struct
 extern Solute solute[MAX_SOLUTES];
 
 void solute_destroy ();
-unsigned int solute_index (const xmlChar *name);
+unsigned int solute_index (const xmlChar * name);
 int solute_open_xml (const char *file_name);
 
 #endif

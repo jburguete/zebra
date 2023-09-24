@@ -53,7 +53,7 @@ solute_destroy ()
  * \return solute index.
  */
 unsigned int
-solute_index (const xmlChar *name)      ///< solute name.
+solute_index (const xmlChar * name)     ///< solute name.
 {
   unsigned int i;
 #if DEBUG_SOLUTE
@@ -140,14 +140,14 @@ solute_open_xml (const char *file_name) ///< input file name.
       if (g_hash_table_contains (hash, name))
         {
           m = _("Duplicated name");
-	  xmlFree (name);
+          xmlFree (name);
           goto exit_on_error;
         }
       i = solute_index (name);
       if (i == MAX_SOLUTES)
         {
           m = _("Unknown");
-	  xmlFree (name);
+          xmlFree (name);
           goto exit_on_error;
         }
       s = solute + i;

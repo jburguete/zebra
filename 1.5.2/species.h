@@ -45,7 +45,7 @@ typedef struct
 extern Species species[MAX_SPECIES];
 
 void species_destroy ();
-unsigned int species_index (const xmlChar *name);
+unsigned int species_index (const xmlChar * name);
 int species_open_xml (char *file_name);
 
 #endif

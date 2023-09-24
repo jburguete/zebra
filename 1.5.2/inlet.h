@@ -135,7 +135,7 @@ inlet_set (Inlet * inlet,       ///< pointer to the inlet struct data.
           v = inlet->solute_concentration[i];
           t = inlet->solute_time[i];
           variable = array_interpolate (time, t, v, n);
-	}
+        }
       else
         variable = 0.;
       for (j = 0; j < ncells; ++j)
@@ -152,7 +152,7 @@ inlet_set (Inlet * inlet,       ///< pointer to the inlet struct data.
           v = inlet->species_concentration[i];
           t = inlet->species_time[i];
           variable = array_interpolate (time, t, v, n);
-	}
+        }
       else
         variable = 0.;
       for (j = 0; j < ncells; ++j)

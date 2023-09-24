@@ -17,10 +17,10 @@ typedef struct
   Pipe **outlet;                ///< array of outlet pipe pointers.
   Cell **cell;                  ///< array of cell pointers.
   Point *point;                 ///< Point pointer.
-  double volume;
+  double volume;                ///< total volume.
   unsigned int ninlets;         ///< number of inlet pipes.
   unsigned int noutlets;        ///< number of outlet pipes.
-  unsigned int ncells;
+  unsigned int ncells;          ///< number of cells.
 } Junction;
 
 void junction_destroy (Junction * junction);

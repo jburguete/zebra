@@ -141,20 +141,20 @@ cell_dead (Cell * cell,         ///< pointer to the cell struct data.
                              cell->recirculation, cell->solute_concentration))
             {
               list[0] = g_list_remove (list[0], list[0]->data);
-	      if (!j)
-	        {
+              if (!j)
+                {
 #if DEBUG_CELL
                   fprintf (stderr, "cell_dead: list1=%lu list2=%lu\n",
                            (size_t) cell->list_specimens[i], (size_t) list[0]);
 #endif
                   cell->list_specimens[i] = list[0];
-		}
-	      if (!list[0])
+                }
+              if (!list[0])
                 break;
-	    }
-	  else
+            }
+          else
             ++j;
-	}
+        }
 #if DEBUG_CELL
       fprintf (stderr, "cell_dead: species=%u specimen-list=%lu\n",
                i, (size_t) cell->list_specimens[i]);
@@ -185,7 +185,7 @@ cell_infestations (Cell * cell) ///< pointer to the cell struct data.
       for (list = cell->list_specimens[i]; list; list = list->next)
         {
           specimen = (Specimen *) list->data;
-	  ++n;
+          ++n;
           v += specimen->size;
         }
       cell->species_infestation_volume[i] = v / cell->lateral_area;

@@ -105,7 +105,7 @@ results_set (Results * results,
         {
 #if DEBUG_RESULTS
           fprintf (stderr, "results_set: pipe=%u cell=%u\n", i, j);
-	  for (l = 0; l < MAX_SOLUTES; ++l)
+          for (l = 0; l < MAX_SOLUTES; ++l)
             fprintf (stderr, "results_set: solute=%u concentration=%lg\n",
                      l, cell->solute_concentration[l]);
 #endif
@@ -113,7 +113,7 @@ results_set (Results * results,
                   MAX_SOLUTES * sizeof (double));
           k += MAX_SOLUTES;
 #if DEBUG_RESULTS
-	  for (l = 0; l < MAX_SPECIES; ++l)
+          for (l = 0; l < MAX_SPECIES; ++l)
             fprintf (stderr, "results_set: species=%u concentration=%lg\n",
                      l, cell->species_concentration[l]);
 #endif
@@ -121,7 +121,7 @@ results_set (Results * results,
                   MAX_SPECIES * sizeof (double));
           k += MAX_SPECIES;
 #if DEBUG_RESULTS
-	  for (l = 0; l < MAX_SPECIES; ++l)
+          for (l = 0; l < MAX_SPECIES; ++l)
             fprintf (stderr, "results_set: species=%u infestation-number=%lg\n",
                      l, cell->species_infestation_number[l]);
 #endif
@@ -129,7 +129,7 @@ results_set (Results * results,
                   MAX_SPECIES * sizeof (double));
           k += MAX_SPECIES;
 #if DEBUG_RESULTS
-	  for (l = 0; l < MAX_SPECIES; ++l)
+          for (l = 0; l < MAX_SPECIES; ++l)
             fprintf (stderr, "results_set: species=%u infestation-volume=%lg\n",
                      l, cell->species_infestation_volume[l]);
 #endif
@@ -509,13 +509,13 @@ results_open_xml (Results * results,
                    MAX_LABEL_LENGTH * sizeof (char));
           for (j = 0; j < header->npoints; ++j)
             if (!strcmp (id, results->point_id + j * MAX_LABEL_LENGTH))
-	      {
+              {
                 dx = (results->point_x[j] - x0) / (ncells - 1);
                 dy = (results->point_y[j] - y0) / (ncells - 1);
                 dz = (results->point_z[j] - z0) / (ncells - 1);
-		break;
-	      }
-	  if (j == header->npoints)
+                break;
+              }
+          if (j == header->npoints)
             {
               fprintf (stderr, "ID=%s\n", id);
               m = _("Bad point identifier");

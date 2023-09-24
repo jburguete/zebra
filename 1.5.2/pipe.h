@@ -110,6 +110,7 @@ pipe_create_mesh (Pipe * pipe,  ///< pointer to the pipe struct data.
   pipe->radius = 0.5 * pipe->diameter;
   pipe->perimeter = perimeter = M_PI * pipe->diameter;
   pipe->area = area = 0.5 * perimeter * pipe->radius;
+  pipe->length = fmax (pipe->length, cell_size);
   n = (unsigned int) ceil (pipe->length / cell_size);
   pipe->ncells = n = (2 > n) ? 2 : n;
   pipe->nwalls = --n;

@@ -54,7 +54,7 @@ species_destroy ()
  * \return species index.
  */
 unsigned int
-species_index (const xmlChar *name)     ///< species name.
+species_index (const xmlChar * name)    ///< species name.
 {
   unsigned int i;
 #if DEBUG_SOLUTE
@@ -135,14 +135,14 @@ species_open_xml (char *file_name)      ///< input file name.
       if (g_hash_table_contains (hash, name))
         {
           m = _("Duplicated name");
-	  xmlFree (name);
+          xmlFree (name);
           goto exit_on_error;
         }
       i = species_index (name);
       if (i == MAX_SPECIES)
         {
           m = _("Unknown");
-	  xmlFree (name);
+          xmlFree (name);
           goto exit_on_error;
         }
       s = species + i;

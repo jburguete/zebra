@@ -631,13 +631,13 @@ network_open_out (Network * network,    ///< pointer to the network struct data.
       if (!strncmp (buffer, PIPE_LINE, PIPE_LENGTH))
         {
           rpt = 0;
-	  break;
-	}
+          break;
+        }
       if (!strncmp (buffer, PIPE_LINE_RPT, PIPE_LENGTH_RPT))
         {
           rpt = 1;
-	  break;
-	}
+          break;
+        }
     }
   while (1);
   if (!fgets (buffer, BUFFER_SIZE, file))
@@ -661,9 +661,9 @@ network_open_out (Network * network,    ///< pointer to the network struct data.
               m = _("Bad data");
               goto exit_on_error;
             }
-    #if DEBUG_NETWORK
+#if DEBUG_NETWORK
           fprintf (stderr, "network_open_out: id=%s q=%lg f=%lf\n", id, q, f);
-    #endif
+#endif
           pipe = (Pipe *) g_hash_table_lookup (network->hash_pipes, id);
           if (!pipe)
             goto exit_on_error;
@@ -681,9 +681,9 @@ network_open_out (Network * network,    ///< pointer to the network struct data.
               m = _("Bad data");
               goto exit_on_error;
             }
-    #if DEBUG_NETWORK
+#if DEBUG_NETWORK
           fprintf (stderr, "network_open_out: id=%s q=%lg f=%lf\n", id, q, f);
-    #endif
+#endif
           pipe = (Pipe *) g_hash_table_lookup (network->hash_pipes, id);
           if (!pipe)
             goto exit_on_error;
