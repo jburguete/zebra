@@ -1,6 +1,6 @@
 .PHONY: clean strip
 
-all: zebra
+all: zebra translate
 
 hdr = config.h tools.h solute.h species.h specimen.h point.h cell.h wall.h \
 	pipe.h junction.h inlet.h junction.h network.h results.h simulation.h
@@ -164,9 +164,12 @@ $(es)zebra.mo: $(es)zebra.po
 	@GNU@msgfmt -c -v -o $(es)zebra.mo $(es)zebra.po
 	touch $(es)zebra.mo
 
+translate: translate.c Makefile
+	$(CC) -Wall -Wextra -Os translate.c -o translate 
+
 clean:
-	rm $(zebra) $(obj) $(locales) $(zebrapgo) $(objpgo) *.gcda
+	rm $(zebra) $(obj) $(locales) $(zebrapgo) $(objpgo) translate *.gcda
 
 strip:
 	@MAKE@
-	strip $(zebra)
+	strip $(zebra) translate
