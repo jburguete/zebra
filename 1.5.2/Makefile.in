@@ -27,36 +27,36 @@ CFLAGS = @CFLAGS@ @XML_CFLAGS@ @GLIB_CFLAGS@ @GSL_CFLAGS@ -c -pedantic -Wall \
 LDFLAGS = @LDFLAGS@ @GSL_LIBS@ @GLIB_LIBS@ @XML_LIBS@ @LIBS@
 
 ifeq (@PGO@, 1)
-	objpgo = tools.pgo solute.pgo species.pgo specimen.pgo cell.pgo \
-		pipe.pgo inlet.pgo junction.pgo network.pgo results.pgo \
-		simulation.pgo main.pgo
-	pgogen = -fprofile-generate
-	pgouse = -fprofile-use -fprofile-correction
-	toolsdep = $(zebrapgo)
-	solutedep = $(zebrapgo)
-	speciesdep = $(zebrapgo)
-	specimendep = $(zebrapgo)
-	celldep = $(zebrapgo)
-	pipedep = $(zebrapgo)
-	inletdep = $(zebrapgo)
-	junctiondep = $(zebrapgo)
-	networkdep = $(zebrapgo)
-	resultsdep = $(zebrapgo)
-	simulationdep = $(zebrapgo)
-	maindep = $(zebrapgo)
+objpgo = tools.pgo solute.pgo species.pgo specimen.pgo cell.pgo \
+	pipe.pgo inlet.pgo junction.pgo network.pgo results.pgo \
+	simulation.pgo main.pgo
+pgogen = -fprofile-generate
+pgouse = -fprofile-use -fprofile-correction
+toolsdep = $(zebrapgo)
+solutedep = $(zebrapgo)
+speciesdep = $(zebrapgo)
+specimendep = $(zebrapgo)
+celldep = $(zebrapgo)
+pipedep = $(zebrapgo)
+inletdep = $(zebrapgo)
+junctiondep = $(zebrapgo)
+networkdep = $(zebrapgo)
+resultsdep = $(zebrapgo)
+simulationdep = $(zebrapgo)
+maindep = $(zebrapgo)
 else
-	toolsdep = tools.c $(cfg)
-	solutedep = solute.c solute.h $(cfg)
-	speciesdep = species.c $(sps)
-	specimendep = specimen.c $(spn)
-	celldep = cell.c cell.h point.h $(spn)
-	pipedep = pipe.c $(pip)
-	inletdep = inlet.c inlet.h $(pip)
-	junctiondep = junction.c junction.h $(pip)
-	networkdep = network.c $(net)
-	resultsdep = results.c $(res)
-	simulationdep = simulation.c $(sim)
-	maindep = main.c $(sim)
+toolsdep = tools.c $(cfg)
+solutedep = solute.c solute.h $(cfg)
+speciesdep = species.c $(sps)
+specimendep = specimen.c $(spn)
+celldep = cell.c cell.h point.h $(spn)
+pipedep = pipe.c $(pip)
+inletdep = inlet.c inlet.h $(pip)
+junctiondep = junction.c junction.h $(pip)
+networkdep = network.c $(net)
+resultsdep = results.c $(res)
+simulationdep = simulation.c $(sim)
+maindep = main.c $(sim)
 endif
 
 all: $(zebra) $(locales)
