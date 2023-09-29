@@ -14,8 +14,8 @@ int
 main (int argn, char **argc)
 {
   const char fmtin[] = "%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf";
-  const char fmtout[] = "LINESTRING(%.9lg %.9lg,%.9lg %.9lg) %s-%u %s %.9lg "
-    "%.9lg %.9lg %.9lg %.9lg %.9lg %.9lg %.9lg\n";
+  const char fmtout[] = "LINESTRING(%.9lg %.9lg,%.9lg %.9lg)\t%s-%u\t%s\t%.9lg"
+    "%.9lg\t%.9lg\t%.9lg\t%.9lg\t%.9lg\t%.9lg\t%.9lg\n";
   double x[10], y[10];
   char id[6];
   FILE *fin, *fout;
@@ -47,8 +47,8 @@ main (int argn, char **argc)
     }
   id[i] = 0;
   printf ("ID=%s\n", id); 
-  fputs ("Line ID patternID z Cl H2O2 OrganicMatter O2 larvae adults mass\n",
-         fout);
+  fputs ("Line\tID\tpatternID\tz\tCl\tH2O2\tOrganicMatter\tO2\tlarvae\tadults"
+         "\tmass\n", fout);
   if (fscanf (fin, fmtin, x, x + 1, x + 2, x + 3, x + 4, x + 5, x + 6, x + 7,
               x + 8, x + 9) != 10)
     {
