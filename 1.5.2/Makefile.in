@@ -1,7 +1,5 @@
 .PHONY: clean strip
 
-all: zebra translate-csv
-
 hdr = config.h tools.h solute.h species.h specimen.h point.h cell.h wall.h \
 	pipe.h junction.h inlet.h junction.h network.h results.h simulation.h
 src = tools.c solute.c species.c specimen.c cell.c pipe.c inlet.c junction.c \
@@ -19,6 +17,7 @@ es = locales/es/LC_MESSAGES/
 locales = $(es)zebra.mo
 zebra = zebra@EXE@
 zebrapgo = zebrapgo@EXE@
+translate_csv = translate-csv@EXE@
 
 CC = @CC@ @ARCH@ @LTO@ -g
 COPT = -O3
@@ -59,7 +58,7 @@ simulationdep = simulation.c $(sim)
 maindep = main.c $(sim)
 endif
 
-all: $(zebra) $(locales)
+all: $(zebra) $(locales) $(translate_csv)
 
 $(zebrapgo): $(objpgo)
 	$(CC) $(objpgo) $(pgogen) -o $(zebrapgo) $(LDFLAGS)
@@ -164,12 +163,12 @@ $(es)zebra.mo: $(es)zebra.po
 	@GNU@msgfmt -c -v -o $(es)zebra.mo $(es)zebra.po
 	touch $(es)zebra.mo
 
-translate-csv: translate-csv.c Makefile
-	$(CC) -Wall -Wextra -Os translate-csv.c -o translate-csv 
+$(translate_csv): translate-csv.c Makefile
+	$(CC) -Wall -Wextra -Os translate-csv.c -o $(translate_csv) 
 
 clean:
-	rm $(zebra) $(obj) $(locales) $(zebrapgo) $(objpgo) translate-csv *.gcda
+	rm $(zebra) $(obj) $(locales) $(zebrapgo) $(objpgo) $(translate_csv) *.gcda
 
 strip:
 	@MAKE@
-	strip $(zebra) translate-csv
+	strip $(zebra) $(translate_csv)
