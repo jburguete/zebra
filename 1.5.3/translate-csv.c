@@ -47,8 +47,6 @@ main (int argn, char **argc)
     }
   id[i] = 0;
   printf ("ID=%s\n", id); 
-  fputs ("Line\tID\tpatternID\tz\tCl\tH2O2\tOrganicMatter\tO2\tlarvae\tadults"
-         "\tmass\n", fout);
   if (fscanf (fin, fmtin, x, x + 1, x + 2, x + 3, x + 4, x + 5, x + 6, x + 7,
               x + 8, x + 9) != 10)
     {

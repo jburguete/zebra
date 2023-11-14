@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.5.2\n"
+"Project-Id-Version: 1.5.3\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-09-21 19:28+0200\n"
+"POT-Creation-Date: 2023-11-14 11:53+0100\n"
 "PO-Revision-Date: 2021-06-15 01:12+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -33,7 +33,7 @@ msgstr "Falta nodo XML raíz"
 msgid "Bad root XML node"
 msgstr "Nodo XML raíz incorrecto"
 
-#: solute.c:131 species.c:126 network.c:849 results.c:539
+#: solute.c:131 species.c:126 network.c:849 results.c:545
 msgid "Bad XML node"
 msgstr "Nodo XML incorrecto"
 
@@ -389,43 +389,43 @@ msgstr "Números de celda incorrectos"
 msgid "Bad configuration file"
 msgstr "Fichero de configuración incorrecto"
 
-#: results.c:384 results.c:521
+#: results.c:384 results.c:527
 msgid "Bad point identifier"
 msgstr "Identificador de punto incorrecto"
 
-#: results.c:411
+#: results.c:414
 msgid "Unknown point identifier"
 msgstr "Identificador de punto desconocido"
 
-#: results.c:417
+#: results.c:420
 msgid "No point file"
 msgstr "Falta fichero de punto"
 
-#: results.c:425
+#: results.c:428
 msgid "Bad point file"
 msgstr "Fichero de punto incorrecto"
 
-#: results.c:453
+#: results.c:456
 msgid "Bad pipe identifier"
 msgstr "Identificador de tubo incorrecto"
 
-#: results.c:464
+#: results.c:470
 msgid "Unknown pipe identifier"
 msgstr "Identicador de tubo desconocido"
 
-#: results.c:470
+#: results.c:476
 msgid "Bad pipe time"
 msgstr "Tiempo de tubo incorrecto"
 
-#: results.c:476
+#: results.c:482
 msgid "No pipe file"
 msgstr "Falta el fichero de tubo"
 
-#: results.c:484
+#: results.c:490
 msgid "Bad pipe file"
 msgstr "Fichero de tubo incorrecto"
 
-#: results.c:497
+#: results.c:503
 msgid "Bad data base"
 msgstr "Base de datos incorrecta"
 

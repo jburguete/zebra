@@ -18,6 +18,9 @@ locales = $(es)zebra.mo
 zebra = zebra@EXE@
 zebrapgo = zebrapgo@EXE@
 translate_csv = translate-csv@EXE@
+Violada = ../cases/Violada/
+results_Violada = $(Violada)results@EXE@
+results = $(results_Violada)
 
 CC = @CC@ @ARCH@ @LTO@ -g
 COPT = -O3
@@ -58,7 +61,7 @@ simulationdep = simulation.c $(sim)
 maindep = main.c $(sim)
 endif
 
-all: $(zebra) $(locales) $(translate_csv)
+all: $(zebra) $(locales) $(translate_csv) $(results)
 
 $(zebrapgo): $(objpgo)
 	$(CC) $(objpgo) $(pgogen) -o $(zebrapgo) $(LDFLAGS)
@@ -165,6 +168,9 @@ $(es)zebra.mo: $(es)zebra.po
 
 $(translate_csv): translate-csv.c Makefile
 	$(CC) -Wall -Wextra -Os translate-csv.c -o $(translate_csv) 
+
+$(results_Violada): $(Violada)results.c Makefile
+	$(CC) -Wall -Wextra -Os $(Violada)results.c -o $(results_Violada)
 
 clean:
 	rm $(zebra) $(obj) $(locales) $(zebrapgo) $(objpgo) $(translate_csv) *.gcda

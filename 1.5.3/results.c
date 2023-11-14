@@ -408,6 +408,9 @@ results_open_xml (Results * results,
             }
           if (i == header->npipes)
             {
+#if DEBUG_RESULTS
+              fprintf (stderr, "results_open_xml: point id=%s\n", id);
+#endif
               m = _("Unknown point identifier");
               goto exit_on_error;
             }
@@ -461,6 +464,9 @@ results_open_xml (Results * results,
               break;
           if (i == header->npipes)
             {
+#if DEBUG_RESULTS
+              fprintf (stderr, "results_open_xml: point id=%s\n", id);
+#endif
               m = _("Unknown pipe identifier");
               goto exit_on_error;
             }
