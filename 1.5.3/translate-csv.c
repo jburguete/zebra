@@ -14,8 +14,8 @@ int
 main (int argn, char **argc)
 {
   const char fmtin[] = "%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf";
-  const char fmtout[] = "LINESTRING(%.9lg %.9lg,%.9lg %.9lg)\t%s-%u\t%s\t%.9lg"
-    "%.9lg\t%.9lg\t%.9lg\t%.9lg\t%.9lg\t%.9lg\t%.9lg\n";
+  const char fmtout[] = "LINESTRING(%.3lf %.3lf,%.3lf %.3lf)\t%s-%u\t%s\t%.3lf"
+    "\t%.9lg\t%.9lg\t%.9lg\t%.9lg\t%.9lg\t%.9lg\t%.9lg\n";
   double x[10], y[10];
   char id[6];
   FILE *fin, *fout;

@@ -532,7 +532,7 @@ results_open_xml (Results * results,
               x = x0 + j * dx;
               y = y0 + j * dy;
               z = z0 + j * dz;
-              fprintf (file, "%.9lg %.9lg %.9lg", x, y, z);
+              fprintf (file, "%.3lf %.3lf %.3lf", x, y, z);
               for (k = 0; k < n; ++k, ++l)
                 fprintf (file, " %.9lg", variable[l]);
               fprintf (file, "\n");
