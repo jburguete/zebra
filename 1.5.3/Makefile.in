@@ -21,7 +21,9 @@ translate_csv = translate-csv@EXE@
 move = move@EXE@
 Violada = ../cases/Violada/
 results_Violada = $(Violada)results@EXE@
-results = $(results_Violada)
+Montesusin = ../cases/Montesusin/
+results_Montesusin = $(Montesusin)results@EXE@
+results = $(results_Violada) $(results_Montesusin)
 
 CC = @CC@ @ARCH@ @LTO@ -g
 COPT = -O3
@@ -175,6 +177,9 @@ $(move): move.c Makefile
 
 $(results_Violada): $(Violada)results.c Makefile
 	$(CC) -Wall -Wextra -Os $(Violada)results.c -o $(results_Violada)
+
+$(results_Montesusin): $(Montesusin)results.c Makefile
+	$(CC) -Wall -Wextra -Os $(Montesusin)results.c -o $(results_Montesusin)
 
 clean:
 	rm $(zebra) $(obj) $(locales) $(zebrapgo) $(objpgo) $(translate_csv) \
