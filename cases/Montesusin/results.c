@@ -223,17 +223,18 @@ main (int argn, char **argc)
   const char *id;
   double second;
   unsigned int i, year, month, day, hour, minute;
-  if (argn != 7)
+  if (argn != 8)
     {
-      printf ("The syntax is:\n./results year month day hour minute second\n");
+      printf ("The syntax is:\n"
+              "./results results_file year month day hour minute second\n");
       return 1;
     }
-  year = atoi (argc[1]);
-  month = atoi (argc[2]);
-  day = atoi (argc[3]);
-  hour = atoi (argc[4]);
-  minute = atoi (argc[5]);
-  second = atof (argc[6]);
+  year = atoi (argc[2]);
+  month = atoi (argc[3]);
+  day = atoi (argc[4]);
+  hour = atoi (argc[5]);
+  minute = atoi (argc[6]);
+  second = atof (argc[7]);
   snprintf (name, BUFFER_SIZE, "%u-%u-%u-%u-%u-%lg",
             year, month, day, hour, minute, second);
   file = fopen ("r.xml", "w");
@@ -248,7 +249,8 @@ main (int argn, char **argc)
     }
   fputs ("</results>", file);
   fclose (file);
-  system ("./zebra results.bin r.xml");
+  snprintf (buffer, BUFFER_SIZE, "./zebra %s r.xml", argc[1]);
+  system (buffer);
   snprintf (buffer, BUFFER_SIZE, "for i in results-pipe-*-%s; "
             "do ./translate-csv $i $i.csv; done", name);
   system (buffer);
@@ -258,7 +260,7 @@ main (int argn, char **argc)
   snprintf (buffer, BUFFER_SIZE, "cat results-pipe-*-%s.csv >> results-%s.csv",
             name, name);
   system (buffer);
-  snprintf (buffer, BUFFER_SIZE, "rm results-pipe-*-%s*", name);
+  snprintf (buffer, BUFFER_SIZE, "rm %s-pipe-*-%s*", argc[1], name);
   system (buffer);
   return 0;
 }
