@@ -1,0 +1,264 @@
+\documentclass[a4paper]{article}
+
+\author{Javier Burguete}
+
+\date{\today}
+
+\title{Análisis adimensional del rozamiento en una tubería con tornillos}
+
+\newcommand{\EQ}[2]{\begin{equation}#1\label{#2}\end{equation}}
+
+\begin{document}
+
+\section{Fuerzas de rozamiento en flujo turbulento}
+
+\subsection{Cilindro en flujo uniforme}
+
+El rozamiento que produce un cilindro, colocado transversalmente en un flujo
+uniforme turbulento es:
+\EQ{F_R=\frac12\,c_c'\,\rho\,u^2\,D_c\,L_c}{EqFrCilindroUniforme}
+con $c_c'$ el coeficiente de resistencia aerodinámica del cilindro, $\rho$ la
+densidad del fluido, $u$ la velocidad no perturbada del fluido, $D_c$ el
+diámetro del cilindro y $L_c$ la longitud del cilindro. Para altos números de
+Reynolds la literatura propone un valor de este coeficiente de:
+\EQ{c_c'=0.51}{EqCc}
+
+\subsection{Cilindro en una pared}
+
+La fórmula anterior cambia si el cilindro está colocado sobre una pared debido
+al perfil de velocidades vertical sobre la pared:
+\EQ{F_R=\frac12\,c_c\,\rho\,u_*^2\,D_c\,L_c}{EqFrCilindroPared}
+con $c_c$ un nuevo coeficiente aerodinámico del cilindro en la pared y $u_*$ la
+velocidad del fluido a la distancia $L_c$ a la pared:
+\EQ{u_*=u\left(z=L_t\right)}{EqUAsterisco}
+La velocidad $u_*$ es la máxima que se enfrenta al tornillo, pero en distancias
+más cercanas a la pared la velocidad del fluido va progresivamente disminuyendo
+hasta anularse, por tanto la resistencia es menor que en el caso anterior y es
+esperable:
+\EQ{c_c<c_c'}{EqCcII}
+
+\subsection{Conjunto de tornillos en la pared de una tubería}
+
+En una tubería prismática de sección de circular de longitud $L$ y diámetro $D$
+sobre la que se colocan $N_t$ tornillos iguales en la pared, haciendo la
+aproximación de los tornillos como cilindros, la fuerza que hace el flujo
+sobre los tornillos será:
+\EQ{F_R=\frac12\,N_t\,c_t\,\rho\,u_*^2\,D_t\,L_t}{EqFrTornillos}
+con $c_t$, $D_t$ y $L_t$ el coeficiente de resistencia aerodinámico en la pared,
+el diámetro y la longitud respectivamente de los tornillos.
+
+Considerando que la fuerza de los tornillos es muy superior a la fuerza de
+rozamiento viscosa sobre la superficie lisa de la tubería, la pérdida de presión
+$\Delta P$ que experimentará la tubería será:
+\[
+  \Delta P\,A=-F_R\Rightarrow\quad
+  \Delta P\,\frac{\pi\,D^2}{4}=-\frac12\,N\,c_t\,\rho\,u_*^2\,D_t\,L_t
+  \Rightarrow
+\]
+\EQ{\Delta P=-\frac{2\,N_t\,c_t\,\rho\,u_*^2\,D_t\,L_t}{\pi\,D^2}}
+{EqDPTornillos}
+con $A$ el área de la sección. El número de tornillos puede expresarse como una
+densidad superficial de tornillos $\sigma_t$ por la superficie lateral de la
+tubería:
+\EQ{N_t=\sigma_t\,\pi\,D\,L}{EqDensidadTornillos}
+Sustituyendo en (\ref{EqDPTornillos}):
+\EQ{\Delta P=-\frac{2\,\sigma_t\,c_t\,\rho\,u_*^2\,D_t\,L_t\,L}{D}}
+{EqPerdidaTornillos}
+
+\section{Leyes de rozamiento en tuberías}
+
+\subsection{Darcy-Weisbach}
+
+La ley de rozamiento en tuberías de Darcy-Weisbach es:
+\EQ{\Delta P=-f\,\frac12\,\rho\,U^2\,\frac{L}{D}}{EqDarcyWeisbach}
+con $f$ el factor de fricción de Darcy-Weisbach (adimensional) y $U$ la
+velocidad media del flujo.
+
+Sustituyendo en (\ref{EqPerdidaTornillos}) obtenemos el factor de fricción para
+la tubería con las paredes con tornillos:
+\EQ{f=4\,\sigma_t\,c_t\,D_t\,L_t\,\left(\frac{u_*}{U}\right)^2}
+{EqDarcyWeisbachTornillos}
+
+La relación $\frac{u_*}{U}$ depende exclusivamente del perfil de velocidades en
+la tubería. En coordenadas polares, colocando el origen en el centro de la
+tubería:
+\[u_*=u\left(r=R-L_t\right),\]
+\EQ
+{
+  U=\frac{1}{A}\int_Au\,dA=\frac1{\pi\,R^2}\,\int_0^{2\,\pi}d\theta\,
+  \int_0^Ru(r)\,r\,dr=\frac2{R^2}\,\int_0^Ru(r)\,r\,dr
+}{EqU}
+con $R=\frac{D}{2}$ el radio de la tubería.
+
+\subsubsection{Perfil de velocidades exponencial}
+
+Para un perfil de velocidades exponencial:
+\[u(r)=u_*\,\left(\frac{R-r}{L_t}\right)^a\Rightarrow\]
+\EQ
+{
+  U=\frac2{R^2}\,\int_0^Ru_*\,\left(\frac{R-r}{L_t}\right)^a\,r\,dr
+  =\frac2{(1+a)\,(2+a)}\,u_*\,\left(\frac{R}{L_t}\right)^a
+}{EqUExponencial}
+con $a$ el exponente de ajuste. Sustituyendo en
+(\ref{EqDarcyWeisbachTornillos}):
+\EQ
+{
+  f=2^{2\,a}\,(1+a)^2\,(2+a)^2\,\sigma_t\,c_t\,D_t\,L_t
+  \,\left(\frac{L_t}{D}\right)^{2\,a}
+}{EqfExponencial}
+Nótese que, de acuerdo con esta fórmula, para un perfil exponencial el factor de
+fricción de Darcy-Weisbach es proporcional a los siguientes factores:
+\EQ
+{
+  f\;\alpha\;\sigma_t,\quad
+  f\;\alpha\;D_t,\quad
+  f\;\alpha\;L_t^{1+2\,a},\quad
+  f\;\alpha\;D^{-2\,a}
+}{EqfExponencialFactores}
+
+\subsubsection{Perfil de velocidades logarítmico}
+
+Para un perfil de velocidades logarítmico, según la hipótesis de Kármán-Prandtl:
+\[
+  u(r)=\frac{u_*}{\kappa}
+  \,\log\left(\frac{R-r}{z_0}\right),\;R-r\geq z_0\Rightarrow\quad
+  u_*=\frac{u_*}{\kappa}\,\log\left(\frac{L_t}{z_0}\right),\]
+\EQ
+{
+  U=\frac2{R^2}\,\int_0^{R-z_0}
+  \frac{u_*}{\kappa}\,\log\left(\frac{R-r}{z_0}\right)\,r\,dr
+  =\frac{u_*}{\kappa}\,\left[\log\left(\frac{R}{z_0}\right)-\frac32
+  +\frac{2\,z_0\,\left(R-\frac14\,z_0\right)}{R^2}\right]
+}{EqULogaritmico}
+con $\kappa=0.4$ la constante de Kármán-Prandtl y $z_0$ una longitud
+característica de rugosidad. En caso de bajas rugosidades relativas:
+\EQ
+{
+  R\gg z_0\Rightarrow\;
+  U\approx\frac{u_*}{\kappa}
+  \,\left[\log\left(\frac{R}{z_0}\right)-\frac32\right]
+}{EqULogaritmicoAproximado}
+Sustituyendo en (\ref{EqDarcyWeisbachTornillos}) y manipulando logaritmos:
+\EQ
+{
+  f=4\,\sigma_t\,c_t\,D_t\,L_t\,\left[\frac{\log\left(\frac{L_t}{z_0}\right)}
+  {\log\left(\frac{R}{z_0}\right)-\frac32}\right]^2
+  =\frac1{\log^2\left[\left(2\,e^{\frac32}\,\frac{z_0}{D}\right)^{\frac1{2\,
+  \sqrt{\sigma_t\,c_t\,D_t\,L_t}\,\log\left(\frac{z_0}{L_t}\right)}}\right]}
+}{EqfLogaritmico}
+
+\subsection{Gauckler-Manning}
+
+La ley de rozamiento de Gauckler-Manning es:
+\EQ{\Delta P=-g\,n^2\,\rho\,U^2\,\frac{L}{R_h^{\frac43}}}{EqGaucklerManning}
+con $n$ el coeficiente de rozamiento de Gauckler-Manning, $g$ la aceleración
+gravitatoria y $R_h$ el radio hidráulico:
+\EQ{R_h=\frac{A}{P_r}=\frac{D}{4}}{EqRadioHidraulico}
+con $A$ y $P_r$ el área y el perímetro respectivamente de la sección. Esta ley
+es equivalente a la de Darcy-Weisbach (\ref{EqDarcyWeisbach}) si:
+\EQ{f=\frac{2^{\frac{11}{3}}\,g\,n^2}{D^{\frac13}}}{EqDarcyWeisbachManning}
+Comparando con (\ref{EqfExponencial}) se comprueba que esta ecuación es
+equivalente a la fuerza de resistencia de los tornillos con un perfil
+exponencial si:
+\EQ
+{
+  a=\frac16,\quad
+  n^2=\frac{\left(\frac{91}{36}\right)^2\,\sigma_t\,c_t\,D_t\,L_t^{\frac43}}
+  {2^{\frac{10}{3}}\,g},\quad
+  f=2^{\frac13}\,\left(\frac{91}{36}\right)^2\,\sigma_t\,c_t\,D_t\,L_t
+  \,\left(\frac{L_t}{D}\right)^{\frac13}
+}{EqManningExponencial}
+Por tanto, si damos como buena la ley de Gauckler-Manning, es esperable de
+que el factor de fricción de Darcy-Weisbach sea proporcional a:
+\EQ
+{
+  f\;\alpha\;\sigma_t,\quad
+  f\;\alpha\;D_t,\quad
+  f\;\alpha\;L_t^{\frac43},\quad
+  f\;\alpha\;D^{-\frac13}
+}{EqfExponencialFactoresManning}
+También es posible despejar el coeficiente de fricción de los tornillos en la
+pared en (\ref{EqManningExponencial}) a partir de medidas experimentales de $f$:
+\EQ
+{
+  c_t=2^{-\frac13}\,\left(\frac{36}{91}\right)^2\,\frac{f}{\sigma_t\,D_t\,L_t}
+  \,\left(\frac{D}{L_t}\right)^{\frac13}
+}{EqManningct}
+
+\subsection{Colebrook-White}
+
+La expresión de la fórmula de Colebrook-White para el factor de fricción de
+Darcy-Weisbach es la siguiente:
+\EQ
+{
+  \frac1{\sqrt{f}}=-2\,\log_{10}\left(\frac{k_s}{3.7\,D}
+  +\frac{2.51}{\mathrm{Re}\,\sqrt{f}}\right)
+}{EqColebrookWhite}
+con Re el número de Reynolds y $k_s$ una longitud característica de rugosidad.
+En medios como los que nos ocupan con rugosidad relativa relativamente alta
+debida a la presencia de los tornillos y altos números de Reynolds el valor del
+segundo sumando es mucho menor que el del primero y la expresión anterior se
+reduce a la segunda ley de Kármán-Prandtl:
+\EQ{\frac1{\sqrt{f}}=-2\,\log_{10}\left(\frac{k_s}{3.7\,D}\right)}
+{EqKarmanPrandtl}
+Despejando y manipulando logaritmos:
+\EQ
+{
+  f=\frac{\log^2 10}{4\,\log^2\left(\frac{k_s}{3.7\,D}\right)}
+  =\frac1{\log^2\left[\left(\frac{k_s}{3.7\,D}\right)^{\frac2{\log 10}}\right]}
+}{EqfKarmanPrandtl}
+Comparando con ($\ref{EqfLogaritmico}$) esta ecuación es igual si:
+\EQ
+{
+  \frac{k_s}{3.7}=2\,e^{\frac32}\,z_0,\quad
+  \frac{2}{\log 10}
+  =\frac1{2\,\sqrt{\sigma_t\,c_t\,D_t\,L_t}\,\log\left(\frac{z_0}{L_t}\right)}
+}{EqRugosidadesI}
+de donde:
+\EQ
+{
+  z_0=L_t\,\exp\left(\frac{\log 10}{4\,\sqrt{\sigma_t\,c_t\,D_t\,L_t}}\right),
+  \quad
+  k_s=7.4\,e^{\frac32}\,L_t
+  \,\exp\left(\frac{\log 10}{4\,\sqrt{\sigma_t\,c_t\,D_t\,L_t}}\right)
+}{EqRugosidadesII}
+y sustituyendo en (\ref{EqfKarmanPrandtl}) se obtiene una complicada relación
+entre el factor de fricción de Darcy-Weisbach y el número y dimensiones de
+tornillos y el diámetro de la tubería:
+\[
+  f=\frac{\log^2 10}{4\,\log^2\left[\frac{2\,e^{\frac32}\,L_t}{D}
+  \,\exp\left(\frac{\log 10}{4\,\sqrt{\sigma_t\,c_t\,D_t\,L_t}}\right)\right]}
+  =\frac1{4\,\left[\log_{10}\left(\frac{2\,e^{\frac32}\,L_t}{D}
+  \,10^{\frac1{4\,\sqrt{\sigma_t\,c_t\,D_t\,L_t}}}\right)\right]^2}
+\]
+\EQ
+{
+  =\frac1{4\,\left[\frac1{4\,\sqrt{\sigma_t\,c_t\,D_t\,L_t}}
+  +\log_{10}\left(\frac{2\,e^{\frac32}\,L_t}{D}\right)\right]^2}
+  =\frac{4\,\sigma_t\,c_t\,D_t\,L_t}{\left[1+4\,\sqrt{\sigma_t\,c_t\,D_t\,L_t}
+  \,\log_{10}\left(\frac{2\,e^{\frac32}\,L_t}{D}\right)\right]^2}
+}{EqfKarmanPrandtlFactors}
+También aquí se puede obtener $c_t$ a partir de medidas experimentales de $f$.
+haciendo la raíz cuadrada:
+\EQ
+{
+  \sqrt{f}=\frac{2\,\sqrt{\sigma_t\,c_t\,D_t\,L_t}}
+  {\left|1+4\,\sqrt{\sigma_t\,c_t\,D_t\,L_t}
+  \,\log_{10}\left(\frac{2\,e^{\frac32}\,L_t}{D}\right)\right|}
+}{EqfKarmanPrandtlFactorsRoot}
+y definiendo el signo:
+\EQ
+{
+  s=\frac{\left|1+4\,\sqrt{\sigma_t\,c_t\,D_t\,L_t}
+  \,\log_{10}\left(\frac{2\,e^{\frac32}\,L_t}{D}\right)\right|}
+  {1+4\,\sqrt{\sigma_t\,c_t\,D_t\,L_t}
+  \,\log_{10}\left(\frac{2\,e^{\frac32}\,L_t}{D}\right)}
+}{EqfKarmanPrandtlFactorsSign}
+se puede despejar en (\ref{EqfKarmanPrandtlFactorsRoot}) finalmente $c_t$:
+\EQ
+{
+  c_t=\frac14\,\frac{f}{\sigma_t\,D_t\,L_t}\,\frac1{\left[
+  1-2\,s\,\sqrt{f}\,\log_{10}\left(\frac{2\,e^{\frac32}\,L_t}{D}\right)\right]^2}
+}{EqfKarmanPrandtlct}
+
+\end{document}
