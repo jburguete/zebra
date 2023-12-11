@@ -1,6 +1,9 @@
 \documentclass[a4paper]{article}
 
-\author{Javier Burguete, Javier Fernández-Pato, Borja Latorre, Nery Zapata}
+\usepackage{graphicx}
+\usepackage[spanish]{babel}
+
+\author{Javier Burguete, Javier Fernández-Pato, Borja Latorre,\\ Nery Zapata}
 
 \date{\today}
 
@@ -9,6 +12,8 @@
 \newcommand{\EQ}[2]{\begin{equation}#1\label{#2}\end{equation}}
 
 \begin{document}
+
+\maketitle
 
 \section{Fuerzas de rozamiento en flujo turbulento}
 
@@ -30,8 +35,8 @@ al perfil de velocidades vertical sobre la pared:
 \EQ{F_R=\frac12\,c_c\,\rho\,u_*^2\,D_c\,L_c}{EqFrCilindroPared}
 con $c_c$ un nuevo coeficiente aerodinámico del cilindro en la pared y $u_*$ la
 velocidad del fluido a la distancia $L_c$ a la pared:
-\EQ{u_*=u\left(z=L_t\right)}{EqUAsterisco}
-La velocidad $u_*$ es la máxima que se enfrenta al tornillo, pero en distancias
+\EQ{u_*=u\left(z=L_c\right)}{EqUAsterisco}
+La velocidad $u_*$ es la máxima que se enfrenta al cilindro, pero en distancias
 más cercanas a la pared la velocidad del fluido va progresivamente disminuyendo
 hasta anularse, por tanto la resistencia es menor que en el caso anterior y es
 esperable:
@@ -115,6 +120,19 @@ fricción de Darcy-Weisbach es proporcional a los siguientes factores:
   f\;\alpha\;L_t^{1+2\,a},\quad
   f\;\alpha\;D^{-2\,a}
 }{EqfExponencialFactores}
+Por otra parte, suponiendo que a efectos de rozamiento el tornillo se comporta
+como un cilindro ($c_t=c_c$), la fuerza de rozamiento será, de acuerdo a
+(\ref{EqFrCilindroUniforme}):
+\EQ
+{
+	F_R=\frac12\,c_c'\,\rho\,D_c\,\int_0^{L_c}u^2\,dz
+	=\frac1{2\,(1+2\,a)}\,c_c'\,\rho\,D_c\,L_c\,u_*^2
+}{EqFrExponencial}
+de donde, comparando con (\ref{EqFrCilindroPared}):
+\EQ
+{
+	c_t=c_c=\frac1{1+2\,a}\,c_c'=\frac{0.51}{1+2\,a}
+}{EqCcExponencial}
 
 \subsubsection{Perfil de velocidades logarítmico}
 
@@ -177,6 +195,9 @@ que el factor de fricción de Darcy-Weisbach sea proporcional a:
   f\;\alpha\;L_t^{\frac43},\quad
   f\;\alpha\;D^{-\frac13}
 }{EqfExponencialFactoresManning}
+De acuerdo a (\ref{EqCcExponencial}) será esperable un coeficiente de
+resistencia aerodinámico:
+\EQ{c_t=\frac34\,c_c'=0.38}{EqManningcc}
 También es posible despejar el coeficiente de fricción de los tornillos en la
 pared en (\ref{EqManningExponencial}) a partir de medidas experimentales de $f$:
 \EQ
@@ -260,5 +281,196 @@ se puede despejar en (\ref{EqfKarmanPrandtlFactorsRoot}) finalmente $c_t$:
   c_t=\frac14\,\frac{f}{\sigma_t\,D_t\,L_t}\,\frac1{\left[
   1-2\,s\,\sqrt{f}\,\log_{10}\left(\frac{2\,e^{\frac32}\,L_t}{D}\right)\right]^2}
 }{EqfKarmanPrandtlct}
+
+\section{Medidas en el laboratorio del CENTER}
+
+Tras las medidas de caída de presión en un tubo con tornillos del laboratorio
+del CENTER vamos a comprobar las predicciones de la ley de Darcy-Weisbach
+(\ref{EqDarcyWeisbach}). Presentamos los resultados en la
+\figurename~\ref{Figdpu}. Se comprueba que las diferencias de presión parecen no ajustarse bien en el rango bajo de velocidades.
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.49\textwidth]{dp-u-250.eps}
+\includegraphics[width=0.49\textwidth]{dp-u-300.eps}
+\caption
+{
+  Caída de presión en función de la velocidad de flujo para distintos
+  valores de densidad y longitud de tornillos y curvas de ajuste de acuerdo a la
+  ley de Darcy-Weisbach (\ref{EqDarcyWeisbach}).\label{Figdpu}
+}
+\end{figure}
+
+Si en cambio hacemos un ajuste modificando la ley:
+\EQ{\Delta P=\Delta P_0-f\,\frac12\,\rho\,U^2\,\frac{L}{D}}
+{EqDarcyWeisbachModificada}
+con $\Delta P_0$ un valor de ajuste a velocidad nula, podemos comprobar los
+resultados en la \figurename~\ref{Figdpub}. Se observa que todas las curvas
+parecen ajustarse a una leve caída de la presión (en torno a 2 kPa) a velocidad
+nula que podría indicar algún desajuste en el sensor de presión. El valor
+promedio de esta caída de presión para las 12 curvas de ajuste resulta:
+\EQ{\Delta P_0=-2270.59\;\mathrm{Pa}}{EqdP0}
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.49\textwidth]{dp-u-250b.eps}
+\includegraphics[width=0.49\textwidth]{dp-u-300b.eps}
+\caption
+{
+  Caída de presión en función de la velocidad de flujo para distintos
+  valores de densidad y longitud de tornillos y curvas de ajuste de acuerdo a la
+  ley de Darcy-Weisbach modificada (\ref{EqDarcyWeisbachModificada}).
+  \label{Figdpub}
+}
+\end{figure}
+
+En la \figurename~\ref{FigctI} presentamos el coeficiente de resistencia
+aerodinámica del tornillo en la pared $c_t$, obtenido el factor de fricción de
+la ley de Darcy-Weisbach (\ref{EqDarcyWeisbach}) a partir de las medidas de
+caída de presión y velocidad de flujo, y usando bien el modelo de
+Gauckler-Manning (\ref{EqManningct}) o el de Colebrook-White
+(\ref{EqfKarmanPrandtlct}). Se comprueba el mal ajuste a presiones bajas.
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.49\textwidth]{ct-dp-gm-1.eps}
+\includegraphics[width=0.49\textwidth]{ct-dp-cw-1.eps}
+\caption
+{
+  Coeficiente de resistencia aerodinámica del tornillo en la pared, obtenido el
+  factor de fricción de (\ref{EqDarcyWeisbach}) y usando bien el modelo de
+  Gauckler-Manning (\ref{EqManningct}) o el de Colebrook-White
+  (\ref{EqfKarmanPrandtlct}).\label{FigctI}
+}
+\end{figure}
+
+En la \figurename~\ref{FigctI} presentamos el coeficiente de resistencia
+aerodinámica del tornillo en la pared $c_t$, obtenido el factor de fricción de
+la ley de Darcy-Weisbach modificada (\ref{EqDarcyWeisbachModificada}) a partir
+de las medidas de caída de presión y velocidad de flujo y en la que se descuenta
+el posible error $\Delta P_0$ en el sensor de presión. Se ha usado bien el
+modelo de Gauckler-Manning (\ref{EqManningct}) o el de Colebrook-White
+(\ref{EqfKarmanPrandtlct}). Se comprueba que los resultados son mucho mejores
+tras el descuento del error del sensor. El coeficiente $c_t$ ajustado a los
+datos con el modelo de Gauckler-Manning (0.35) está muy próximo al valor teórico
+(0.38). Los resultados del modelo de Gauckler-Manning parecen mejores que el de
+Colebrook-White, que presentan mayor dispersión, siendo además un modelo
+bastante más simple. En ambos modelos se obtienen mayores valores de $c_t$ en la
+tubería DN250-PN10 que en la DN300PN10. 
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.49\textwidth]{ct-dp-gm-4.eps}
+\includegraphics[width=0.49\textwidth]{ct-dp-cw-4.eps}
+\caption
+{
+  Coeficiente de resistencia aerodinámica del tornillo en la pared, obtenido el
+  factor de fricción de (\ref{EqDarcyWeisbachModificada}) y usando bien el
+  modelo de Gauckler-Manning (\ref{EqManningct}) o el de Colebrook-White
+  (\ref{EqfKarmanPrandtlct}).\label{FigctII}
+}
+\end{figure}
+
+A continuación vamos a tratar de comprobar la validez del modelo de perfil de
+velocidades exponencial. Según (\ref{EqfExponencial}) debería esperarse la
+relación:
+\EQ
+{
+  \log\left(\frac{f}{\sigma_t\,D_t\,L_t}\right)=
+  \log\left[2^{2\,a}\,(1+a)^2\,(2+a)^2\,c_t\right]
+  +2\,a\,\log\left(\frac{L_t}{D}\right)
+}{Eqfsdl}
+Si tenemos como válida la ley de Gauckler-Manning
+(\ref{EqManningExponencial}), que parece haberse comportado mejor para la
+fricción de los tornillos que la de Colebrook-White, debería cumplirse:
+\EQ
+{
+  \log\left(\frac{f}{\sigma_t\,D_t\,L_t}\right)=
+  \log\left[2^{\frac13}\,\left(\frac{91}{36}\right)^2\,0.38\right]
+  +\frac13\,\log\left(\frac{L_t}{D}\right)
+}{EqfsdlManning}
+En la \figurename~\ref{Figfsdl} presentamos la relación entre
+$\log\left(\frac{f}{\sigma_t\,D_t\,L_t}\right)$ y
+$\log\left(\frac{L_t}{D}\right)$ con 2 ajustes a una recta según el diámetro de
+la tubería y la recta esperable según (\ref{EqfsdlManning}). Se comprueba una
+importante dispersión en los datos, además de que sólo se midieron 4
+combinaciones del valor $\frac{L_t}{D}$, lo que hace difícil el ajuste a rectas.
+Se intuyen valores en la pendiente superiores al esperado por el modelo de
+Gauckler-Manning que sugieren que un ajuste exponencial con valores superiores
+del exponente $a=\frac16$ podrían comportarse mejor. No obstante, los datos no
+parecen concluyentes y no creemos que sean suficientes para permitir proponer
+otro valor de $a$.
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.49\textwidth]{f-sdl.eps}
+\caption
+{
+  Relación entre $\log\left(\frac{f}{\sigma_t\,D_t\,L_t}\right)$ y
+  $\log\left(\frac{L_t}{D}\right)$ y ajuste a 2 rectas según el diámetro de la
+  tubería y la recta predicha por el modelo de Gauckler-Manning
+  (\ref{EqfsdlManning}).\label{Figfsdl}
+}
+\end{figure}
+
+Finalmente, en la \figurename~\ref{Figdpdp} se exponen los valores de caída de
+presión predichos usando la ley de Darcy-Weisbach modificada
+(\ref{EqDarcyWeisbachModificada}), teniendo en cuenta el error del sensor
+de presión $\Delta P_0$, usando el modelo de Gauckler-Manning
+(\ref{EqManningExponencial}) con el valor del coeficiente aeródinamico de los
+tornillos en la pared teórico (\ref{EqManningct}) frente al valor de caída de
+presión medido. Se comprueba un ajuste razonable, aunque los valores en la
+tubería DN250-PN10 quedan algo subestimados y en cambio los de la tubería
+DN300-PN10 algo sobreestimados.
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.49\textwidth]{dp-dp-1.eps}
+\caption
+{
+  Valores de caída de presión predichos usando la ley de Darcy-Weisbach
+  modificada (\ref{EqDarcyWeisbachModificada}) usando el modelo de
+  Gauckler-Manning (\ref{EqManningExponencial}) con el valor del coeficiente
+  aeródinamico de los tornillos en la pared teórico ($c_t=0.38$) frente al
+  valor medido de caída de presión.\label{Figdpdp}
+}
+\end{figure}
+
+\section{Estimación de pérdidas de presión por mejillón cebra}
+
+Si la pérdida de presión es producida por mejillón cebra las fórmulas de las
+secciones anteriores siguen válidas sustituyendo las dimensiones y el
+coeficiente de resistencia aerodinámico de los tornillos por el de la concha del
+mejillón. La concha del mejillón tiene un perfil de tipo aerodinámico, en este
+tipo de perfiles son esperables coeficientes de resistencia $c_m$ en torno a:
+\EQ{c_m\approx0.1}{Eqcm}
+Suponiendo una pérdida base $\Delta P_w$ en las tuberías sin mejillón acorde a
+la ley de Colebrook-White (\ref{EqColebrookWhite}):
+\EQ
+{
+	\Delta P_w=f_w\,\frac12\,\rho\,U^2\,\frac{L}{D},\quad
+	f_w=\frac1{4\,\log_{10}^2\left(\frac{k_s}{3.7\,D}
+	+\frac{2.51}{\mathrm{Re}\,\sqrt{f_w}}\right)}
+}{Eqdpw}
+con $f_w$ el factor de fricción de Darcy-Weisbach para la tubería sin tornillos.
+Consideraremos la pérdida total en tuberías con mejillón ($\Delta P_m$):
+\EQ{\Delta P_m=\left(f_w+f_m\right)\,\frac12\,\rho\,U^2\,\frac{L}{D}}{Eqdpfm}
+con $f_m$ el factor de fricción de Darcy-Weisbach debido a la presencia del
+mejillón, que aproximaremos con Gauckler-Manning y teniendo en cuenta que
+por la forma de la concha, la sección eficaz que se enfrenta al flujo $A_m$ es:
+\[
+  A_m\approx\frac12\,w_m\,h_m,\quad
+  f_m=2^{\frac13}\,\left(\frac{91}{36}\right)^2\,\sigma_m\,c_m\,A_m
+  \,\left(\frac{h_t}{D}\right)^{\frac13}\Rightarrow
+\]
+\EQ
+{
+  f_m=2^{-\frac23}\,\left(\frac{91}{36}\right)^2\,\sigma_m\,c_m\,w_m\,h_m
+  \,\left(\frac{h_t}{D}\right)^{\frac13}
+}{Eqfm}
+con $\sigma_m$ la densidad de mejillones por superficie de pared, $w_m$ la
+anchura de la concha y $h_m$ su altura. Por otra parte, si lo que se conoce es
+la caída de presión podemos deducir la densidad de mejillones de (\ref{Eqdpw}),
+(\ref{Eqdpfm}) y (\ref{Eqfm}):
+\EQ
+{
+  \sigma_m=2^\frac53\,\left(\frac{36}{91}\right)^2
+  \,\frac{\Delta P_m-\Delta P_w}{\rho\,U^2\,L\,c_m\,w_m}
+  \,\left(\frac{D}{h_m}\right)^{\frac43}
+}{Eqsigmam}
 
 \end{document}
