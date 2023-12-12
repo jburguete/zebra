@@ -120,6 +120,9 @@ inlet_read_file (const char *name,      ///< file name.
         break;
       if (fscanf (file, "%lf", &c) != 1)
         break;
+#if DEBUG_INLET
+      fprintf (stderr, "inlet_read_file: t=%.14lg c=%lg\n", t, c);
+#endif
       i = *n;
       if (i && t < tt[i - 1])
         goto exit_on_error;

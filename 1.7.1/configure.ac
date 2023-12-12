@@ -1,5 +1,5 @@
 AC_PREREQ([2.69])
-AC_INIT([zebra],[1.7.0],[https://github.com/jburguete/zebra])
+AC_INIT([zebra],[1.7.1],[https://github.com/jburguete/zebra])
 #AC_CONFIG_HEADERS([config.h])
 
 # Checks for operative systems

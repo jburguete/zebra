@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.7.0\n"
+"Project-Id-Version: 1.7.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-10 19:01+0100\n"
+"POT-Creation-Date: 2023-12-11 11:16+0100\n"
 "PO-Revision-Date: 2021-06-15 01:12+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -149,55 +149,55 @@ msgstr "Faltan especies"
 msgid "Inlet"
 msgstr "Entrada"
 
-#: inlet.c:178
+#: inlet.c:181
 msgid "Bad node identifier"
 msgstr "Identificador de nodo incorrecto"
 
-#: inlet.c:198
+#: inlet.c:201
 msgid "The node is not assigned to a pipe"
 msgstr "El nodo no está asignado a ningún tubo"
 
-#: inlet.c:211
+#: inlet.c:214
 msgid "No solute name"
 msgstr "Falta el nombre del soluto"
 
-#: inlet.c:217
+#: inlet.c:220
 msgid "Unknown solute"
 msgstr "Soluto desconocido"
 
-#: inlet.c:225
+#: inlet.c:228
 msgid "Bad initial conditions"
 msgstr "Condiciones iniciales incorrectas"
 
-#: inlet.c:238
+#: inlet.c:241
 msgid "Bad solute type"
 msgstr "Tipo de soluto incorrecto"
 
-#: inlet.c:245
+#: inlet.c:248
 msgid "No solute file"
 msgstr "Falta fichero de solutos"
 
-#: inlet.c:254
+#: inlet.c:257
 msgid "Bad solute input file"
 msgstr "Falta el fichero de entrada de solutos"
 
-#: inlet.c:264
+#: inlet.c:267
 msgid "No species name"
 msgstr "Falta el nombre de la especie"
 
-#: inlet.c:270
+#: inlet.c:273
 msgid "Unknown species"
 msgstr "Especie desconocida"
 
-#: inlet.c:277 simulation.c:185
+#: inlet.c:280 simulation.c:185
 msgid "No species file"
 msgstr "Falta el fichero de especie"
 
-#: inlet.c:286
+#: inlet.c:289
 msgid "Bad species input file"
 msgstr "Fichero de entrada de especie incorrecto"
 
-#: inlet.c:292
+#: inlet.c:295
 msgid "Unknown node"
 msgstr "Nodo desconocido"
 

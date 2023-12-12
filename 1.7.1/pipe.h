@@ -396,7 +396,7 @@ pipe_solute_decay_step (Pipe *pipe,     ///< pointer to the pipe struct data.
     if (solute[j].time_decay > FLT_EPSILON)
       for (i = 0; i < ncells; ++i)
         cell[i].solute_concentration[j] *=
-          fmax (0., 1. - M_LN2 * step / solute[j].time_decay);
+          fmax (0., 1. - step * solute[j].time_decay);
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_solute_decay_step: end\n");
 #endif
