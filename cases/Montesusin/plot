@@ -1,0 +1,146 @@
+set term pos eps enh 24
+
+set key left
+set xlabel 'day'
+set ylabel 'density (larvae/m^3)'
+set xrange [0:3397./24.]
+set yrange [0:160]
+month(x)=x==1?0:x==2?31:x==3?59:x==4?90:x==5?120:x==6?151:x==7?181:x==8?\
+	212:x==9?243:x==10?273:x==11?304:334
+f(y,m,d,h)=h/24.+d+month(m)+365*y
+h21(y,m,d,h)=f(y,m,d,h)-f(2021,5,13,2)
+h22(y,m,d,h)=f(y,m,d,h)-f(2022,5,13,2)
+set out '2021-mussel-input-constant.eps'
+plot 'zebra-mussel-2021-constant.in' u (h21($1,$2,$3,$4)):7 t'Constant' w l lt 1
+set out '2021-mussel-input-measured.eps'
+plot 'zebra-mussel-2021-measured.in' u (h21($1,$2,$3,$4)):7 t'Measured' w l lt 1
+set out '2021-mussel-input-random.eps'
+plot 'zebra-mussel-2021-random.in' u (h21($1,$2,$3,$4)):7 t'Random' w l lt 1
+set out '2021-mussel-input-uniform.eps'
+plot 1.251340659 t'Uniform' w l lt 1
+set out '2022-mussel-input-constant.eps'
+plot 'zebra-mussel-2022-constant.in' u (h22($1,$2,$3,$4)):7 t'Constant' w l lt 1
+set out '2022-mussel-input-measured.eps'
+plot 'zebra-mussel-2022-measured.in' u (h22($1,$2,$3,$4)):7 t'Measured' w l lt 1
+set out '2022-mussel-input-random.eps'
+plot 'zebra-mussel-2022-random.in' u (h22($1,$2,$3,$4)):7 t'Random' w l lt 1
+set out '2022-mussel-input-uniform.eps'
+plot 1.508920085 t'Uniform' w l lt 1
+
+set xlabel 'Time (days)'
+set ylabel 'Chlorine concentration (%)'
+
+d(x)=x/(24*3600)
+
+set title 'Node-0'
+set out '2021-chlorine-constant-0.eps'
+plot [0:92][-10:110] 'results-2021-chlorine-constant.bin.d/point-0'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-2'
+set out '2021-chlorine-constant-2.eps'
+plot [0:92][-10:110] 'results-2021-chlorine-constant.bin.d/point-2'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-6665'
+set out '2021-chlorine-constant-6665.eps'
+plot [0:92][-10:110] 'results-2021-chlorine-constant.bin.d/point-6665'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-172'
+set out '2021-chlorine-constant-172.eps'
+plot [0:92][-10:110] 'results-2021-chlorine-constant.bin.d/point-172'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-0'
+set out '2021-chlorine-day-0.eps'
+plot [0:92][-10:110] 'results-2021-chlorine-day.bin.d/point-0'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-2'
+set out '2021-chlorine-day-2.eps'
+plot [0:92][-10:110] 'results-2021-chlorine-day.bin.d/point-2'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-65'
+set out '2021-chlorine-day-65.eps'
+plot [0:92][-10:110] 'results-2021-chlorine-day.bin.d/point-65'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-6665'
+set out '2021-chlorine-day-6665.eps'
+plot [0:92][-10:110] 'results-2021-chlorine-day.bin.d/point-6665'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-172'
+set out '2021-chlorine-day-172.eps'
+plot [0:92][-10:110] 'results-2021-chlorine-day.bin.d/point-172'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-0'
+set out '2021-chlorine-week-0.eps'
+plot [0:92][-10:110] 'results-2021-chlorine-week.bin.d/point-0'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-2'
+set out '2021-chlorine-week-2.eps'
+plot [0:92][-10:110] 'results-2021-chlorine-week.bin.d/point-2'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-68'
+set out '2021-chlorine-week-68.eps'
+plot [0:92][-10:110] 'results-2021-chlorine-week.bin.d/point-68'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-123'
+set out '2021-chlorine-week-123.eps'
+plot [0:92][-10:110] 'results-2021-chlorine-week.bin.d/point-123'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-172'
+set out '2021-chlorine-week-172.eps'
+plot [0:92][-10:110] 'results-2021-chlorine-week.bin.d/point-172'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-0'
+set out '2022-chlorine-constant-0.eps'
+plot [0:92][-10:110] 'results-2022-chlorine-constant.bin.d/point-0'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-2'
+set out '2022-chlorine-constant-2.eps'
+plot [0:92][-10:110] 'results-2022-chlorine-constant.bin.d/point-2'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-6665'
+set out '2022-chlorine-constant-68.eps'
+plot [0:92][-10:110] 'results-2022-chlorine-constant.bin.d/point-68'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-172'
+set out '2022-chlorine-constant-172.eps'
+plot [0:92][-10:110] 'results-2022-chlorine-constant.bin.d/point-172'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-0'
+set out '2022-chlorine-day-0.eps'
+plot [0:92][-10:110] 'results-2022-chlorine-day.bin.d/point-0'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-2'
+set out '2022-chlorine-day-2.eps'
+plot [0:92][-10:110] 'results-2022-chlorine-day.bin.d/point-2'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-6634'
+set out '2022-chlorine-day-6634.eps'
+plot [0:92][-10:110] 'results-2022-chlorine-day.bin.d/point-6634'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-68'
+set out '2022-chlorine-day-68.eps'
+plot [0:92][-10:110] 'results-2022-chlorine-day.bin.d/point-68'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-172'
+set out '2022-chlorine-day-172.eps'
+plot [0:92][-10:110] 'results-2022-chlorine-day.bin.d/point-172'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-0'
+set out '2022-chlorine-week-0.eps'
+plot [0:92][-10:110] 'results-2022-chlorine-week.bin.d/point-0'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-2'
+set out '2022-chlorine-week-2.eps'
+plot [0:92][-10:110] 'results-2022-chlorine-week.bin.d/point-2'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-6634'
+set out '2022-chlorine-week-6634.eps'
+plot [0:92][-10:110] 'results-2022-chlorine-week.bin.d/point-6634'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-139'
+set out '2022-chlorine-week-139.eps'
+plot [0:92][-10:110] 'results-2022-chlorine-week.bin.d/point-139'\
+	u (d($1)):(100*$8) not w l lt 1
+set title 'Node-172'
+set out '2022-chlorine-week-172.eps'
+plot [0:92][-10:110] 'results-2022-chlorine-week.bin.d/point-172'\
+	u (d($1)):(100*$8) not w l lt 1

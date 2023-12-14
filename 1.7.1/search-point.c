@@ -53,28 +53,28 @@ main (int argn, char **argc)
                 {
                   ++n;
                   m += x;
-                } 
+                }
             }
-          }
-       while (1);
-end:
-       fclose (fin);
-       m /= n;
-       fprintf (fout, "%s %lg\n", d->d_name, m);
-       if (m > max)
-         {
-           max = m;
-           free (max_name);
-           max_name = strdup (d->d_name);
-         }
-       if (m < FLT_EPSILON)
-         printf ("file=%s: average null\n", d->d_name);
-       else if (m < min)
-         {
-           min = m;
-           free (min_name);
-           min_name = strdup (d->d_name);
-         }
+        }
+      while (1);
+    end:
+      fclose (fin);
+      m /= n;
+      fprintf (fout, "%s %lg\n", d->d_name, m);
+      if (m > max)
+        {
+          max = m;
+          free (max_name);
+          max_name = strdup (d->d_name);
+        }
+      if (m < FLT_EPSILON)
+        printf ("file=%s: average null\n", d->d_name);
+      else if (m < min)
+        {
+          min = m;
+          free (min_name);
+          min_name = strdup (d->d_name);
+        }
     }
   fclose (fout);
   closedir (dir);
