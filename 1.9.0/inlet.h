@@ -59,7 +59,7 @@ inlet_maximum_time (Inlet *inlet,       ///< pointer to the inlet struct data.
 #if DEBUG_INLET
   fprintf (stderr, "inlet_maximum_time: start\n");
 #endif
-  tmax = maximum_time;
+  t = tmax = maximum_time;
   for (j = 0; j < MAX_SOLUTES; ++j)
     {
       date = inlet->solute_time[j];

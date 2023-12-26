@@ -13,6 +13,7 @@
 #include <gsl/gsl_rng.h>
 #include "config.h"
 #include "tools.h"
+#include "temperature.h"
 #include "solute.h"
 #include "species.h"
 #include "specimen.h"

@@ -14,6 +14,7 @@
 #include <gsl/gsl_rng.h>
 #include "config.h"
 #include "tools.h"
+#include "temperature.h"
 #include "solute.h"
 #include "species.h"
 #include "specimen.h"
@@ -86,66 +87,6 @@ inlet_destroy (Inlet *inlet)    ///< pointer to the inlet struct data.
 #if DEBUG_INLET
   fprintf (stderr, "inlet_destroy: end\n");
 #endif
-}
-
-/**
- * function to read the inlet data on a text file.
- *
- * \return 1 on success, 0 on error.
- */
-static int
-inlet_read_file (const char *name,      ///< file name.
-                 double **data, ///< pointer to the array of data.
-                 double **date, ///< pointer to the array of times.
-                 unsigned int *n)       ///< pointer to the number of data.
-{
-  FILE *file;
-  double *tt, *cc;
-  double t, c;
-  size_t size;
-  int e, error_code = 0;
-  unsigned int i;
-#if DEBUG_INLET
-  fprintf (stderr, "inlet_read_file: start\n");
-#endif
-  file = fopen (name, "r");
-  if (!file)
-    goto exit_on_error;
-  *n = 0;
-  tt = cc = NULL;
-  do
-    {
-      t = read_time (file, &e);
-      if (!e)
-        break;
-      if (fscanf (file, "%lf", &c) != 1)
-        break;
-#if DEBUG_INLET
-      fprintf (stderr, "inlet_read_file: t=%.14lg c=%lg\n", t, c);
-#endif
-      i = *n;
-      if (i && t < tt[i - 1])
-        goto exit_on_error;
-      ++(*n);
-      size = (*n) * sizeof (double);
-      cc = (double *) realloc (cc, size);
-      cc[i] = c;
-      tt = (double *) realloc (tt, size);
-      tt[i] = t;
-    }
-  while (1);
-  *data = cc;
-  *date = tt;
-  if (!*n)
-    goto exit_on_error;
-  error_code = 1;
-exit_on_error:
-  if (file)
-    fclose (file);
-#if DEBUG_INLET
-  fprintf (stderr, "inlet_read_file: end\n");
-#endif
-  return error_code;
 }
 
 /**
@@ -249,10 +190,10 @@ inlet_open_xml (Inlet *inlet,   ///< pointer to the inlet struct data.
               goto exit_on_error;
             }
           snprintf (name, BUFFER_SIZE, "%s/%s", directory, (char *) buffer);
-          if (!inlet_read_file (name,
-                                inlet->solute_concentration + i,
-                                inlet->solute_time + i,
-                                inlet->nsolute_times + i))
+          if (!read_file (name,
+                          inlet->solute_concentration + i,
+                          inlet->solute_time + i,
+                          inlet->nsolute_times + i))
             {
               m = _("Bad solute input file");
               goto exit_on_error;
@@ -281,10 +222,10 @@ inlet_open_xml (Inlet *inlet,   ///< pointer to the inlet struct data.
               goto exit_on_error;
             }
           snprintf (name, BUFFER_SIZE, "%s/%s", directory, (char *) buffer);
-          if (!inlet_read_file (name,
-                                inlet->species_concentration + i,
-                                inlet->species_time + i,
-                                inlet->nspecies_times + i))
+          if (!read_file (name,
+                          inlet->species_concentration + i,
+                          inlet->species_time + i,
+                          inlet->nspecies_times + i))
             {
               m = _("Bad species input file");
               goto exit_on_error;

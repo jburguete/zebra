@@ -14,6 +14,7 @@ extern char *error_msg;
 void error_message (const char *label, const char *name, char *msg);
 void time_string (char *string, unsigned int length, double date);
 double read_time (FILE * file, int *error);
+int read_file (const char *name, double **data, double **date, unsigned int *n);
 unsigned int xml_node_get_uint (xmlNode * node, const xmlChar * prop,
                                 int *error);
 unsigned int xml_node_get_uint_with_default (xmlNode * node,

@@ -27,6 +27,7 @@
 #define BUFFER_SIZE 512         ///< size of string buffers.
 #define DEFAULT_CFL 0.9         ///< default CFL value.
 #define DEFAULT_DISPERSION_CFL 1.       ///< default dispersion CFL value.
+#define DEFAULT_TEMPERATURE 20. ///< default temperature.
 #define FLUX_LIMITER 3
 ///< flux limiter (0:null, 1:upwind, 2:centred, 3:monotonized central)
 #define FMTL "%16s"             ///< format of identifier labels.
@@ -178,6 +179,8 @@
 ///< solubility XML label.
 #define XML_SPECIES             (const xmlChar *) "species"
 ///< species XML label.
+#define XML_TEMPERATURE         (const xmlChar *) "temperature"
+///< temperature XML label.
 #define XML_TIME                (const xmlChar *) "time"
 ///< time XML label.
 #define XML_TIME_DECAY          (const xmlChar *) "time-decay"

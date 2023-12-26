@@ -45,7 +45,6 @@ typedef struct
   unsigned int nwalls;          ///< number of mesh walls.
 } Pipe;
 
-extern double current_time;
 extern double next_time;
 extern double advection_step;
 extern double dispersion_step;

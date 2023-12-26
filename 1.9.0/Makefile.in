@@ -1,14 +1,15 @@
 .PHONY: clean strip
 
-hdr = config.h tools.h solute.h species.h specimen.h point.h cell.h wall.h \
-	pipe.h junction.h inlet.h junction.h network.h results.h simulation.h
-src = tools.c solute.c species.c specimen.c cell.c pipe.c inlet.c junction.c \
-	network.c results.c simulation.c main.c
-obj = tools.o solute.o species.o specimen.o cell.o pipe.o inlet.o junction.o \
-	network.o results.o simulation.o main.o
+hdr = config.h tools.h temperature.h solute.h species.h specimen.h point.h \
+	cell.h wall.h pipe.h junction.h inlet.h junction.h network.h results.h \
+	simulation.h
+src = tools.c temperature.c solute.c species.c specimen.c cell.c pipe.c \
+	inlet.c junction.c network.c results.c simulation.c main.c
+obj = tools.o temperature.o solute.o species.o specimen.o cell.o pipe.o \
+	inlet.o junction.o network.o results.o simulation.o main.o
 cfg = tools.h config.h Makefile
 sps = species.h solute.h $(cfg)
-spn = specimen.h $(sps)
+spn = specimen.h temperature.h $(sps)
 pip = pipe.h cell.h wall.h point.h $(spn)
 net = network.h inlet.h junction.h $(pip)
 res = results.h $(net)
@@ -29,12 +30,13 @@ CFLAGS = @CFLAGS@ @XML_CFLAGS@ @GLIB_CFLAGS@ @GSL_CFLAGS@ -c -pedantic -Wall \
 LDFLAGS = @LDFLAGS@ @GSL_LIBS@ @GLIB_LIBS@ @XML_LIBS@ @LIBS@
 
 ifeq (@PGO@, 1)
-objpgo = tools.pgo solute.pgo species.pgo specimen.pgo cell.pgo \
-	pipe.pgo inlet.pgo junction.pgo network.pgo results.pgo \
+objpgo = tools.pgo temperature.pgo solute.pgo species.pgo specimen.pgo \
+	cell.pgo pipe.pgo inlet.pgo junction.pgo network.pgo results.pgo \
 	simulation.pgo main.pgo
 pgogen = -fprofile-generate
 pgouse = -fprofile-use -fprofile-correction
 toolsdep = $(zebrapgo)
+temperaturedep = $(zebrapgo)
 solutedep = $(zebrapgo)
 speciesdep = $(zebrapgo)
 specimendep = $(zebrapgo)
@@ -48,6 +50,7 @@ simulationdep = $(zebrapgo)
 maindep = $(zebrapgo)
 else
 toolsdep = tools.c $(cfg)
+temperaturedep = temperature.c temperature.h $(cfg)
 solutedep = solute.c solute.h $(cfg)
 speciesdep = species.c $(sps)
 specimendep = specimen.c $(spn)
@@ -74,6 +77,9 @@ $(zebrapgo): $(objpgo)
 
 tools.pgo: tools.c $(cfg)
 	$(CC) $(CFLAGS) $(pgogen) tools.c -o tools.pgo
+
+temperature.pgo: temperature.c temperature.h $(cfg)
+	$(CC) $(CFLAGS) $(pgogen) temperature.c -o temperature.pgo
 
 solute.pgo: solute.c solute.h $(cfg)
 	$(CC) $(CFLAGS) $(pgogen) solute.c -o solute.pgo
@@ -113,6 +119,9 @@ $(zebra): $(obj)
 
 tools.o: $(toolsdep)
 	$(CC) $(CFLAGS) $(pgouse) tools.c -o tools.o
+
+temperature.o: $(temperaturedep)
+	$(CC) $(CFLAGS) $(pgouse) temperature.c -o temperature.o
 
 solute.o: $(solutedep)
 	$(CC) $(CFLAGS) $(pgouse) solute.c -o solute.o

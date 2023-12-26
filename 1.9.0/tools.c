@@ -89,6 +89,57 @@ read_time (FILE *file,          ///< XML node struct.
 }
 
 /**
+ * function to read the data on a text file.
+ *
+ * \return 1 on success, 0 on error.
+ */
+int
+read_file (const char *name,    ///< file name.
+           double **data,       ///< pointer to the array of data.
+           double **date,       ///< pointer to the array of times.
+           unsigned int *n)     ///< pointer to the number of data.
+{
+  FILE *file;
+  double *tt, *cc;
+  double t, c;
+  size_t size;
+  int e, error_code = 0;
+  unsigned int i;
+  file = fopen (name, "r");
+  if (!file)
+    goto exit_on_error;
+  *n = 0;
+  tt = cc = NULL;
+  do
+    {
+      t = read_time (file, &e);
+      if (!e)
+        break;
+      if (fscanf (file, "%lf", &c) != 1)
+        break;
+      i = *n;
+      if (i && t < tt[i - 1])
+        goto exit_on_error;
+      ++(*n);
+      size = (*n) * sizeof (double);
+      cc = (double *) realloc (cc, size);
+      cc[i] = c;
+      tt = (double *) realloc (tt, size);
+      tt[i] = t;
+    }
+  while (1);
+  *data = cc;
+  *date = tt;
+  if (!*n)
+    goto exit_on_error;
+  error_code = 1;
+exit_on_error:
+  if (file)
+    fclose (file);
+  return error_code;
+}
+
+/**
  * function to get an unsigned integer number from a property of a XML node.
  *
  * \return unsigned integer number value.

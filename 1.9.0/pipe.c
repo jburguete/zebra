@@ -13,6 +13,7 @@
 #include <gsl/gsl_rng.h>
 #include "config.h"
 #include "tools.h"
+#include "temperature.h"
 #include "solute.h"
 #include "species.h"
 #include "specimen.h"
@@ -25,7 +26,6 @@ double time_step;               ///< time step size.
 double advection_step;          ///< advection step size.
 double dispersion_step;         ///< dispersion step size.
 double biological_step;         ///< biological step size.
-double current_time;            ///< current time.
 double next_time;               ///< next time.
 
 
