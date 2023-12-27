@@ -23,7 +23,8 @@
 #include "pipe.h"
 #include "temperature.h"
 
-double current_time;            ///< current time.
+Temperature temperature[1];     ///< struct defining the temperatures.
+double current_time;            ///< current time in seconds since 1970.
 double current_temperature;     ///< current temperature.
 
 /**
@@ -36,28 +37,10 @@ temperature_error (const char *msg)     ///< error message.
 }
 
 /**
- * function to init an empty temperature.
- */
-static inline void
-temperature_null (Temperature *temperature)
-                  ///< pointer to the temperature struct data.
-{
-#if DEBUG_TEMPERATURE
-  fprintf (stderr, "temperature_null: start\n");
-#endif
-  temperature->ntimes = 0;
-  temperature->temperature = temperature->time = NULL;
-#if DEBUG_TEMPERATURE
-  fprintf (stderr, "temperature_null: end\n");
-#endif
-}
-
-/**
  * function to free the memory used by the temperature data.
  */
 void
-temperature_destroy (Temperature *temperature)
-                     ///< pointer to the temperature struct data.
+temperature_destroy ()
 {
 #if DEBUG_TEMPERATURE
   fprintf (stderr, "temperature_destroy: start\n");
@@ -76,38 +59,21 @@ temperature_destroy (Temperature *temperature)
  * \return 1 on success, 0 on error.
  */
 int
-temperature_open_xml (Temperature *temperature,
-                      ///< pointer to the temperature struct data.
-                      xmlNode *node,    ///< XML node.
-                      char *directory)  ///< directory string.
+temperature_open_xml (const char *name) ///< file name.
 {
-  char name[BUFFER_SIZE];
-  xmlChar *buffer;
   const char *m;
 
   // start
 #if DEBUG_TEMPERATURE
   fprintf (stderr, "temperature_open_xml: start\n");
 #endif
-  temperature_null (temperature);
 
   // reading temperature
-  if (!xmlStrcmp (node->name, XML_TEMPERATURE))
+  if (!read_file (name, &temperature->temperature, &temperature->time,
+                  &temperature->ntimes))
     {
-      buffer = xmlGetProp (node, XML_FILE);
-      if (!buffer)
-        {
-          m = _("No temperature file");
-          goto exit_on_error;
-        }
-      snprintf (name, BUFFER_SIZE, "%s/%s", directory, (char *) buffer);
-      xmlFree (buffer);
-      if (!read_file (name, &temperature->temperature, &temperature->time,
-                      &temperature->ntimes))
-        {
-          m = _("Bad temperature input file");
-          goto exit_on_error;
-        }
+      m = _("Bad temperature input file");
+      goto exit_on_error;
     }
 
   // exit on success
@@ -123,7 +89,7 @@ exit_on_error:
   temperature_error (m);
 
   // free memory on error
-  temperature_destroy (temperature);
+  temperature_destroy ();
 
   // end
 #if DEBUG_TEMPERATURE

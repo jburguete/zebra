@@ -123,6 +123,19 @@ inlet_open_xml (Inlet *inlet,   ///< pointer to the inlet struct data.
       goto exit_on_error;
     }
   snprintf (inlet->id, MAX_LABEL_LENGTH, "%s", (char *) buffer);
+  xmlFree (buffer);
+  buffer = xmlGetProp (node, XML_TYPE);
+  if (!buffer)
+    inlet->type = INLET_TYPE_SET;
+  else if (!xmlStrcmp (buffer, XML_INJECT))
+    inlet->type = INLET_TYPE_INJECT;
+  else if (!xmlStrcmp (buffer, XML_SET))
+    inlet->type = INLET_TYPE_SET;
+  else
+    {
+      m = _("Bad inlet type");
+      goto exit_on_error;
+    }
 
   inlet->volume = 0.;
   for (i = 0; i < npipes; ++i)
@@ -161,7 +174,6 @@ inlet_open_xml (Inlet *inlet,   ///< pointer to the inlet struct data.
               m = _("Unknown solute");
               goto exit_on_error;
             }
-          xmlFree (buffer);
           x = xml_node_get_float_with_default (node, XML_INITIAL_CONDITIONS, &e,
                                                0.);
           if (!e || x < 0.)
@@ -170,18 +182,6 @@ inlet_open_xml (Inlet *inlet,   ///< pointer to the inlet struct data.
               goto exit_on_error;
             }
           solute[i].initial_conditions = x;
-          buffer = xmlGetProp (node, XML_TYPE);
-          if (!buffer)
-            solute[i].type = INLET_TYPE_SET;
-          else if (!xmlStrcmp (buffer, XML_INJECT))
-            solute[i].type = INLET_TYPE_INJECT;
-          else if (!xmlStrcmp (buffer, XML_SET))
-            solute[i].type = INLET_TYPE_SET;
-          else
-            {
-              m = _("Bad solute type");
-              goto exit_on_error;
-            }
           xmlFree (buffer);
           buffer = xmlGetProp (node, XML_FILE);
           if (!buffer)
@@ -192,8 +192,7 @@ inlet_open_xml (Inlet *inlet,   ///< pointer to the inlet struct data.
           snprintf (name, BUFFER_SIZE, "%s/%s", directory, (char *) buffer);
           if (!read_file (name,
                           inlet->solute_concentration + i,
-                          inlet->solute_time + i,
-                          inlet->nsolute_times + i))
+                          inlet->solute_time + i, inlet->nsolute_times + i))
             {
               m = _("Bad solute input file");
               goto exit_on_error;
@@ -224,8 +223,7 @@ inlet_open_xml (Inlet *inlet,   ///< pointer to the inlet struct data.
           snprintf (name, BUFFER_SIZE, "%s/%s", directory, (char *) buffer);
           if (!read_file (name,
                           inlet->species_concentration + i,
-                          inlet->species_time + i,
-                          inlet->nspecies_times + i))
+                          inlet->species_time + i, inlet->nspecies_times + i))
             {
               m = _("Bad species input file");
               goto exit_on_error;

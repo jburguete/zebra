@@ -318,6 +318,7 @@ network_step (Network *network, ///< pointer to the network struct data.
         }
       while (tdf < tbf);
       bdt = tbf - tb;
+      temperature_set (tb);
       for (i = 0; i < npipes; ++i)
         pipe_biological_step (pipe + i, rng, bdt);
       tb = tbf;

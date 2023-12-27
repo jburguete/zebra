@@ -20,6 +20,7 @@
 #define DEBUG_SOLUTE 0          ///< macro to debug the solute functions.
 #define DEBUG_SPECIES 0         ///< macro to debug the species functions.
 #define DEBUG_SPECIMEN 0        ///< macro to debug the specimen functions.
+#define DEBUG_TEMPERATURE 0     ///< macro to debug the temperautre functions.
 #define DEBUG_WALL 0            ///< macro to debug the wall functions.
 
 // general macros

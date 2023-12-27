@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 1.9.0\n"
+"Project-Id-Version: 1.9.1\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-25 19:58+0100\n"
+"POT-Creation-Date: 2023-12-27 09:03+0100\n"
 "PO-Revision-Date: 2021-06-15 01:12+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -17,15 +17,11 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: temperature.c:35
+#: temperature.c:36
 msgid "Temperature"
 msgstr "Temperatura"
 
-#: temperature.c:100
-msgid "No temperature file"
-msgstr "Falta fichero de temperatura"
-
-#: temperature.c:108
+#: temperature.c:75
 msgid "Bad temperature input file"
 msgstr "Fichero de entrada de temperatura incorrecto"
 
@@ -45,7 +41,7 @@ msgstr "Falta nodo XML raíz"
 msgid "Bad root XML node"
 msgstr "Nodo XML raíz incorrecto"
 
-#: solute.c:131 species.c:126 network.c:851 results.c:547
+#: solute.c:131 species.c:126 network.c:871 results.c:547
 msgid "Bad XML node"
 msgstr "Nodo XML incorrecto"
 
@@ -165,51 +161,51 @@ msgstr "Entrada"
 msgid "Bad node identifier"
 msgstr "Identificador de nodo incorrecto"
 
-#: inlet.c:142
+#: inlet.c:136
+msgid "Bad inlet type"
+msgstr "Tipo de entrada incorrecta"
+
+#: inlet.c:155
 msgid "The node is not assigned to a pipe"
 msgstr "El nodo no está asignado a ningún tubo"
 
-#: inlet.c:155
+#: inlet.c:168
 msgid "No solute name"
 msgstr "Falta el nombre del soluto"
 
-#: inlet.c:161
+#: inlet.c:174
 msgid "Unknown solute"
 msgstr "Soluto desconocido"
 
-#: inlet.c:169
+#: inlet.c:181
 msgid "Bad initial conditions"
 msgstr "Condiciones iniciales incorrectas"
-
-#: inlet.c:182
-msgid "Bad solute type"
-msgstr "Tipo de soluto incorrecto"
 
 #: inlet.c:189
 msgid "No solute file"
 msgstr "Falta fichero de solutos"
 
-#: inlet.c:198
+#: inlet.c:197
 msgid "Bad solute input file"
 msgstr "Falta el fichero de entrada de solutos"
 
-#: inlet.c:208
+#: inlet.c:207
 msgid "No species name"
 msgstr "Falta el nombre de la especie"
 
-#: inlet.c:214
+#: inlet.c:213
 msgid "Unknown species"
 msgstr "Especie desconocida"
 
-#: inlet.c:221 simulation.c:186
+#: inlet.c:220 simulation.c:186
 msgid "No species file"
 msgstr "Falta el fichero de especie"
 
-#: inlet.c:230
+#: inlet.c:228
 msgid "Bad species input file"
 msgstr "Fichero de entrada de especie incorrecto"
 
-#: inlet.c:236
+#: inlet.c:234
 msgid "Unknown node"
 msgstr "Nodo desconocido"
 
@@ -309,23 +305,23 @@ msgstr "Falta fichero de Epanet"
 msgid "Unable to open the Epanet file"
 msgstr "No se pudo abrir el fichero de Epanet"
 
-#: network.c:812
+#: network.c:832
 msgid "No inlets"
 msgstr "Faltan entradas"
 
-#: network.c:827
+#: network.c:847
 msgid "Bad discharges time"
 msgstr "Tiempo de caudales incorrecto"
 
-#: network.c:832
+#: network.c:852
 msgid "Bad discharges time order"
 msgstr "Orden de tiempos de caudales incorrecto"
 
-#: network.c:838
+#: network.c:858
 msgid "No discharges file"
 msgstr "Falta fichero de caudales"
 
-#: network.c:857
+#: network.c:877
 msgid "No discharges"
 msgstr "Faltan caudales"
 
@@ -500,6 +496,9 @@ msgstr ""
 #: main.c:142
 msgid "ERROR!"
 msgstr "¡ERROR!"
+
+#~ msgid "No temperature file"
+#~ msgstr "Falta fichero de temperatura"
 
 #~ msgid "Bad cling water coefficient"
 #~ msgstr "Coeficiente de anclaje de agua incorrecto"

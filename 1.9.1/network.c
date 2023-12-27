@@ -787,7 +787,27 @@ network_open_xml (Network *network,     ///< pointer to the network struct data.
       goto exit_on_error;
     }
 
+  // reading temperatures
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_open_xml: reading temperatures\n");
+#endif
+  temperature_null ();
+  buffer = xmlGetProp (node, XML_TEMPERATURE);
+  if (buffer)
+    {
+      snprintf (name, BUFFER_SIZE, "%s/%s", directory, (char *) buffer);
+      xmlFree (buffer);
+      if (!temperature_open_xml (name))
+        {
+          m = error_msg;
+          goto exit_on_error;
+        }
+    }
+
   // reading inlets
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_open_xml: reading inlets\n");
+#endif
   for (node = node->children; node; node = node->next)
     {
       if (!xmlStrcmp (node->name, XML_INLET))

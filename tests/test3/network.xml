@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<network file="template.inp" pipe-length="length">
+<network file="template.inp" temperature="temperature.in" pipe-length="length">
 	<inlet node="0">
 		<solute name="oxygen" file="oxygen.in"/>
 		<solute name="organic-matter" file="organic-matter.in"/>
