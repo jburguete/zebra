@@ -90,6 +90,7 @@ network_null (Network *network) ///< pointer to the network struct data.
   network->discharges = NULL;
   network->npoints = network->npipes = network->njunctions = network->ninlets
     = network->ndischarges = network->current_discharges = 0;
+  temperature_null (temperature);
 #if DEBUG_NETWORK
   fprintf (stderr, "network_null: end\n");
 #endif
@@ -122,6 +123,7 @@ network_destroy (Network *network)      ///< pointer to the network struct data.
     pipe_destroy (network->pipe + i);
   free (network->pipe);
   free (network->point);
+  temperature_destroy (temperature);
   network_null (network);
 #if DEBUG_NETWORK
   fprintf (stderr, "network_destroy: end\n");
@@ -791,7 +793,6 @@ network_open_xml (Network *network,     ///< pointer to the network struct data.
 #if DEBUG_NETWORK
   fprintf (stderr, "network_open_xml: reading temperatures\n");
 #endif
-  temperature_null ();
   buffer = xmlGetProp (node, XML_TEMPERATURE);
   if (buffer)
     {
