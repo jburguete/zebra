@@ -22,7 +22,7 @@ main (int argn, char **argc)
   unsigned int i, j, k;
   if (argn != 3)
     {
-      puts ("The syntax is:\n./translate input_file output_file");
+      puts ("The syntax is:\n./translate-csv input_file output_file");
       return ERROR_CODE_ARGUMENTS;
     }
   fin = fopen (argc[1], "r");

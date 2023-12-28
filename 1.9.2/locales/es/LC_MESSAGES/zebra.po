@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 1.9.2\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-12-27 13:58+0100\n"
+"POT-Creation-Date: 2023-12-28 08:35+0100\n"
 "PO-Revision-Date: 2021-06-15 01:12+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -29,15 +29,15 @@ msgstr "Fichero de entrada de temperatura incorrecto"
 msgid "Solute"
 msgstr "Soluto"
 
-#: solute.c:107 species.c:102 network.c:741 simulation.c:76
+#: solute.c:107 species.c:102 network.c:742 simulation.c:76
 msgid "Bad input file"
 msgstr "Fichero de entrada incorrecto"
 
-#: solute.c:115 species.c:110 network.c:749 results.c:362 simulation.c:84
+#: solute.c:115 species.c:110 network.c:750 results.c:362 simulation.c:84
 msgid "No root XML node"
 msgstr "Falta nodo XML raíz"
 
-#: solute.c:120 species.c:115 network.c:754 results.c:367 simulation.c:89
+#: solute.c:120 species.c:115 network.c:755 results.c:367 simulation.c:89
 msgid "Bad root XML node"
 msgstr "Nodo XML raíz incorrecto"
 
@@ -213,95 +213,95 @@ msgstr "Nodo desconocido"
 msgid "Network"
 msgstr "Red"
 
-#: network.c:214
+#: network.c:215
 msgid "Bad Epanet title"
 msgstr "Título de Epanet incorrecto"
 
-#: network.c:222
+#: network.c:223
 msgid "Bad Epanet file"
 msgstr "Fichero de Epanet incorrecto"
 
-#: network.c:248 network.c:262 network.c:269
+#: network.c:249 network.c:263 network.c:270
 msgid "Bad Epanet coordinates section"
 msgstr "Sección de coordenadas de Epanet incorrecta"
 
-#: network.c:285 network.c:299 network.c:306
+#: network.c:286 network.c:300 network.c:307
 msgid "Bad Epanet junctions section"
 msgstr "Sección de intersecciones de Epanet incorrecta"
 
-#: network.c:324 network.c:339 network.c:346
+#: network.c:325 network.c:340 network.c:347
 msgid "Bad Epanet pipes section"
 msgstr "Sección de tubos de Epanet incorrecta"
 
-#: network.c:364 network.c:379 network.c:386
+#: network.c:365 network.c:380 network.c:387
 msgid "Bad Epanet reservoirs section"
 msgstr "Sección de fuentes de Epanet incorrecta"
 
-#: network.c:402
+#: network.c:403
 msgid "No Epanet end section"
 msgstr "Falta la sección final de Epanet"
 
-#: network.c:420
+#: network.c:421
 msgid "No EPANET coordinates nodes"
 msgstr "Falta nodos de coordenadas de EPANET"
 
-#: network.c:441
+#: network.c:442
 msgid "Unknown node indentifier on junction"
 msgstr "Identificador de nodo de intersección desconocido"
 
-#: network.c:458
+#: network.c:459
 msgid "Unknown node indentifier on reservoir"
 msgstr "Indentificador de nodo de fuente desconocido"
 
-#: network.c:487
+#: network.c:488
 msgid "Unknown 1st node indentifier on pipe"
 msgstr "Identificador de primer nodo de tubo desconocido"
 
-#: network.c:493
+#: network.c:494
 msgid "No elevation of 1st node"
 msgstr "Falta elevación del primer nodo"
 
-#: network.c:501
+#: network.c:502
 msgid "Unknown 2nd node indentifier on pipe"
 msgstr "Identificador de segundo nodo de tubo desconocido"
 
-#: network.c:507
+#: network.c:508
 msgid "No elevation of 2nd node"
 msgstr "Falta elevación del segundo nodo"
 
-#: network.c:512
+#: network.c:513
 msgid "Same nodes for inlet and outlet"
 msgstr "Mismo nodo para entrada y salida"
 
-#: network.c:623
+#: network.c:624
 msgid "Unable to open the file"
 msgstr "No se pudo abrir el fichero"
 
-#: network.c:631 results.c:181
+#: network.c:632 results.c:181
 msgid "Bad header"
 msgstr "Cabecera incorrecta"
 
-#: network.c:648
+#: network.c:649
 msgid "Bad header line"
 msgstr "Línea de cabecera incorrecta"
 
-#: network.c:664 network.c:684
+#: network.c:665 network.c:685
 msgid "Bad data"
 msgstr "Datos incorrectos"
 
-#: network.c:701
+#: network.c:702
 msgid "File"
 msgstr "Fichero"
 
-#: network.c:767
+#: network.c:768
 msgid "Unknown pipe length model"
 msgstr "Modo de longitud de tubo desconocido"
 
-#: network.c:774
+#: network.c:775
 msgid "No Epanet file"
 msgstr "Falta fichero de Epanet"
 
-#: network.c:782
+#: network.c:783
 msgid "Unable to open the Epanet file"
 msgstr "No se pudo abrir el fichero de Epanet"
 
