@@ -18,7 +18,7 @@ es = locales/es/LC_MESSAGES/
 locales = $(es)zebra.mo
 zebra = zebra@EXE@
 zebrapgo = zebrapgo@EXE@
-translate_csv = translate-csv@EXE@
+translate = translate@EXE@
 move = move@EXE@
 search_point = search-point@EXE@
 Violada = ../cases/Violada/
@@ -64,7 +64,7 @@ simulationdep = simulation.c $(sim)
 maindep = main.c $(sim)
 endif
 
-all: $(zebra) $(locales) $(translate_csv) $(move) $(search_point)
+all: $(zebra) $(locales) $(translate) $(move) $(search_point)
 
 $(zebrapgo): $(objpgo)
 	$(CC) $(objpgo) $(pgogen) -o $(zebrapgo) $(LDFLAGS)
@@ -175,8 +175,8 @@ $(es)zebra.mo: $(es)zebra.po
 	@GNU@msgfmt -c -v -o $(es)zebra.mo $(es)zebra.po
 	touch $(es)zebra.mo
 
-$(translate_csv): translate-csv.c Makefile
-	$(CC) -Wall -Wextra -Os translate-csv.c -o $(translate_csv)
+$(translate): translate.c Makefile
+	$(CC) -Wall -Wextra -Os translate.c -o $(translate)
 
 $(move): move.c Makefile
 	$(CC) -Wall -Wextra -Os move.c -o $(move)
@@ -185,9 +185,9 @@ $(search_point): search-point.c Makefile
 	$(CC) -Wall -Wextra -Os search-point.c -o $(search_point)
 
 clean:
-	rm $(zebra) $(obj) $(locales) $(zebrapgo) $(objpgo) $(translate_csv) \
+	rm $(zebra) $(obj) $(locales) $(zebrapgo) $(objpgo) $(translate) \
 		$(move) $(search_point) *.gcda
 
 strip:
 	@MAKE@
-	strip $(zebra) $(translate_csv) $(move) $(search_point)
+	strip $(zebra) $(translate) $(move) $(search_point)

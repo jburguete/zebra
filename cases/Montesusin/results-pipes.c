@@ -255,7 +255,7 @@ main (int argn, char **argc)
   system (buffer);
   printf ("Translating every file to .csv\n");
   snprintf (buffer, BUFFER_SIZE, "for i in %s-pipe-*-%s; "
-            "do ./translate-csv $i $i.csv; done", argc[1], name);
+            "do ./translate csv $i $i.csv; done", argc[1], name);
   system (buffer);
   printf ("Doing final .csv file\n");
   snprintf (buffer, BUFFER_SIZE, "echo \"Line\tID\tpatternID\tz\tCl\tH2O2\t"

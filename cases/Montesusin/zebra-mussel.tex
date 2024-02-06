@@ -29,6 +29,19 @@ aspersión. Aplicación en la red de la Comunidad de Regantes de Montesusín}
 	\end{figure}
 }
 
+\newcommand{\FIGIIB}[6]
+{
+	\begin{figure}[ht!]
+		\centering
+		\begin{tabular}{cc}
+			#2&#4\\
+			\includegraphics[width=0.49\textwidth]{#1}&
+			\includegraphics[width=0.49\textwidth]{#3}\\
+		\end{tabular}
+		\caption{#5.\label{#6}}
+	\end{figure}
+}
+
 \newcommand{\FIGIII}[5]
 {
 	\begin{figure}[ht!]
@@ -37,6 +50,21 @@ aspersión. Aplicación en la red de la Comunidad de Regantes de Montesusín}
 		\includegraphics[width=0.49\textwidth]{#2}
 		\includegraphics[width=0.49\textwidth]{#3}
 		\caption{#4.\label{#5}}
+	\end{figure}
+}
+
+\newcommand{\FIGIIIB}[8]
+{
+	\begin{figure}[ht!]
+		\centering
+		\begin{tabular}{cc}
+			#2&#4\\
+			\includegraphics[width=0.49\textwidth]{#1}&
+			\includegraphics[width=0.49\textwidth]{#3}\\
+		\end{tabular}
+		#6\\
+		\includegraphics[width=0.49\textwidth]{#5}
+		\caption{#7.\label{#8}}
 	\end{figure}
 }
 
@@ -49,6 +77,22 @@ aspersión. Aplicación en la red de la Comunidad de Regantes de Montesusín}
 		\includegraphics[width=0.49\textwidth]{#3}
 		\includegraphics[width=0.49\textwidth]{#4}
 		\caption{#5.\label{#6}}
+	\end{figure}
+}
+
+\newcommand{\FIGIVB}[9]
+{
+	\begin{figure}[ht!]
+		\centering
+		\begin{tabular}{cc}
+			#2&#4\\
+			\includegraphics[width=0.49\textwidth]{#1}&
+			\includegraphics[width=0.49\textwidth]{#3}\\
+			#6&#8\\
+			\includegraphics[width=0.49\textwidth]{#5}&
+			\includegraphics[width=0.49\textwidth]{#7}
+		\end{tabular}
+		\caption{#9.}
 	\end{figure}
 }
 
@@ -76,6 +120,7 @@ aspersión. Aplicación en la red de la Comunidad de Regantes de Montesusín}
 Hipótesis:
 \begin{itemize}
 \item Red de la Comunidad de Regantes de Montesusín.
+\item El número total de larvas es idéntico en cada modelo.
 \item Tiempo medio de pegado $\approx$ 4 días.
 \item Velocidad máxima de pegado 1.2 m/s.
 \item No muerte.
@@ -85,21 +130,27 @@ Hipótesis:
 {2021-mussel-input-uniform.eps}{2021-mussel-input-random.eps}
 {Entradas de larvas en función del tiempo. Año 2021}{Fig2021MusselInput}
 
-\FIGIV{2021-mussel-constant.pdf}{2021-mussel-measured.pdf}
-{2021-mussel-uniform.pdf}{2021-mussel-random.pdf}
+\FIGIVB{2021-mussel-constant.pdf}{$+0\%$, R=$1$}
+{2021-mussel-measured.pdf}{$-41.7\%$, R=$0.977$}
+{2021-mussel-uniform.pdf}{$-28.4\%$, R=$0.976$}
+{2021-mussel-random.pdf}{$-9.8\%$, R=$0.990$}
 {Infestación con entrada de larvas constante en una ventana de tiempo
 (arriba-izquierda), medida (arriba-derecha), uniforme (abajo-izquierda) y
-aleatoria (abajo-derecha). Año 2021}{Fig2021MusselRandom}
+aleatoria (abajo-derecha). Año 2021\label{Fig2021MusselRandom}}
 
-\FIGIV{2022-mussel-input-constant.eps}{2022-mussel-input-measured.eps}
-{2022-mussel-input-uniform.eps}{2022-mussel-input-random.eps}
+\FIGIV{2022-mussel-input-constant.eps}
+{2022-mussel-input-measured.eps}
+{2022-mussel-input-uniform.eps}
+{2022-mussel-input-random.eps}
 {Entradas de larvas en función del tiempo. Año 2022}{Fig2022MusselInput}
 
-\FIGIV{2022-mussel-constant.pdf}{2022-mussel-measured.pdf}
-{2022-mussel-uniform.pdf}{2022-mussel-random.pdf}
+\FIGIVB{2022-mussel-constant.pdf}{$+0\%$, R=$1$}
+{2022-mussel-measured.pdf}{$+24.8\%$, R=$0.976$}
+{2022-mussel-uniform.pdf}{$-21.8\%$, R=$0.957$}
+{2022-mussel-random.pdf}{$-28.3\%$, R=$0.988$}
 {Infestación con entrada de larvas constante en una ventana de tiempo
 (arriba-izquierda), medida (arriba-derecha), uniforme (abajo-izquierda) y
-aleatoria (abajo-derecha). Año 2022}{Fig2022MusselRandom}
+aleatoria (abajo-derecha). Año 2022\label{Fig2022MusselRandom}}
 
 \clearpage
 \subsection{Efecto de la velocidad máxima de pegado}
@@ -112,13 +163,17 @@ Hipótesis:
 \item No muerte.
 \end{itemize}
 
-\FIGIII{2021-mussel-velocity-1.0.pdf}{2021-mussel-constant.pdf}
-{2021-mussel-velocity-2.0.pdf}{Infestación con velocidad máxima de pegado de
+\FIGIIIB{2021-mussel-velocity-1.0.pdf}{$-9.1\%$, R=$0.971$}
+{2021-mussel-constant.pdf}{$+0\%$, R=$1$}
+{2021-mussel-velocity-2.0.pdf}{$+9.7\%$, R=$0.951$}
+{Infestación con velocidad máxima de pegado de
 1.0~m/s (arriba-izquierda), 1.2~m/s (arriba-derecha) y 2.0~m/s (abajo). Año
 2021}{Fig2021MusselVelocity}
 
-\FIGIII{2022-mussel-velocity-1.0.pdf}{2022-mussel-constant.pdf}
-{2022-mussel-velocity-2.0.pdf}{Infestación con velocidad máxima de pegado de
+\FIGIIIB{2022-mussel-velocity-1.0.pdf}{$-2.8\%$, R=$0.995$}
+{2022-mussel-constant.pdf}{$+0\%$, R=$1$}
+{2022-mussel-velocity-2.0.pdf}{$+2.9\%$, R=$0.989$}
+{Infestación con velocidad máxima de pegado de
 1.0~m/s (arriba-izquierda), 1.2~m/s (arriba-derecha) y 2.0~m/s (abajo). Año
 2022}{Fig2022MusselVelocity}
 
@@ -133,13 +188,17 @@ Hipótesis:
 \item No muerte.
 \end{itemize}
 
-\FIGIII{2021-mussel-cling-1.1.pdf}{2021-mussel-constant.pdf}
-{2021-mussel-cling-8.0.pdf}{Infestación con tiempo medio de pegado de
+\FIGIIIB{2021-mussel-cling-1.1.pdf}{$-44.6\%$, R=$0.986$}
+{2021-mussel-constant.pdf}{$+0\%$, R=$1$}
+{2021-mussel-cling-8.0.pdf}{$+273.3\%$, R=$0.961$}
+{Infestación con tiempo medio de pegado de
 14 días (arriba-izquierda), 4 días (arriba-derecha) y 1 día (abajo). Año 2021}
 {Fig2021MusselCling}
 
-\FIGIII{2022-mussel-cling-1.1.pdf}{2022-mussel-constant.pdf}
-{2022-mussel-cling-8.0.pdf}{Infestación con tiempo medio de pegado de
+\FIGIIIB{2022-mussel-cling-1.1.pdf}{$-41.1\%$, R=$0.995$}
+{2022-mussel-constant.pdf}{$+0\%$, R=$1$}
+{2022-mussel-cling-8.0.pdf}{$+171.6\%$, R=$0.955$}
+{Infestación con tiempo medio de pegado de
 14 días (arriba-izquierda), 4 días (arriba-derecha) y 1 día (abajo). Año 2022}
 {Fig2022MusselCling}
 
@@ -156,10 +215,14 @@ Hipótesis:
 \item Tasa de muerte de adultos: a los 4 años sobrevive el 10\%.
 \end{itemize}
 
-\FIGII{2021-mussel-constant.pdf}{2021-mussel-death.pdf}{Infestación sin muerte
+\FIGIIB{2021-mussel-constant.pdf}{$+0\%$, R=$1$}
+{2021-mussel-death.pdf}{$-9.8\%$, R=$0.997$}
+{Infestación sin muerte
 de larvas (izquierda) y con muerte (derecha). Año 2021}{Fig2021MusselDeath}
 
-\FIGII{2022-mussel-constant.pdf}{2022-mussel-death.pdf}{Infestación sin muerte
+\FIGIIB{2022-mussel-constant.pdf}{$+0\%$, R=$1$}
+{2022-mussel-death.pdf}{$-16.4\%$, R=$0.999$}
+{Infestación sin muerte
 de larvas (izquierda) y con muerte (derecha). Año 2022}{Fig2022MusselDeath}
 
 \clearpage
@@ -173,15 +236,15 @@ Hipótesis:
 \item Tasa de decaimiento del cloro: 0.36 día$^{-1}$.
 \end{itemize}
 
-\FIGIV{2021-chlorine-constant-0.eps}{2021-chlorine-constant-2.eps}
-{2021-chlorine-constant-6665.eps}{2021-chlorine-constant-172.eps}
+\FIGIV{24-0.36-2021-chlorine-constant-0.eps}{24-0.36-2021-chlorine-constant-2.eps}
+{24-0.36-2021-chlorine-constant-6665.eps}{24-0.36-2021-chlorine-constant-172.eps}
 {Concentración de cloro en distintos nodos con entrada constante. Año 2021}
-{Fig2021ChlorineConstant}
+{Fig0362021ChlorineConstant}
 
-\FIGIV{2022-chlorine-constant-0.eps}{2022-chlorine-constant-2.eps}
-{2022-chlorine-constant-68.eps}{2022-chlorine-constant-172.eps}
+\FIGIV{24-0.36-2022-chlorine-constant-0.eps}{24-0.36-2022-chlorine-constant-2.eps}
+{24-0.36-2022-chlorine-constant-68.eps}{24-0.36-2022-chlorine-constant-172.eps}
 {Concentración de cloro en distintos nodos con entrada constante. Año 2022}
-{Fig2022ChlorineConstant}
+{Fig0362022ChlorineConstant}
 
 \begin{table}[ht!]
 	\centering
@@ -204,28 +267,89 @@ Hipótesis:
 	\end{tabular}	
 \end{table}
 
-\FIGV{2021-chlorine-day-0.eps}{2021-chlorine-day-2.eps}
-{2021-chlorine-day-65.eps}{2021-chlorine-day-6665.eps}
-{2021-chlorine-day-172.eps}
+\FIGV{24-0.36-2021-chlorine-day-0.eps}{24-0.36-2021-chlorine-day-2.eps}
+{24-0.36-2021-chlorine-day-65.eps}{24-0.36-2021-chlorine-day-6665.eps}
+{24-0.36-2021-chlorine-day-172.eps}
 {Concentración de cloro en distintos nodos con entrada con una ventana horaria
-diaria. Año 2021}{Fig2021ChlorineDay}
+diaria. Año 2021}{Fig0362021ChlorineDay}
 
-\FIGV{2022-chlorine-day-0.eps}{2022-chlorine-day-2.eps}
-{2022-chlorine-day-6634.eps}{2022-chlorine-day-68.eps}
-{2022-chlorine-day-172.eps}
+\FIGV{24-0.36-2022-chlorine-day-0.eps}{24-0.36-2022-chlorine-day-2.eps}
+{24-0.36-2022-chlorine-day-6634.eps}{24-0.36-2022-chlorine-day-68.eps}
+{24-0.36-2022-chlorine-day-172.eps}
 {Concentración de cloro en distintos nodos con entrada con una ventana horaria
-diaria. Año 2022}{Fig2022ChlorineDay}
+diaria. Año 2022}{Fig0362022ChlorineDay}
 
-\FIGV{2021-chlorine-week-0.eps}{2021-chlorine-week-2.eps}
-{2021-chlorine-week-68.eps}{2021-chlorine-week-123.eps}
-{2021-chlorine-week-172.eps}
+\FIGV{24-0.36-2021-chlorine-week-0.eps}{24-0.36-2021-chlorine-week-2.eps}
+{24-0.36-2021-chlorine-week-68.eps}{24-0.36-2021-chlorine-week-123.eps}
+{24-0.36-2021-chlorine-week-172.eps}
 {Concentración de cloro en distintos nodos con entrada con una ventana horaria
-semanal. Año 2021}{Fig2021ChlorineWeek}
+semanal. Año 2021}{Fig0362021ChlorineWeek}
 
-\FIGV{2022-chlorine-week-0.eps}{2022-chlorine-week-2.eps}
-{2022-chlorine-week-6634.eps}{2022-chlorine-week-139.eps}
-{2022-chlorine-week-172.eps}
+\FIGV{24-0.36-2022-chlorine-week-0.eps}{24-0.36-2022-chlorine-week-2.eps}
+{24-0.36-2022-chlorine-week-6634.eps}{24-0.36-2022-chlorine-week-139.eps}
+{24-0.36-2022-chlorine-week-172.eps}
 {Concentración de cloro en distintos nodos con entrada con una ventana horaria
-semanal. Año 2022}{Fig2022ChlorineWeek}
+semanal. Año 2022}{Fig0362022ChlorineWeek}
+
+\clearpage
+Hipótesis:
+\begin{itemize}
+\item Red de la Comunidad de Regantes de Montesusín.
+\item Tasa de decaimiento del cloro: 24 día$^{-1}$.
+\end{itemize}
+
+\FIGIV{24-2021-chlorine-constant-0.eps}{24-2021-chlorine-constant-2.eps}
+{24-2021-chlorine-constant-6665.eps}{24-2021-chlorine-constant-172.eps}
+{Concentración de cloro en distintos nodos con entrada constante. Año 2021}
+{Fig242021ChlorineConstant}
+
+\FIGIV{24-2022-chlorine-constant-0.eps}{24-2022-chlorine-constant-2.eps}
+{24-2022-chlorine-constant-68.eps}{24-2022-chlorine-constant-172.eps}
+{Concentración de cloro en distintos nodos con entrada constante. Año 2022}
+{Fig242022ChlorineConstant}
+
+\FIGV{24-2021-chlorine-day-0.eps}{24-2021-chlorine-day-2.eps}
+{24-2021-chlorine-day-65.eps}{24-2021-chlorine-day-6665.eps}
+{24-2021-chlorine-day-172.eps}
+{Concentración de cloro en distintos nodos con entrada con una ventana horaria
+diaria. Año 2021}{Fig242021ChlorineDay}
+
+\FIGV{24-2022-chlorine-day-0.eps}{24-2022-chlorine-day-2.eps}
+{24-2022-chlorine-day-6634.eps}{24-2022-chlorine-day-68.eps}
+{24-2022-chlorine-day-172.eps}
+{Concentración de cloro en distintos nodos con entrada con una ventana horaria
+diaria. Año 2022}{Fig242022ChlorineDay}
+
+\FIGV{24-2021-chlorine-week-0.eps}{24-2021-chlorine-week-2.eps}
+{24-2021-chlorine-week-68.eps}{24-2021-chlorine-week-123.eps}
+{24-2021-chlorine-week-172.eps}
+{Concentración de cloro en distintos nodos con entrada con una ventana horaria
+semanal. Año 2021}{Fig242021ChlorineWeek}
+
+\FIGV{24-2022-chlorine-week-0.eps}{24-2022-chlorine-week-2.eps}
+{24-2022-chlorine-week-6634.eps}{24-2022-chlorine-week-139.eps}
+{24-2022-chlorine-week-172.eps}
+{Concentración de cloro en distintos nodos con entrada con una ventana horaria
+semanal. Año 2022}{Fig242022ChlorineWeek}
+
+\clearpage
+\section{Modelo de crecimiento de adultos}
+
+Hipótesis:
+\begin{itemize}
+\item Las larvas tardan un tiempo en convertirse en adultos una vez pegadas
+(¿1 semana?)
+\item El crecimiento viene a ser $\approx$ 1 cm / año.
+\item La tasa de crecimiento está modulada por la temperatura.
+\item El crecimiento se paraliza si la velocidad de flujo es muy alta.
+\end{itemize}
+
+Hipótesis futuras:
+\begin{itemize}
+\item Tasa de alimentación
+\item Tasa de respiración
+\item Muertes por anoxia/hambre
+\item ¿Defecación?
+\end{itemize}
 
 \end{document}

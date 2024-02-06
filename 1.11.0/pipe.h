@@ -36,6 +36,7 @@ typedef struct
   double radius;                ///< radius.
   double area;                  ///< cross sectional area.
   double perimeter;             ///< cross sectional perimeter.
+  double hydraulic_radious;     ///< hydraulic radious.
   double roughness;             ///< roughness length.
   double discharge;             ///< current discharge.
   double velocity;              ///< current flow velocity.
@@ -109,6 +110,7 @@ pipe_create_mesh (Pipe *pipe,   ///< pointer to the pipe struct data.
   pipe->radius = 0.5 * pipe->diameter;
   pipe->perimeter = perimeter = M_PI * pipe->diameter;
   pipe->area = area = 0.5 * perimeter * pipe->radius;
+  pipe->hydraulic_radious = area / perimeter;
   pipe->length = fmax (pipe->length, cell_size);
   n = (unsigned int) ceil (pipe->length / cell_size);
   pipe->ncells = n = (2 > n) ? 2 : n;
@@ -392,10 +394,12 @@ pipe_solute_decay_step (Pipe *pipe,     ///< pointer to the pipe struct data.
   cell = pipe->cell;
   ncells = pipe->ncells;
   for (j = 0; j < MAX_SOLUTES; ++j)
-    if (solute[j].time_decay > FLT_EPSILON)
+    if (fmax (solute[j].decay_time, solute[j].decay_surface) > FLT_EPSILON)
       for (i = 0; i < ncells; ++i)
         cell[i].solute_concentration[j] *=
-          fmax (0., 1. - step * solute[j].time_decay);
+          fmax (0., 1. - step * (solute[j].decay_time
+                                 + solute[j].decay_surface
+                                 / pipe->hydraulic_radious));
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_solute_decay_step: end\n");
 #endif

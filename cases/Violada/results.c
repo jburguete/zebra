@@ -180,18 +180,17 @@ main (int argn, char **argc)
     {
       id = pipes[i];
       fprintf (file, "\t<pipe id=\"%u\" time=\"%u %u %u %u %u %lg\" "
-               "file=\"results-pipe-%u-%s\"/>\n", 
+               "file=\"results-pipe-%u-%s\"/>\n",
                id, year, month, day, hour, minute, second, id, name);
     }
   fputs ("</results>", file);
   fclose (file);
   system ("./zebra results.bin r.xml");
   snprintf (buffer, BUFFER_SIZE, "for i in results-pipe-*-%s; "
-            "do ./translate-csv $i $i.csv; done", name);
+            "do ./translate csv $i $i.csv; done", name);
   system (buffer);
   snprintf (buffer, BUFFER_SIZE, "echo \"Line\tID\tpatternID\tz\tCl\tH2O2\t"
-            "OrganicMatter\tO2\tlarvae\tadults\tmass\" > results-%s.csv",
-            name);
+            "OrganicMatter\tO2\tlarvae\tadults\tmass\" > results-%s.csv", name);
   system (buffer);
   snprintf (buffer, BUFFER_SIZE, "cat results-pipe-*-%s.csv >> results-%s.csv",
             name, name);

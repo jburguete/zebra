@@ -160,8 +160,8 @@ solute_open_xml (const char *file_name) ///< input file name.
           m = _("Bad solubility");
           goto exit_on_error;
         }
-      s->time_decay
-        = xml_node_get_float_with_default (node, XML_TIME_DECAY, &e, 0.);
+      s->decay_time
+        = xml_node_get_float_with_default (node, XML_DECAY_TIME, &e, 0.);
       if (!e)
         {
           m = _("Bad time decay rate");

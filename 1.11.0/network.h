@@ -295,6 +295,7 @@ network_step (Network *network, ///< pointer to the network struct data.
               inlet = network->inlet;
               for (i = 0; i < ninlets; ++i)
                 inlet_set (inlet + i, ta, taf);
+              ta = taf;
 #if DEBUG_NETWORK
               fprintf (stderr, "network_step: taf=%.14lg tdf=%.14lg\n",
                        taf, tdf);

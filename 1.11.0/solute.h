@@ -24,7 +24,7 @@ typedef struct
 {
   xmlChar *name;                ///< name.
   double solubility;            ///< solubility.
-  double time_decay;            ///< time decay rate.
+  double decay_time;            ///< time decay rate.
   double decay_temperature;     ///< temperature decay rate.
   double decay_surface;         ///< surface decay rate.
   double initial_conditions;    ///< initial conditions concentration.

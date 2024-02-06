@@ -27,7 +27,7 @@
 
 #define BUFFER_SIZE 512         ///< size of string buffers.
 #define DEFAULT_CFL 0.9         ///< default CFL value.
-#define DEFAULT_DISPERSION_CFL 1.       ///< default dispersion CFL value.
+#define DEFAULT_DISPERSION_CFL 10.      ///< default dispersion CFL value.
 #define DEFAULT_TEMPERATURE 20. ///< default temperature.
 #define FLUX_LIMITER 3
 ///< flux limiter (0:null, 1:upwind, 2:centred, 3:monotonized central)
@@ -92,6 +92,8 @@
 ///< decay-surface XML label.
 #define XML_DECAY_TEMPERATURE   (const xmlChar *) "decay-temperature"
 ///< decay-temperature XML label.
+#define XML_DECAY_TIME          (const xmlChar *) "decay-time"
+///< time-decay XML label.
 #define XML_DISCHARGES          (const xmlChar *) "discharges"
 ///< discharges XML label.
 #define XML_DISPERSION_CFL      (const xmlChar *) "dispersion-cfl"
@@ -184,8 +186,6 @@
 ///< temperature XML label.
 #define XML_TIME                (const xmlChar *) "time"
 ///< time XML label.
-#define XML_TIME_DECAY          (const xmlChar *) "time-decay"
-///< time-decay XML label.
 #define XML_TYPE                (const xmlChar *) "type"
 ///< type XML label.
 #define XML_ZEBRA_MUSSEL        (const xmlChar *) "zebra-mussel"
