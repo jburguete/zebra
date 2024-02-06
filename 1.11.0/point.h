@@ -2,7 +2,7 @@
  * \file point.h
  * \brief header file to define the network node points.
  * \author Javier Burguete Tolosa.
- * \copyright Copyright 2021-2023, Javier Burguete Tolosa.
+ * \copyright Copyright 2021-2024, Javier Burguete Tolosa.
  */
 #ifndef POINT__H
 #define POINT__H 1

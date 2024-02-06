@@ -2,7 +2,7 @@
  * \file tools.c
  * \brief source file to define tools.
  * \author Javier Burguete Tolosa.
- * \copyright Copyright 2021-2023, Javier Burguete Tolosa.
+ * \copyright Copyright 2021-2024, Javier Burguete Tolosa.
  */
 #include <stdio.h>
 #include <time.h>

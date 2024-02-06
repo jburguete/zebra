@@ -2,7 +2,7 @@
  * \file solute.h
  * \brief header file to define the solutes.
  * \author Javier Burguete Tolosa.
- * \copyright Copyright 2021-2023, Javier Burguete Tolosa.
+ * \copyright Copyright 2021-2024, Javier Burguete Tolosa.
  */
 #ifndef SOLUTE__H
 #define SOLUTE__H 1

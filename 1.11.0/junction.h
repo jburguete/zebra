@@ -2,7 +2,7 @@
  * \file junction.h
  * \brief header file to define the network junctions.
  * \author Javier Burguete Tolosa.
- * \copyright Copyright 2021-2023, Javier Burguete Tolosa.
+ * \copyright Copyright 2021-2024, Javier Burguete Tolosa.
  */
 #ifndef JUNCTION__H
 #define JUNCTION__H 1

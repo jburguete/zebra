@@ -35,7 +35,7 @@ main (int argn, char **argc)
   char id[6];
   FILE *fin, *fout;
   unsigned int i, j, k, col;
-  if (argn != 4 || argn != 7)
+  if (argn != 4 && argn != 7)
     {
       puts ("The syntax is:\n"
             "./translate type(\"csv\" or \"tex\") input_file output_file "

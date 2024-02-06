@@ -2,7 +2,7 @@
  * \file temperature.h
  * \brief header file to define the temperatures.
  * \author Javier Burguete Tolosa.
- * \copyright Copyright 2021-2023, Javier Burguete Tolosa.
+ * \copyright Copyright 2021-2024, Javier Burguete Tolosa.
  */
 #ifndef TEMPERATURE__H
 #define TEMPERATURE__H 1

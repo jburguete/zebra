@@ -2,7 +2,7 @@
  * \file config.h
  * \brief header file to define configurations.
  * \author Javier Burguete Tolosa.
- * \copyright Copyright 2021-2023, Javier Burguete Tolosa.
+ * \copyright Copyright 2021-2024, Javier Burguete Tolosa.
  */
 #ifndef CONFIG__H
 #define CONFIG__H 1

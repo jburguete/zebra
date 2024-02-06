@@ -2,7 +2,7 @@
  * \file inlet.h
  * \brief header file to define the inlets.
  * \author Javier Burguete Tolosa.
- * \copyright Copyright 2021-2023, Javier Burguete Tolosa.
+ * \copyright Copyright 2021-2024, Javier Burguete Tolosa.
  */
 #ifndef INLET__H
 #define INLET__H 1

@@ -2,7 +2,7 @@
  * \file simulation.h
  * \brief header file to define the simulation.
  * \author Javier Burguete Tolosa.
- * \copyright Copyright 2021-2023, Javier Burguete Tolosa.
+ * \copyright Copyright 2021-2024, Javier Burguete Tolosa.
  */
 #ifndef SIMULATION__H
 #define SIMULATION__H 1

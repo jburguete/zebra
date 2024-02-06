@@ -2,7 +2,7 @@
  * \file pipe.h
  * \brief header file to define the network pipes.
  * \author Javier Burguete Tolosa.
- * \copyright Copyright 2021-2023, Javier Burguete Tolosa.
+ * \copyright Copyright 2021-2024, Javier Burguete Tolosa.
  */
 #ifndef PIPE__H
 #define PIPE__H 1

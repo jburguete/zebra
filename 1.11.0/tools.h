@@ -2,7 +2,7 @@
  * \file tools.h
  * \brief header file to define useful tools.
  * \author Javier Burguete Tolosa.
- * \copyright Copyright 2021-2023, Javier Burguete Tolosa.
+ * \copyright Copyright 2021-2024, Javier Burguete Tolosa.
  */
 #ifndef TOOLS__H
 #define TOOLS__H 1

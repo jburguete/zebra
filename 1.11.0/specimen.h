@@ -2,7 +2,7 @@
  * \file specimen.h
  * \brief header file to define the specimen.
  * \author Javier Burguete Tolosa.
- * \copyright Copyright 2021-2023, Javier Burguete Tolosa.
+ * \copyright Copyright 2021-2024, Javier Burguete Tolosa.
  */
 #ifndef SPECIMEN__H
 #define SPECIMEN__H 1

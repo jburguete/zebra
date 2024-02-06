@@ -21,6 +21,8 @@ zebrapgo = zebrapgo@EXE@
 translate = translate@EXE@
 move = move@EXE@
 search_point = search-point@EXE@
+results_pipes = results-pipes@EXE@
+results_points = results-points@EXE@
 Violada = ../cases/Violada/
 
 CC = @CC@ @ARCH@ @LTO@ -g
@@ -28,6 +30,8 @@ COPT = -O3
 CFLAGS = @CFLAGS@ @XML_CFLAGS@ @GLIB_CFLAGS@ @GSL_CFLAGS@ -c -pedantic -Wall \
 	-Wextra $(COPT)
 LDFLAGS = @LDFLAGS@ @GSL_LIBS@ @GLIB_LIBS@ @XML_LIBS@ @LIBS@
+COPT2 = -Os
+CFLAGS2 = @CFLAGS@ -pedantic -Wall -Wextra $(COPT2)
 
 ifeq (@PGO@, 1)
 objpgo = tools.pgo temperature.pgo solute.pgo species.pgo specimen.pgo \
@@ -64,7 +68,8 @@ simulationdep = simulation.c $(sim)
 maindep = main.c $(sim)
 endif
 
-all: $(zebra) $(locales) $(translate) $(move) $(search_point)
+all: $(zebra) $(locales) $(translate) $(move) $(search_point) $(results_pipes) \
+	$(results_points)
 
 $(zebrapgo): $(objpgo)
 	$(CC) $(objpgo) $(pgogen) -o $(zebrapgo) $(LDFLAGS)
@@ -176,18 +181,25 @@ $(es)zebra.mo: $(es)zebra.po
 	touch $(es)zebra.mo
 
 $(translate): translate.c Makefile
-	$(CC) -Wall -Wextra -Os translate.c -o $(translate)
+	$(CC) $(CFLAGS2) translate.c -lm -o $(translate)
 
 $(move): move.c Makefile
-	$(CC) -Wall -Wextra -Os move.c -o $(move)
+	$(CC) $(CFLAGS2) move.c -o $(move)
 
 $(search_point): search-point.c Makefile
-	$(CC) -Wall -Wextra -Os search-point.c -o $(search_point)
+	$(CC) $(CFLAGS2) search-point.c -o $(search_point)
+
+$(results_pipes): results-pipes.c Makefile
+	$(CC) $(CFLAGS2) results-pipes.c -o $(results_pipes)
+
+$(results_points): results-points.c Makefile
+	$(CC) $(CFLAGS2) results-points.c -o $(results_points)
 
 clean:
 	rm $(zebra) $(obj) $(locales) $(zebrapgo) $(objpgo) $(translate) \
-		$(move) $(search_point) *.gcda
+		$(move) $(search_point) $(results_pipes) $(results_points) *.gcda
 
 strip:
 	@MAKE@
-	strip $(zebra) $(translate) $(move) $(search_point)
+	strip $(zebra) $(translate) $(move) $(search_point) $(results_pipes) \
+		$(results_points)

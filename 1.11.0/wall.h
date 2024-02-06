@@ -2,7 +2,7 @@
  * \file wall.h
  * \brief header file to define the calculation mesh walls.
  * \author Javier Burguete Tolosa.
- * \copyright Copyright 2021-2023, Javier Burguete Tolosa.
+ * \copyright Copyright 2021-2024, Javier Burguete Tolosa.
  */
 #ifndef WALL__H
 #define WALL__H 1
