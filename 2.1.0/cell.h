@@ -124,14 +124,15 @@ cell_death (Cell *cell,         ///< pointer to the cell struct data.
             double step)        ///< time step size.
 {
   GList *list[1];
+  double decay;
   unsigned int i, j;
 #if DEBUG_CELL
   fprintf (stderr, "cell_death: start\n");
 #endif
   for (i = 0; i < MAX_SPECIES; ++i)
     {
-      cell->species_concentration[i]
-        *= fmax (0., 1. - species[i].larva_decay * step);
+      decay = species_larva_decay (species + i, cell->solute_concentration);
+      cell->species_concentration[i] *= fmax (0., 1. - decay * step);
 #if DEBUG_CELL
       fprintf (stderr, "cell_death: species=%u specimen-list=%lu\n",
                i, (size_t) cell->list_specimens[i]);

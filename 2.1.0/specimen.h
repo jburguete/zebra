@@ -153,28 +153,48 @@ specimen_death (Specimen *specimen,
 {
   Species *species;
   double *chlorine, *hydrogen_peroxide, *oxygen;
+  double decay;
 
 #if DEBUG_SPECIMEN
   fprintf (stderr, "specimen_death: start\n");
 #endif
 
-  // get species
+  // get species and solutes
   species = specimen->species;
+
+  // check juvenile age
+  if (specimen->age < species->juvenile_age)
+    {
+      // decay
+      decay = species_larva_decay (species, solute); 
+#if DEBUG_SPECIMEN
+      fprintf (stderr, "specimen_death: larva_decay=%lg step=%lg\n",
+               decay, step);
+#endif
+      if (gsl_rng_uniform (rng) < decay * step)
+        goto death;
+      // exit
+#if DEBUG_SPECIMEN
+      fprintf (stderr, "specimen_death: alive\n");
+      fprintf (stderr, "specimen_death: end\n");
+#endif
+      return 0;
+    }
 
   // check solute limitants 
   chlorine = solute + SOLUTE_TYPE_CHLORINE;
 #if DEBUG_SPECIMEN
-  fprintf (stderr, "specimen_death: chlorine=%lg maximum=%lg\n",
-           *chlorine, species->maximum_chlorine);
+  fprintf (stderr, "specimen_death: chlorine=%lg adult-maximum=%lg\n",
+           *chlorine, species->adult_maximum_chlorine);
 #endif
-  if (*chlorine > species->maximum_chlorine)
+  if (*chlorine > species->adult_maximum_chlorine)
     goto death;
   hydrogen_peroxide = solute + SOLUTE_TYPE_HYDROGEN_PEROXIDE;
 #if DEBUG_SPECIMEN
-  fprintf (stderr, "specimen_death: hydrogen-peroxide=%lg maximum=%lg\n",
-           *hydrogen_peroxide, species->maximum_chlorine);
+  fprintf (stderr, "specimen_death: hydrogen-peroxide=%lg adult-maximum=%lg\n",
+           *hydrogen_peroxide, species->adult_maximum_hydrogen_peroxide);
 #endif
-  if (*hydrogen_peroxide > species->maximum_hydrogen_peroxide)
+  if (*hydrogen_peroxide > species->adult_maximum_hydrogen_peroxide)
     goto death;
   oxygen = solute + SOLUTE_TYPE_OXYGEN;
 #if DEBUG_SPECIMEN

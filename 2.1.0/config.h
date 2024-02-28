@@ -71,6 +71,24 @@
 
 #define XML_ADULT_DECAY         (const xmlChar *) "adult-decay"
 ///< adult-decay XML label.
+#define XML_ADULT_DECAY_CHLORINE \
+  (const xmlChar *) "adult-decay-chlorine"
+///< adult-decay-chlorine XML label.
+#define XML_ADULT_DECAY_HYDROGEN_PEROXIDE \
+  (const xmlChar *) "adult-decay-hydrogen-peroxide"
+///< adult-decay-hdrogen-peroxide XML label.
+#define XML_ADULT_MAXIMUM_CHLORINE \
+  (const xmlChar *) "adult-maximum-chlorine"
+///< adult-maximum-chlorine XML label.
+#define XML_ADULT_MAXIMUM_HYDROGEN_PEROXIDE \
+  (const xmlChar *) "adult_maximum-hydrogen-peroxide"
+///< adult-maximum-hydrogen-peroxide XML label.
+#define XML_ADULT_MINIMUM_CHLORINE \
+  (const xmlChar *) "adult-minimum-chlorine"
+///< adult-minimum-chlorine XML label.
+#define XML_ADULT_MINIMUM_HYDROGEN_PEROXIDE \
+  (const xmlChar *) "adult_minimum-hydrogen-peroxide"
+///< adult-minimum-hydrogen-peroxide XML label.
 #define XML_CELL_SIZE           (const xmlChar *) "cell-size"
 ///< cell-size XML label.
 #define XML_CFL                 (const xmlChar *) "cfl"
@@ -83,11 +101,6 @@
 ///< concentration XML label.
 #define XML_COORDINATES         (const xmlChar *) "coordinates"
 ///< coordinates XML label.
-#define XML_DECAY_CHLORINE      (const xmlChar *) "decay-chlorine"
-///< decay-chlorine XML label.
-#define XML_DECAY_HYDROGEN_PEROXIDE \
-  (const xmlChar *) "decay-hydrogen-peroxide"
-///< decay-hdrogen-peroxide XML label.
 #define XML_DECAY_SURFACE       (const xmlChar *) "decay-surface"
 ///< decay-surface XML label.
 #define XML_DECAY_TEMPERATURE   (const xmlChar *) "decay-temperature"
@@ -120,24 +133,34 @@
 ///< inject XML label.
 #define XML_INLET               (const xmlChar *) "inlet"
 ///< inlet XML label.
+#define XML_JUVENILE_AGE        (const xmlChar *) "juvenile-age"
+///< juvenile-age XML label.
 #define XML_LARVA_DECAY         (const xmlChar *) "larva-decay"
 ///< larva-decay XML label.
+#define XML_LARVA_DECAY_CHLORINE \
+  (const xmlChar *) "larva-decay-chlorine"
+///< larva-decay-chlorine XML label.
+#define XML_LARVA_DECAY_HYDROGEN_PEROXIDE \
+  (const xmlChar *) "larva-decay-hydrogen-peroxide"
+///< larva-decay-hdrogen-peroxide XML label.
+#define XML_LARVA_MAXIMUM_CHLORINE \
+  (const xmlChar *) "larva-maximum-chlorine"
+///< larva-maximum-chlorine XML label.
+#define XML_LARVA_MAXIMUM_HYDROGEN_PEROXIDE \
+  (const xmlChar *) "larva_maximum-hydrogen-peroxide"
+///< larva-maximum-hydrogen-peroxide XML label.
+#define XML_LARVA_MINIMUM_CHLORINE \
+  (const xmlChar *) "larva-minimum-chlorine"
+///< larva-minimum-chlorine XML label.
+#define XML_LARVA_MINIMUM_HYDROGEN_PEROXIDE \
+  (const xmlChar *) "larva_minimum-hydrogen-peroxide"
+///< larva-minimum-hydrogen-peroxide XML label.
 #define XML_LENGTH              (const xmlChar *) "length"
 ///< length XML label.
-#define XML_MAXIMUM_CHLORINE    (const xmlChar *) "maximum-chlorine"
-///< maximum-chlorine XML label.
-#define XML_MAXIMUM_HYDROGEN_PEROXIDE \
-  (const xmlChar *) "maximum-hydrogen-peroxide"
-///< maximum-hydrogen-peroxide XML label.
 #define XML_MAXIMUM_TEMPERATURE (const xmlChar *) "maximum-temperature"
 ///< maximum-temperature XML label.
 #define XML_MAXIMUM_VELOCITY    (const xmlChar *) "maximum-velocity"
 ///< maximum-velocity XML label.
-#define XML_MINIMUM_CHLORINE    (const xmlChar *) "minimum-chlorine"
-///< minimum-chlorine XML label.
-#define XML_MINIMUM_HYDROGEN_PEROXIDE \
-  (const xmlChar *) "minimum-hydrogen-peroxide"
-///< minimum-hydrogen-peroxide XML label.
 #define XML_MINIMUM_OXYGEN      (const xmlChar *) "minimum-oxygen"
 ///< minimum-oxygen XML label.
 #define XML_MINIMUM_TEMPERATURE (const xmlChar *) "minimum-temperature"

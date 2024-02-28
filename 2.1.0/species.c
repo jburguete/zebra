@@ -148,6 +148,13 @@ species_open_xml (char *file_name)      ///< input file name.
       s = species + i;
       s->name = name;
       s->type = i;
+      s->juvenile_age
+        = xml_node_get_float_with_default (node, XML_JUVENILE_AGE, &k, 0.);
+      if (!k || s->juvenile_age < 0.)
+        {
+          m = _("Bad juvenile age");
+          goto exit_on_error;
+        }
       s->maximum_velocity
         = xml_node_get_float_with_default (node, XML_MAXIMUM_VELOCITY, &k, 0.);
       if (!k || s->maximum_velocity < 0.)
@@ -225,54 +232,112 @@ species_open_xml (char *file_name)      ///< input file name.
           m = _("Bad maximum temperature");
           goto exit_on_error;
         }
-      s->minimum_chlorine
-        = xml_node_get_float_with_default (node, XML_MINIMUM_CHLORINE, &k, 0.);
-      if (!k || s->minimum_chlorine < 0.)
+      s->larva_minimum_chlorine
+        = xml_node_get_float_with_default (node, XML_LARVA_MINIMUM_CHLORINE, &k,
+                                           0.);
+      if (!k || s->larva_minimum_chlorine < 0.)
         {
-          m = _("Bad minimum chlorine");
+          m = _("Bad larva minimum chlorine");
           goto exit_on_error;
         }
-      s->maximum_chlorine
-        = xml_node_get_float_with_default (node, XML_MAXIMUM_CHLORINE, &k, 0.);
-      if (!k || s->maximum_chlorine < s->minimum_chlorine)
+      s->larva_maximum_chlorine
+        = xml_node_get_float_with_default (node, XML_LARVA_MAXIMUM_CHLORINE, &k,
+                                           0.);
+      if (!k || s->larva_maximum_chlorine < s->larva_minimum_chlorine)
         {
-          m = _("Bad maximum chlorine");
+          m = _("Bad larva maximum chlorine");
           goto exit_on_error;
         }
-      s->decay_chlorine
-        = xml_node_get_float_with_default (node, XML_DECAY_CHLORINE, &k, 0.);
-      if (!k || s->decay_chlorine < 0.)
+      s->larva_decay_chlorine
+        = xml_node_get_float_with_default (node, XML_LARVA_DECAY_CHLORINE, &k,
+                                           0.);
+      if (!k || s->larva_decay_chlorine < 0.)
         {
-          m = _("Bad chlorine decay");
+          m = _("Bad larva chlorine decay");
           goto exit_on_error;
         }
-      s->minimum_hydrogen_peroxide
-        = xml_node_get_float_with_default (node, XML_MINIMUM_HYDROGEN_PEROXIDE,
+      s->larva_minimum_hydrogen_peroxide
+        = xml_node_get_float_with_default (node,
+                                           XML_LARVA_MINIMUM_HYDROGEN_PEROXIDE,
                                            &k, 0.);
-      if (!k || s->minimum_hydrogen_peroxide < 0.)
+      if (!k || s->larva_minimum_hydrogen_peroxide < 0.)
         {
-          m = _("Bad minimum hydrogen peroxide");
+          m = _("Bad larva minimum hydrogen peroxide");
           goto exit_on_error;
         }
-      s->maximum_hydrogen_peroxide
-        = xml_node_get_float_with_default (node, XML_MAXIMUM_HYDROGEN_PEROXIDE,
+      s->larva_maximum_hydrogen_peroxide
+        = xml_node_get_float_with_default (node,
+                                           XML_LARVA_MAXIMUM_HYDROGEN_PEROXIDE,
                                            &k, 0.);
-      if (!k || s->maximum_hydrogen_peroxide < s->minimum_hydrogen_peroxide)
+      if (!k || s->larva_maximum_hydrogen_peroxide
+                < s->larva_minimum_hydrogen_peroxide)
         {
-          m = _("Bad maximum hydrogen peroxide");
+          m = _("Bad larva maximum hydrogen peroxide");
           goto exit_on_error;
         }
-      s->decay_hydrogen_peroxide
-        = xml_node_get_float_with_default (node, XML_DECAY_HYDROGEN_PEROXIDE,
+      s->larva_decay_hydrogen_peroxide
+        = xml_node_get_float_with_default (node,
+                                           XML_LARVA_DECAY_HYDROGEN_PEROXIDE,
                                            &k, 0.);
-      if (!k || s->decay_hydrogen_peroxide < 0.)
+      if (!k || s->larva_decay_hydrogen_peroxide < 0.)
         {
-          m = _("Bad hydrogen peroxide decay");
+          m = _("Bad larva hydrogen peroxide decay");
+          goto exit_on_error;
+        }
+      s->adult_minimum_chlorine
+        = xml_node_get_float_with_default (node, XML_ADULT_MINIMUM_CHLORINE, &k,
+                                           0.);
+      if (!k || s->adult_minimum_chlorine < 0.)
+        {
+          m = _("Bad adult minimum chlorine");
+          goto exit_on_error;
+        }
+      s->adult_maximum_chlorine
+        = xml_node_get_float_with_default (node, XML_ADULT_MAXIMUM_CHLORINE, &k,
+                                           0.);
+      if (!k || s->adult_maximum_chlorine < s->adult_minimum_chlorine)
+        {
+          m = _("Bad adult maximum chlorine");
+          goto exit_on_error;
+        }
+      s->adult_decay_chlorine
+        = xml_node_get_float_with_default (node, XML_ADULT_DECAY_CHLORINE, &k,
+                                           0.);
+      if (!k || s->adult_decay_chlorine < 0.)
+        {
+          m = _("Bad adult chlorine decay");
+          goto exit_on_error;
+        }
+      s->adult_minimum_hydrogen_peroxide
+        = xml_node_get_float_with_default (node,
+                                           XML_ADULT_MINIMUM_HYDROGEN_PEROXIDE,
+                                           &k, 0.);
+      if (!k || s->adult_minimum_hydrogen_peroxide < 0.)
+        {
+          m = _("Bad adult minimum hydrogen peroxide");
+          goto exit_on_error;
+        }
+      s->adult_maximum_hydrogen_peroxide
+        = xml_node_get_float_with_default (node,
+                                           XML_ADULT_MAXIMUM_HYDROGEN_PEROXIDE,
+                                           &k, 0.);
+      if (!k || s->adult_maximum_hydrogen_peroxide
+                < s->adult_minimum_hydrogen_peroxide)
+        {
+          m = _("Bad adult maximum hydrogen peroxide");
+          goto exit_on_error;
+        }
+      s->adult_decay_hydrogen_peroxide
+        = xml_node_get_float_with_default (node,
+                                           XML_ADULT_DECAY_HYDROGEN_PEROXIDE,
+                                           &k, 0.);
+      if (!k || s->adult_decay_hydrogen_peroxide < 0.)
+        {
+          m = _("Bad adult hydrogen peroxide decay");
           goto exit_on_error;
         }
       g_hash_table_insert (hash, name, NULL);
     }
-
   if (!g_hash_table_size (hash))
     {
       m = _("No species");

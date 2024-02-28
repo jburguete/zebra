@@ -1,0 +1,179 @@
+\documentclass[pdr]{beamer}
+\mode<presentation>{\usetheme{Marburg}}
+\usepackage[utf8]{inputenc}
+\usepackage[spanish]{babel}
+\usepackage{pstricks}
+\usepackage{multido}
+\usepackage{listings,multicol}
+%\usepackage{minted}
+\usepackage{pstricks}
+\usepackage{pst-plot}
+
+\newcommand{\PSPICTURE}[5]
+{
+	\begin{pspicture}(#1,#2)(#3,#4)
+		#5
+	\end{pspicture}
+}
+
+\newcommand{\FIGURE}[2]
+{
+	\begin{center}
+		\includegraphics[width=#1]{#2}
+	\end{center}
+}
+
+\title[Análisis de los tratamientos químicos para el control del mejillón cebra
+	en redes de riego presurizadas]
+{Análisis del movimiento de la materia activa de los tratamientos químicos para
+el control del mejillón cebra en las redes de riego presurizadas}
+\author[{\bfseries Javier Burguete}\\Estación Experimental de Aula Dei / CSIC]
+{{\bfseries Javier Burguete Tolosa}\\
+	Suelo y Agua. Estación Experimental de Aula Dei / CSIC}
+\date{1 de marzo de 2024}
+
+\begin{document}
+
+\begin{frame}
+	\begin{titlepage}
+		\centering
+		\FIGURE{0.8\textwidth}{Logos.pdf}
+	\end{titlepage}
+\end{frame}
+
+\begin{frame}{Índice}
+	\tableofcontents
+\end{frame}
+
+\section{Introducción}
+
+\subsection{Venenos para el mejillón cebra}
+
+\begin{frame}{Venenos para el mejillón cebra}
+	\begin{itemize}
+		\item Agua oxigenada
+		\item Cloro
+		\item Sustancias muy oxidantes: "queman" la materia orgánica
+		\item Reaccionan con las sustancias disueltas en el agua y con
+			las paredes de la tuberías
+		\item Decaen rápidamente en el tiempo
+		\item Son corrosivas
+		\item El cloro puede generar subproductos tóxicos
+		\item Las larvas son más sensibles que los adultos
+		\item Una concentración de 0.5 ppm de cloro (similar a los
+			tratamientos de agua potable) mata todas las larvas en
+			una hora
+		\item A las concentraciones que matan las larvas, el riego no
+			parece producir daños graves en plantas
+	\end{itemize}
+\end{frame}
+
+\subsection{Zona de estudio}
+
+\begin{frame}{Zona de estudio}
+	\framesubtitle{Ramal de la Comunidad de Regantes de Montesusín}
+\end{frame}
+
+\section{Herramientas de cálculo}
+
+\subsection{Modelo de movimiento de solutos}
+
+\begin{frame}{Modelo de movimiento de solutos}
+	\begin{itemize}
+		\item Requiere:
+		\begin{itemize}
+			\item Datos del proyecto de la red (EPANET)
+			\begin{itemize}
+				\item Longitud, diámetro y material de cada
+					tubería
+			\end{itemize}
+			\item Datos temporales de caudal de cada tubería
+			\begin{itemize}
+				\item Se calculan simulando la red con EPANET a
+					partir de los datos de demanda en cada
+					hidrante (Telecontrol)
+			\end{itemize}
+			\item Calibración de coeficientes de decaimiento
+		\end{itemize}
+		\item El modelo es muy preciso calculando transporte y
+			dispersión de solutos
+		\item Hay más incertidumbre en el decaimiento 
+	\end{itemize}
+\end{frame}
+
+\subsection{Modelo de movimiento de larvas}
+
+\begin{frame}{Modelo de movimiento de larvas}
+	\begin{itemize}
+		\item Las larvas se mueven y dispersan como cualquier soluto
+		\item Requiere:
+		\begin{itemize}
+			\item Datos del proyecto de la red (EPANET)
+			\begin{itemize}
+				\item Longitud, diámetro y material de cada
+					tubería
+			\end{itemize}
+			\item Datos temporales de caudal de cada tubería
+			\begin{itemize}
+				\item Se calculan simulando la red con EPANET a
+					partir de los datos de demanda en cada
+					hidrante (Telecontrol)
+			\end{itemize}
+			\item Calibración de coeficientes de decaimiento
+		\end{itemize}
+		\item El modelo es muy preciso calculando transporte y
+			dispersión de larvas
+		\item Sin embargo, la cantidad de larvas que entran es muy
+			variable
+	\end{itemize}
+\end{frame}
+
+\subsection{Modelo de crecimiento de mejillones}
+
+\begin{frame}{Modelo de crecimiento de mejillones}
+\end{frame}
+
+\section{Efecto de diferentes tratamientos químicos}
+
+\subsection{Tratamiento continuo}
+
+\begin{frame}{Tratamiento continuo}
+\end{frame}
+
+\subsection{Tratamientos discontinuos}
+
+\section{Conclusiones}
+
+\begin{frame}{Conclusiones}
+	\begin{itemize}
+		\item Disponemos de 2 sustancias efectivas para eliminar las
+			larvas de mejillón cebra: cloro y agua oxigenada
+		\item Ambos son sustancias peligrosas
+		\item Los subproductos del agua oxigenada son menos peligrosos
+			pero hay que echar mayor cantidad (¿más caro?)
+		\item El tratamiento en continuo es el más seguro para evitar la
+			presencia del mejillón
+		\item No parece que estos tratamientos causen mermas
+			significas de producción en los cultivos
+		\item Los costes parecen asumibles
+		\item Hemos diseñado unas herramientas que podrían ayudar a
+			reducir costes e impacto de los tratamientos
+	\end{itemize}
+\end{frame}
+
+\section{Trabajo futuro}
+
+\begin{frame}{Trabajo futuro}
+	\begin{itemize}
+		\item Determinar coeficientes de decaimiento de cloro en una red
+			de riego
+		\item Determinar coeficientes de decaimiento del agua oxigenada
+		\item Refinar el modelo de crecimiento de mejillones
+		\item Diseñar un modelo de arrastre de conchas
+		\item Diseñar una interfaz y un manual para los modelos
+		\item Probar los modelos con diferentes tratamientos químicos
+		\item Usar los modelos en más zonas
+	\end{itemize}
+\end{frame}
+
+\end{document}
