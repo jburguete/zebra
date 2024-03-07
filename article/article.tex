@@ -1,0 +1,113 @@
+\documentclass[review,authoryear]{elsarticle}
+
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+
+\title{A coupled model of transport and decay of solutes and mussel larvae in
+	pressurized networks}
+
+\author[1]{Javier Burguete}
+\ead{jburguete@eead.csic.es}
+
+\author[1]{Borja Latorre}
+
+\author[1]{Pilar Paniagua}
+
+\author[1]{Eva Medina}
+
+\author[1]{Javier Fernández-Pato}
+
+\author[1]{Enrique Playán}
+
+\author[1]{Nery Zapata}
+
+\affiliation[1]{organization={Soil and Water, EEAD/CSIC},
+	addressline={Av. Montañana 1005},
+	postcode={50059},
+	city={Zaragoza},
+	country={Spain}}
+
+\date{\today}
+
+\newcommand{\EQ}[2]{\begin{equation}#1\label{#2}\end{equation}}
+\newcommand{\PA}[1]{\left(#1\right)}
+\newcommand{\PARTIAL}[2]{\frac{\partial#1}{\partial#2}}
+
+\begin{document}
+
+\begin{abstract}
+In this work we present ...
+\end{abstract}
+
+\begin{highlights}
+\item 1st highlight
+\end{highlights}
+
+\begin{keyword}
+mussel larvae, solute transport, solute decay, pressurized networks, irrigation
+\end{keyword}
+
+\maketitle
+
+\section*{Notation}
+
+\begin{tabular}{lcl}
+$A$ & = & cross sectional area,\\
+$c$ & = & solute (or mussel larvae) concentration,\\
+$f$ & = & friction factor of Darcy-Weissbach,\\
+$K_x$ & = & longitudinal dispersion coefficient,\\
+$P$ & = & perimeter,\\
+$Q$ & = & discharge,\\
+$S$ & = & solute (or mussel larvae) source,\\
+$t$ & = & time,\\
+$v$ & = & velocity,\\
+$x$ & = & longitudinal coordinate,\\
+\end{tabular}
+
+\section{Introduction}
+
+\section{Theorical models}
+
+\subsection{Model of transport and dispersion of solutes in a pipe}
+
+The equation governing a one-dimensional transport and dispersion of solutes in
+a pipe is the advection-diffusion Fick's law with sources due to external
+injections or reaction decays:
+\EQ{\PARTIAL{}{t}(A\,c)+\PARTIAL{}{x}(Q\,c)
+	=S+\PARTIAL{}{x}\PA{K_x\,A\,\PARTIAL{c}{x}}}{EqTransport}
+where $t$ is the time, $A$ the cross sectional area of the pipe, $c$ the solute
+concentration, $x$ the longitudinal coordinate, $Q$ the discharge, $S$ the
+solute source and $K_x$ the longitudinal dispersion coefficient.
+
+In this work, the following model, according to the \citet{Rutherford94} works,
+for $K_x$ coefficient is used:
+\EQ{K_x=10\,P\,|v|\,\sqrt{\frac{f}{2}}}{EqKx}  
+with $P$ the perimeter of the pipe, $v$ the water velocity and $f$ friction
+factor of Darcy-Weissbach \citep{Darcy58}.
+
+\subsection{Model of solute decay in a pipe}
+
+\subsection{Model of transport and dispersion of mussel larvae in a pipe}
+
+The swimming capacity of the zebra mussel larvae can be considered negligible
+compared to the water velocity in pressurized networks. Then, equation
+\ref{EqTransport} is used for transport and dispersion of larvae in pipes.
+
+\subsection{Model of mussel larvae cling in a pipe}
+
+\subsection{Model of mussel larvae death}
+
+\subsection{Model of junctions}
+
+\subsection{Model of inlets}
+
+\section{Applications cases}
+
+\section{Conclusions}
+
+\section*{Aknowledgments}
+
+\bibliographystyle{elsarticle-harv}
+\bibliography{bib}
+
+\end{document}
