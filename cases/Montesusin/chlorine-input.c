@@ -86,6 +86,11 @@ main (int argn, char **argc)
   hour = initial_hour;
   minute = initial_minute;
   second = initial_second;
+  snprintf (buffer, BUFFER_SIZE, "chlorine-%u-null.in", year);
+  file = fopen (buffer, "w");
+  fprintf (file, "%u %u %u %u %u %u 0\n",
+           year, month, day, hour, minute, second);
+  fclose (file);
   snprintf (buffer, BUFFER_SIZE, "chlorine-%u-constant.in", year);
   file = fopen (buffer, "w");
   fprintf (file, "%u %u %u %u %u %u 1\n",
