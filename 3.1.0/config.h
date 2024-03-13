@@ -205,6 +205,8 @@
 ///< solubility XML label.
 #define XML_SPECIES             (const xmlChar *) "species"
 ///< species XML label.
+#define XML_SUMMARY             (const xmlChar *) "summary"
+///< summary XML label.
 #define XML_TEMPERATURE         (const xmlChar *) "temperature"
 ///< temperature XML label.
 #define XML_TIME                (const xmlChar *) "time"

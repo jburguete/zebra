@@ -28,12 +28,15 @@ typedef struct
   ///< array of pointers to arrays of species concentration.
   double *species_time[MAX_SPECIES];
   ///< array of pointers to arrays of species time.
+  double solute_input[MAX_SOLUTES];     ///< array of solute inputs.
+  double species_input[MAX_SPECIES];    ///< array of species inputs.
   unsigned int nsolute_times[MAX_SOLUTES];
   ///< array of numbers of solute times.
   unsigned int nspecies_times[MAX_SPECIES];
   ///< array of numbers of species times.
   char id[MAX_LABEL_LENGTH];    ///< node identifier.
   Cell **cell;                  ///< array of pointers to cells.
+  double input;                 ///< water input.
   double volume;                ///< volume of the cells.
   unsigned int ncells;          ///< number of cells.
   unsigned int type;            ///< type (0: set, 1: inject)
@@ -42,6 +45,26 @@ typedef struct
 void inlet_destroy (Inlet * inlet);
 int inlet_open_xml (Inlet * inlet, xmlNode * node, Pipe * pipe,
                     unsigned int npipes, char *directory);
+
+/**
+ * function to init inlet variables.
+ */
+static inline void
+inlet_init (Inlet *inlet)       ///< pointer to the inlet struct data.
+{
+  unsigned int i;
+#if DEBUG_INLET
+  fprintf (stderr, "inlet_init: start\n");
+#endif
+  inlet->input = 0.;
+  for (i = 0; i < MAX_SOLUTES; ++i)
+    inlet->solute_input[i] = 0.;
+  for (i = 0; i < MAX_SPECIES; ++i)
+    inlet->species_input[i] = 0.;
+#if DEBUG_INLET
+  fprintf (stderr, "inlet_init: end\n");
+#endif
+}
 
 /**
  * function to calculate the maximum time allowed by an inlet.
@@ -127,13 +150,16 @@ inlet_set (Inlet *inlet,        ///< pointer to the inlet struct data.
 {
   Cell **cell;
   double *v, *t;
-  double variable;
+  double variable, volume, dt;
   unsigned int i, j, n, ncells;
 #if DEBUG_INLET
   fprintf (stderr, "inlet_set: start\n");
 #endif
   cell = inlet->cell;
   ncells = inlet->ncells;
+  dt = final_time - initial_time;
+  volume = cell[0]->discharge * dt;
+  inlet->input += volume;
   for (i = 0; i < MAX_SOLUTES; ++i)
     {
       n = inlet->nsolute_times[i];
@@ -145,10 +171,16 @@ inlet_set (Inlet *inlet,        ///< pointer to the inlet struct data.
           v = inlet->solute_concentration[i];
           t = inlet->solute_time[i];
           if (inlet->type == INLET_TYPE_SET)
-            variable = array_interpolate (final_time, t, v, n);
+            {
+              variable = array_interpolate (final_time, t, v, n);
+              inlet->solute_input[i] += volume * variable;
+            }
           else
-            variable = array_integrate (t, v, n, initial_time, final_time)
-              / inlet->volume;
+            {
+              variable = array_integrate (t, v, n, initial_time, final_time);
+              inlet->solute_input[i] += variable;
+              variable /= inlet->volume;
+            }
         }
       else
         variable = 0.;
@@ -170,6 +202,7 @@ inlet_set (Inlet *inlet,        ///< pointer to the inlet struct data.
           v = inlet->species_concentration[i];
           t = inlet->species_time[i];
           variable = array_interpolate (final_time, t, v, n);
+          inlet->species_input[i] += volume * variable;
         }
       else
         variable = 0.;
@@ -178,6 +211,30 @@ inlet_set (Inlet *inlet,        ///< pointer to the inlet struct data.
     }
 #if DEBUG_INLET
   fprintf (stderr, "inlet_set: end\n");
+#endif
+}
+
+/**
+ * function to write the inlet data in a summary file.
+ */
+static inline void
+inlet_summary (Inlet *inlet,    ///< pointer to the inlet struct data.
+               FILE *file)      ///< summary file.
+{
+  unsigned int i;
+#if DEBUG_INLET
+  fprintf (stderr, "inlet_summary: start\n");
+#endif
+  fprintf (file, "Inlet ID: %s input: %lg\n",
+           inlet->id, inlet->input);
+  for (i = 0; i < MAX_SOLUTES; ++i)
+    fprintf (file, "solute: %s input: %lg\n",
+             (char *) solute[i].name, inlet->solute_input[i]);
+  for (i = 0; i < MAX_SPECIES; ++i)
+    fprintf (file, "species: %s input: %lg\n",
+             (char *) species[i].name, inlet->species_input[i]);
+#if DEBUG_INLET
+  fprintf (stderr, "inlet_summary: end\n");
 #endif
 }
 

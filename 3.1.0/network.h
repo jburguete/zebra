@@ -266,7 +266,7 @@ network_step (Network *network, ///< pointer to the network struct data.
   Inlet *inlet;
   Junction *junction;
   Pipe *pipe;
-  double ta, taf, td, tdf, tb, tbf, bdt;
+  double ta, taf, td, tdf, tb, tbf, dt;
   unsigned int i, npipes, njunctions, ninlets;
 #if DEBUG_NETWORK
   fprintf (stderr, "network_step: start\n");
@@ -288,8 +288,9 @@ network_step (Network *network, ///< pointer to the network struct data.
           do
             {
               taf = fmin (tdf, ta + advection_step);
+              dt = taf - ta;
               for (i = 0; i < npipes; ++i)
-                pipe_advection_step (pipe + i, taf - ta);
+                pipe_advection_step (pipe + i, dt);
               for (i = 0; i < njunctions; ++i)
                 junction_set (junction + i);
               inlet = network->inlet;
@@ -302,13 +303,14 @@ network_step (Network *network, ///< pointer to the network struct data.
 #endif
             }
           while (taf < tdf);
+          dt = tdf - td;
           if (dispersion_model)
             for (i = 0; i < npipes; ++i)
-              pipe_dispersion_step (pipe + i, tdf - td);
+              pipe_dispersion_step (pipe + i, dt);
           for (i = 0; i < npipes; ++i)
-            pipe_solute_decay_step (pipe + i, tdf - td);
+            pipe_solute_decay_step (pipe + i, dt);
           for (i = 0; i < njunctions; ++i)
-            junction_set (junction + i);
+            junction_set_with_outputs (junction + i, dt);
           inlet = network->inlet;
           for (i = 0; i < ninlets; ++i)
             inlet_set (inlet + i, taf, tdf);
@@ -318,10 +320,10 @@ network_step (Network *network, ///< pointer to the network struct data.
 #endif
         }
       while (tdf < tbf);
-      bdt = tbf - tb;
+      dt = tbf - tb;
       temperature_set (tb);
       for (i = 0; i < npipes; ++i)
-        pipe_biological_step (pipe + i, rng, bdt);
+        pipe_biological_step (pipe + i, rng, dt);
       tb = tbf;
 #if DEBUG_NETWORK
       fprintf (stderr, "network_step: tbf=%.14lg next_time=%.14lg\n",
@@ -332,6 +334,33 @@ network_step (Network *network, ///< pointer to the network struct data.
   network_infestations (network);
 #if DEBUG_NETWORK
   fprintf (stderr, "network_step: end\n");
+#endif
+}
+
+/**
+ * function to write the summary.
+ */
+static inline void
+network_summary(Network *network,       ///< pointer to the network struct data.
+                char *summary)  ///< summary file name.
+{
+  Inlet *inlet;
+  Junction *junction;
+  FILE *file;
+  unsigned int i;
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_summary: start\n");
+#endif
+  file = fopen (summary, "w");
+  inlet = network->inlet;
+  for (i = 0; i < network->ninlets; ++i)
+    inlet_summary (inlet + i, file);
+  junction = network->junction;
+  for (i = 0; i < network->njunctions; ++i)
+    junction_summary (junction + i, file);
+  fclose (file);
+#if DEBUG_NETWORK
+  fprintf (stderr, "network_summary: end\n");
 #endif
 }
 

@@ -5,9 +5,9 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: 2.1.0\n"
+"Project-Id-Version: 3.1.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-02-28 14:24+0100\n"
+"POT-Creation-Date: 2024-03-13 03:05+0100\n"
 "PO-Revision-Date: 2021-06-15 01:12+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -29,19 +29,19 @@ msgstr "Fichero de entrada de temperatura incorrecto"
 msgid "Solute"
 msgstr "Soluto"
 
-#: solute.c:107 species.c:102 network.c:742 simulation.c:76
+#: solute.c:107 species.c:102 network.c:743 simulation.c:76
 msgid "Bad input file"
 msgstr "Fichero de entrada incorrecto"
 
-#: solute.c:115 species.c:110 network.c:750 results.c:362 simulation.c:84
+#: solute.c:115 species.c:110 network.c:751 results.c:362 simulation.c:84
 msgid "No root XML node"
 msgstr "Falta nodo XML raíz"
 
-#: solute.c:120 species.c:115 network.c:755 results.c:367 simulation.c:89
+#: solute.c:120 species.c:115 network.c:756 results.c:367 simulation.c:89
 msgid "Bad root XML node"
 msgstr "Nodo XML raíz incorrecto"
 
-#: solute.c:131 species.c:126 network.c:872 results.c:547
+#: solute.c:131 species.c:126 network.c:874 results.c:547
 msgid "Bad XML node"
 msgstr "Nodo XML incorrecto"
 
@@ -225,7 +225,7 @@ msgstr "Falta el nombre de la especie"
 msgid "Unknown species"
 msgstr "Especie desconocida"
 
-#: inlet.c:220 simulation.c:186
+#: inlet.c:220 simulation.c:195
 msgid "No species file"
 msgstr "Falta el fichero de especie"
 
@@ -301,55 +301,55 @@ msgstr "Falta elevación del segundo nodo"
 msgid "Same nodes for inlet and outlet"
 msgstr "Mismo nodo para entrada y salida"
 
-#: network.c:624
+#: network.c:625
 msgid "Unable to open the file"
 msgstr "No se pudo abrir el fichero"
 
-#: network.c:632 results.c:181
+#: network.c:633 results.c:181
 msgid "Bad header"
 msgstr "Cabecera incorrecta"
 
-#: network.c:649
+#: network.c:650
 msgid "Bad header line"
 msgstr "Línea de cabecera incorrecta"
 
-#: network.c:665 network.c:685
+#: network.c:666 network.c:686
 msgid "Bad data"
 msgstr "Datos incorrectos"
 
-#: network.c:702
+#: network.c:703
 msgid "File"
 msgstr "Fichero"
 
-#: network.c:768
+#: network.c:769
 msgid "Unknown pipe length model"
 msgstr "Modo de longitud de tubo desconocido"
 
-#: network.c:775
+#: network.c:776
 msgid "No Epanet file"
 msgstr "Falta fichero de Epanet"
 
-#: network.c:783
+#: network.c:784
 msgid "Unable to open the Epanet file"
 msgstr "No se pudo abrir el fichero de Epanet"
 
-#: network.c:833
+#: network.c:835
 msgid "No inlets"
 msgstr "Faltan entradas"
 
-#: network.c:848
+#: network.c:850
 msgid "Bad discharges time"
 msgstr "Tiempo de caudales incorrecto"
 
-#: network.c:853
+#: network.c:855
 msgid "Bad discharges time order"
 msgstr "Orden de tiempos de caudales incorrecto"
 
-#: network.c:859
+#: network.c:861
 msgid "No discharges file"
 msgstr "Falta fichero de caudales"
 
-#: network.c:878
+#: network.c:880
 msgid "No discharges"
 msgstr "Faltan caudales"
 
@@ -494,18 +494,22 @@ msgid "No results file"
 msgstr "Falta fichero de resultados"
 
 #: simulation.c:145
+msgid "No summary file"
+msgstr "Falta fichero de sumario"
+
+#: simulation.c:154
 msgid "Bad numerical order"
 msgstr "Orden del método numérico incorrecto"
 
-#: simulation.c:156
+#: simulation.c:165
 msgid "Unknown dispersion model"
 msgstr "Modelo de dispersión desconocido"
 
-#: simulation.c:168
+#: simulation.c:177
 msgid "No solutes file"
 msgstr "Falta fichero de solutos"
 
-#: simulation.c:204
+#: simulation.c:213
 msgid "No network file"
 msgstr "Falta fichero de red"
 

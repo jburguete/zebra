@@ -15,6 +15,7 @@ typedef struct
 {
   Network network[1];           ///< network struct data.
   char results[BUFFER_SIZE];    ///< results file name.
+  char summary[BUFFER_SIZE];    ///< summary file name.
   double initial_time;          ///< initial time in seconds since 1970.
   double final_time;            ///< final time in seconds since 1970.
   double cfl;                   ///< CFL number.
@@ -118,6 +119,9 @@ simulation_run (Simulation *simulation)
       results_write_variables (results, file);
 
     }
+
+  // saving summary
+  network_summary (network, simulation->summary);
 
   // freeing
   fclose (file);

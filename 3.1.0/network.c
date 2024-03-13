@@ -542,7 +542,7 @@ network_open_inp (Network *network,     ///< pointer to the network struct data.
   for (i = 0; i < nnodes; ++i)
     {
       k = pj[i].ninlets + pj[i].noutlets;
-      if (k > 1)
+      if (k)
         {
           j = network->njunctions;
           ++network->njunctions;
@@ -551,8 +551,9 @@ network_open_inp (Network *network,     ///< pointer to the network struct data.
                                     network->njunctions * sizeof (Junction));
           memcpy (network->junction + j, pj + i, sizeof (Junction));
           junction_init (network->junction + j);
+          network->junction[j].set = (k > 1) ? 1 : 0;
         }
-      else if (k == 1)
+      else
         junction_destroy (pj + i);
     }
 #if PIPE_LENGTHS_SAVE
@@ -824,6 +825,7 @@ network_open_xml (Network *network,     ///< pointer to the network struct data.
               m = error_msg;
               goto exit_on_error;
             }
+          inlet_init (network->inlet + i);
         }
       else
         break;
@@ -911,6 +913,7 @@ network_set_flow (Network *network)
                   ///< pointer to the network struct data.
 {
   NetDischarges *discharges;
+  Junction *junction;
   unsigned int i;
 #if DEBUG_NETWORK
   fprintf (stderr, "network_set_flow: start\n");
@@ -919,6 +922,8 @@ network_set_flow (Network *network)
   for (i = 0; i < network->npipes; ++i)
     pipe_set_flow (discharges->pipe[i], discharges->discharge[i],
                    discharges->friction_factor[i]);
+  for (i = 0, junction = network->junction; i < network->njunctions; ++i)
+    junction_set_demand (junction + i);
 #if DEBUG_NETWORK
   fprintf (stderr, "network_set_flow: end\n");
 #endif

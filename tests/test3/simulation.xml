@@ -1,2 +1,2 @@
 <?xml version="1.0"?>
-<simulation solutes="solutes.xml" species="species.xml" network="network.xml" initial-time="2017 1 1 0 0 0" final-time="2017 1 3 0 0 0" cell-size="10" saving-step="3600" numerical-order="2" cfl="0.9" results="results.bin"/>
+<simulation solutes="solutes.xml" species="species.xml" network="network.xml" initial-time="2017 1 1 0 0 0" final-time="2017 1 3 0 0 0" cell-size="10" saving-step="3600" numerical-order="2" cfl="0.9" results="results.bin" summary="summary"/>

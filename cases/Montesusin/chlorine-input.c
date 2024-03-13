@@ -41,7 +41,7 @@ main (int argn, char **argc)
     final_year, final_month, final_day, final_hour, final_minute, final_second;
   if (argn != 2)
     {
-      printf ("The syntax is:\n./random-input year\n");
+      printf ("The syntax is:\n./chlorine-input year\n");
       return 1;
     }
   year = atoi (argc[1]);
@@ -126,6 +126,53 @@ main (int argn, char **argc)
           if (year == final_year && month == final_month && day == final_day)
             break;
         }
+      fprintf (file, "%u %u %u %u 0 0 0\n", year, month, day, hour);
+      fprintf (file, "%u %u %u %u 0 1 1\n", year, month, day, hour);
+      fprintf (file, "%u %u %u %u 0 0 1\n", year, month, day, ++hour);
+      fprintf (file, "%u %u %u %u 0 1 0\n", year, month, day, hour);
+    }
+  while (1);
+  fprintf (file, "%u %u %u %u %u %u 0\n", final_year, final_month,
+           final_day, final_hour, final_minute, final_second);
+  fclose (file);
+  year = initial_year;
+  month = initial_month;
+  day = initial_day;
+  hour = initial_hour;
+  minute = initial_minute;
+  second = initial_second;
+  snprintf (buffer, BUFFER_SIZE, "chlorine-%u-hourb.in", year);
+  file = fopen (buffer, "w");
+  fprintf (file, "%u %u %u %u %u %u 0\n",
+           year, month, day, hour, minute, second);
+  fprintf (file, "%u %u %u %u %u %u 1\n",
+           year, month, day, hour, minute, second + 1);
+  fprintf (file, "%u %u %u %u %u %u 1\n",
+           year, month, day, ++hour, minute, second);
+  fprintf (file, "%u %u %u %u %u %u 0\n",
+           year, month, day, hour, minute, second + 1);
+  do
+    {
+      ++hour;
+      if (hour > 23)
+        {
+          hour = 0;
+          ++day;
+          if (day > days[month - 1])
+            {
+              day = 1;
+              ++month;
+              if (month > 12)
+                {
+                  month = 1;
+                  ++year;
+                }
+            }
+          if (year == final_year && month == final_month && day == final_day)
+            break;
+        }
+      if (hour % 4)
+        continue;
       fprintf (file, "%u %u %u %u 0 0 0\n", year, month, day, hour);
       fprintf (file, "%u %u %u %u 0 1 1\n", year, month, day, hour);
       fprintf (file, "%u %u %u %u 0 0 1\n", year, month, day, ++hour);
