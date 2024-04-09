@@ -1,4 +1,4 @@
-article.pdf: article.tex Makefile
+article.pdf: article.tex bib.bib Makefile
 	lualatex article
 	lualatex article
 	bibtex article
