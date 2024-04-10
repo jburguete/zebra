@@ -35,7 +35,112 @@
 
 \date{\today}
 
+\newcommand{\CO}[1]{\left[#1\right]}
 \newcommand{\EQ}[2]{\begin{equation}#1\label{#2}\end{equation}}
+\newcommand{\FIG}[3]
+{
+	\begin{figure}[ht!]
+		\centering
+		\includegraphics[width=\textwidth]{#1}
+		\caption{#2.\label{#3}}
+	\end{figure}
+}
+\newcommand{\FIGII}[4]
+{
+	\begin{figure}[ht!]
+		\centering
+		\includegraphics[width=0.49\textwidth]{#1}
+		\includegraphics[width=0.49\textwidth]{#2}
+		\caption{#3.\label{#4}}
+	\end{figure}
+}
+\newcommand{\FIGIIB}[6]
+{
+	\begin{figure}[ht!]
+		\centering
+		\begin{tabular}{cc}
+			#2&#4\\
+			\includegraphics[width=0.49\textwidth]{#1}&
+			\includegraphics[width=0.49\textwidth]{#3}\\
+		\end{tabular}
+		\caption{#5.\label{#6}}
+	\end{figure}
+}
+\newcommand{\FIGIIC}[5]
+{
+	\begin{figure}[ht!]
+		\centering
+		\begin{tabular}{cc}
+			#2&#4\\
+			&#5\\
+			\includegraphics[width=0.45\textwidth]{#1}&
+			\includegraphics[width=0.45\textwidth]{#3}
+		\end{tabular}
+	\end{figure}
+}
+\newcommand{\FIGIII}[5]
+{
+	\begin{figure}[ht!]
+		\centering
+		\includegraphics[width=0.49\textwidth]{#1}
+		\includegraphics[width=0.49\textwidth]{#2}
+		\includegraphics[width=0.49\textwidth]{#3}
+		\caption{#4.\label{#5}}
+	\end{figure}
+}
+\newcommand{\FIGIIIB}[8]
+{
+	\begin{figure}[ht!]
+		\centering
+		\begin{tabular}{cc}
+			#2&#4\\
+			\includegraphics[width=0.49\textwidth]{#1}&
+			\includegraphics[width=0.49\textwidth]{#3}\\
+		\end{tabular}
+		#6\\
+		\includegraphics[width=0.49\textwidth]{#5}
+		\caption{#7.\label{#8}}
+	\end{figure}
+}
+\newcommand{\FIGIV}[6]
+{
+	\begin{figure}[ht!]
+		\centering
+		\includegraphics[width=0.49\textwidth]{#1}
+		\includegraphics[width=0.49\textwidth]{#2}
+		\includegraphics[width=0.49\textwidth]{#3}
+		\includegraphics[width=0.49\textwidth]{#4}
+		\caption{#5.\label{#6}}
+	\end{figure}
+}
+\newcommand{\FIGIVB}[9]
+{
+	\begin{figure}[ht!]
+		\centering
+		\begin{tabular}{cc}
+			#2&#4\\
+			\includegraphics[width=0.49\textwidth]{#1}&
+			\includegraphics[width=0.49\textwidth]{#3}\\
+			#6&#8\\
+			\includegraphics[width=0.49\textwidth]{#5}&
+			\includegraphics[width=0.49\textwidth]{#7}
+		\end{tabular}
+		\caption{#9.}
+	\end{figure}
+}
+\newcommand{\FIGV}[7]
+{
+	\begin{figure}[ht!]
+		\centering
+		\includegraphics[width=0.49\textwidth]{#1}
+		\includegraphics[width=0.49\textwidth]{#2}
+		\includegraphics[width=0.49\textwidth]{#3}
+		\includegraphics[width=0.49\textwidth]{#4}
+		\includegraphics[width=0.49\textwidth]{#5}
+		\caption{#6.\label{#7}}
+	\end{figure}
+}
+\newcommand{\LL}[1]{\left\{#1\right\}}
 \newcommand{\PA}[1]{\left(#1\right)}
 \newcommand{\PARTIAL}[2]{\frac{\partial#1}{\partial#2}}
 
@@ -58,13 +163,22 @@ mussel larvae, solute transport, solute decay, pressurized networks, irrigation
 \section*{Notation}
 
 \begin{tabular}{lcl}
+$\Delta$ & = & temporal differences,\\
+$\delta$ & = & spatial differences,\\
+$\Psi^\pm$ & = & upwind flux limiter,\\
+$\psi$ & = & flux limiter function,\\
+$\theta$ & = & implicit parameter,\\
 $A$ & = & cross sectional area,\\
-$c$ & = & solute (or mussel larvae) concentration,\\
+$C$ & = & mussel larvae sources,\\
+$c$ & = & mussel larvae concentration,\\
 $f$ & = & friction factor of Darcy-Weissbach,\\
+$K_b$ & = & base solute decay coefficient,\\
+$K_w$ & = & wall solute decay coefficient,\\
 $K_x$ & = & longitudinal dispersion coefficient,\\
 $P$ & = & perimeter,\\
 $Q$ & = & discharge,\\
-$S$ & = & solute (or mussel larvae) source,\\
+$S$ & = & solute sources,\\
+$s$ & = & solute concentration,\\
 $t$ & = & time,\\
 $v$ & = & velocity,\\
 $x$ & = & longitudinal coordinate,\\
@@ -79,9 +193,9 @@ $x$ & = & longitudinal coordinate,\\
 The equation governing a one-dimensional transport and dispersion of solutes in
 a pipe is the advection-diffusion Fick's law with sources due to external
 injections or reaction decays:
-\EQ{\PARTIAL{}{t}(A\,c)+\PARTIAL{}{x}(Q\,c)
-	=S+\PARTIAL{}{x}\PA{K_x\,A\,\PARTIAL{c}{x}}}{EqTransport}
-where $t$ is the time, $A$ the cross sectional area of the pipe, $c$ the solute
+\EQ{\PARTIAL{}{t}(A\,s)+\PARTIAL{}{x}(Q\,s)
+	=S+\PARTIAL{}{x}\PA{K_x\,A\,\PARTIAL{s}{x}}}{EqTransportSolute}
+where $t$ is the time, $A$ the cross sectional area of the pipe, $s$ the solute
 concentration, $x$ the longitudinal coordinate, $Q$ the discharge, $S$ the
 solute source and $K_x$ the longitudinal dispersion coefficient.
 
@@ -93,11 +207,59 @@ factor of Darcy-Weissbach \citep{Darcy58}.
 
 \subsection{Model of solute decay in a pipe}
 
+In the solute decay in a pipe two effects are taked into accout: the reaction of
+the solute with the matter disolved in the water and the reaction with the pipe
+walls. The following equation is used \citep{DiGianoZhang05}:
+\EQ{\PARTIAL{c}{t}=-\PA{K_b-K_w\,\frac{P}{A}}\,c}{EqSoluteDecay}
+with $K_b$ and $K_w$ the base and wall decay constants respectively. 
+
 \subsection{Model of transport and dispersion of mussel larvae in a pipe}
 
 The swimming capacity of the zebra mussel larvae can be considered negligible
 compared to the water velocity in pressurized networks. Then, equation
-\ref{EqTransport} is used for transport and dispersion of larvae in pipes.
+(\ref{EqTransportSolute}), adapted to mussel larvae, is used for transport and
+dispersion in pipes:
+\EQ{\PARTIAL{}{t}(A\,c)+\PARTIAL{}{x}(Q\,c)
+	=C+\PARTIAL{}{x}\PA{K_x\,A\,\PARTIAL{c}{x}}}{EqTransportLarvae}
+with $c$ the larvae concentration and $C$ the sources of larvae.
+
+\section{The numerical model}
+
+\subsection{Model of advection-diffusion equation}
+
+The Roe-Sweby \citep{Sweby84} second order in space and time TVD (total
+variation diminishing) scheme is used to solve the advection term combined with
+a centred implicit scheme of second order in space to solve the diffusion term
+of the advection-diffusion equations (\ref{EqTransportSolute}) and
+(\ref{EqTransportLarvae}):
+\[\Delta s^n=s^{n+1}-s^n,\quad\delta s_{i+\frac12}=s_{i+1}-s_i,\quad
+	\delta F_{i+\frac12}^n=\PA{1-v\,\frac{\Delta t}{\delta x}}\,v\,
+	\delta s_{i+\frac12}^n,\]
+\[
+	\delta F^\pm=\frac{v\pm|v|}{2}\,\delta s_{i+\frac12},\quad
+	\Psi_{i+\frac12}^\pm=\psi\PA{\frac{\delta F_{i+\frac12\pm1}^\pm}
+	{\delta F_{i+\frac12}^\pm}},\]
+\[\psi(r)=\max\CO{0,\;\min\PA{2\,r,\;\frac{1+r}{2},\;2}},\]
+\[-\theta\,K_x\,\frac{\Delta t}{\delta x}\,\Delta s_{i-1}^n
+	+\PA{\delta x+2\,\theta\,K_x\,\frac{\Delta t}{\delta x}}\,\Delta s_i^n
+	-\theta\,K_x\,\frac{\Delta t}{\delta x}\,\Delta s_{i+1}^n\]
+\[=(1-\theta)\,K_x\,\frac{\Delta t}{\delta x}\,\PA{\delta s_{i+\frac12}^n
+	-\delta s_{i-\frac12}^n}\]
+\[+\Delta t\,\left\{\frac12\,\PA{\Psi^+\,\delta F^+}_{i-\frac32}^n
+	-\CO{\PA{1+\frac12\,\Psi^+}\,\delta F^+}_{i-\frac12}^n\right.\]
+\EQ{
+	\left.-\CO{\PA{1+\frac12\,\Psi^-}\,\delta F^-}_{i+\frac12}^n
+	+\frac12\,\PA{\Psi^-\,\delta F^-}_{i+\frac32}^n\right\}}
+	{EqAdvectionDiffusion}
+with $\theta\in[0,1]$ the implicit parameter, $\psi$ the monotonized central
+flux limiter function \citep{vanLeer77}, $\Delta$ is used for temporal
+differences and $\delta$ for spatial differences. This scheme produces a
+tridiagonal system of equations in $\Delta s_i^n$ that is solved by Gaussian
+elimination.
+
+For $\theta=\frac12$ the diffusion scheme is second order in time. The following
+value is used for compromise in accuracy holding the TVD property:
+\EQ{\theta=\max\PA{\frac12,\;1-\frac{\delta x^2}{2\,K_x\,\Delta t}}}{EqTheta}
 
 \subsection{Model of mussel larvae cling in a pipe}
 
@@ -105,11 +267,238 @@ compared to the water velocity in pressurized networks. Then, equation
 
 \subsection{Model of junctions}
 
+To solve the solute or larvae concentration at the network junctions, equality
+of concentrations and mass conservation at all nodes involved in the junction is
+imposed:
+\EQ{s=\frac{\sum_jA_j\,s_j\,\delta x_j}{\sum_jA_j\,\delta x_j}}{EqJunction}
+with $s$ the concentration at all the nodes and $j$ for each node.
+
 \subsection{Model of inlets}
 
-\section{The numerical model}
-
 \section{Applications cases}
+
+\subsection{Efecto de la variabilidad en la entrada}
+
+Hipótesis:
+\begin{itemize}
+\item Red de la Comunidad de Regantes de Montesusín.
+\item El número total de larvas es idéntico en cada modelo.
+\item Tiempo medio de pegado $\approx$ 4 días.
+\item Velocidad máxima de pegado 1.2 m/s.
+\item No muerte.
+\end{itemize}
+
+\FIGIV{2021-mussel-input-constant.eps}{2021-mussel-input-measured.eps}
+{2021-mussel-input-uniform.eps}{2021-mussel-input-random.eps}
+{Entradas de larvas en función del tiempo. Año 2021}{Fig2021MusselInput}
+
+\FIGIVB{2021-mussel-constant.pdf}{$+0\%$, R=$1$}
+{2021-mussel-measured.pdf}{$-41.7\%$, R=$0.977$}
+{2021-mussel-uniform.pdf}{$-28.4\%$, R=$0.976$}
+{2021-mussel-random.pdf}{$-9.8\%$, R=$0.990$}
+{Infestación con entrada de larvas constante en una ventana de tiempo
+(arriba-izquierda), medida (arriba-derecha), uniforme (abajo-izquierda) y
+aleatoria (abajo-derecha). Año 2021\label{Fig2021MusselRandom}}
+
+\FIGIV{2022-mussel-input-constant.eps}
+{2022-mussel-input-measured.eps}
+{2022-mussel-input-uniform.eps}
+{2022-mussel-input-random.eps}
+{Entradas de larvas en función del tiempo. Año 2022}{Fig2022MusselInput}
+
+\FIGIVB{2022-mussel-constant.pdf}{$+0\%$, R=$1$}
+{2022-mussel-measured.pdf}{$+24.8\%$, R=$0.976$}
+{2022-mussel-uniform.pdf}{$-21.8\%$, R=$0.957$}
+{2022-mussel-random.pdf}{$-28.3\%$, R=$0.988$}
+{Infestación con entrada de larvas constante en una ventana de tiempo
+(arriba-izquierda), medida (arriba-derecha), uniforme (abajo-izquierda) y
+aleatoria (abajo-derecha). Año 2022\label{Fig2022MusselRandom}}
+
+\clearpage
+\subsection{Efecto de la velocidad máxima de pegado}
+
+Hipótesis:
+\begin{itemize}
+\item Red de la Comunidad de Regantes de Montesusín, año 2021.
+\item Entrada de larvas constante.
+\item Tiempo medio de pegado $\approx$ 4 días.
+\item No muerte.
+\end{itemize}
+
+\FIGIIIB{2021-mussel-velocity-1.0.pdf}{$-9.1\%$, R=$0.971$}
+{2021-mussel-constant.pdf}{$+0\%$, R=$1$}
+{2021-mussel-velocity-2.0.pdf}{$+9.7\%$, R=$0.951$}
+{Infestación con velocidad máxima de pegado de
+1.0~m/s (arriba-izquierda), 1.2~m/s (arriba-derecha) y 2.0~m/s (abajo). Año
+2021}{Fig2021MusselVelocity}
+
+\FIGIIIB{2022-mussel-velocity-1.0.pdf}{$-2.8\%$, R=$0.995$}
+{2022-mussel-constant.pdf}{$+0\%$, R=$1$}
+{2022-mussel-velocity-2.0.pdf}{$+2.9\%$, R=$0.989$}
+{Infestación con velocidad máxima de pegado de
+1.0~m/s (arriba-izquierda), 1.2~m/s (arriba-derecha) y 2.0~m/s (abajo). Año
+2022}{Fig2022MusselVelocity}
+
+\clearpage
+\subsection{Efecto de la probabilidad de pegado}
+
+Hipótesis:
+\begin{itemize}
+\item Red de la Comunidad de Regantes de Montesusín.
+\item Entrada de larvas constante.
+\item Velocidad máxima de pegado 1.2 m/s.
+\item No muerte.
+\end{itemize}
+
+\FIGIIIB{2021-mussel-cling-1.1.pdf}{$-44.6\%$, R=$0.986$}
+{2021-mussel-constant.pdf}{$+0\%$, R=$1$}
+{2021-mussel-cling-8.0.pdf}{$+273.3\%$, R=$0.961$}
+{Infestación con tiempo medio de pegado de
+14 días (arriba-izquierda), 4 días (arriba-derecha) y 1 día (abajo). Año 2021}
+{Fig2021MusselCling}
+
+\FIGIIIB{2022-mussel-cling-1.1.pdf}{$-41.1\%$, R=$0.995$}
+{2022-mussel-constant.pdf}{$+0\%$, R=$1$}
+{2022-mussel-cling-8.0.pdf}{$+171.6\%$, R=$0.955$}
+{Infestación con tiempo medio de pegado de
+14 días (arriba-izquierda), 4 días (arriba-derecha) y 1 día (abajo). Año 2022}
+{Fig2022MusselCling}
+
+\clearpage
+\subsection{Efecto de la probabilidad de muerte}
+
+Hipótesis:
+\begin{itemize}
+\item Red de la Comunidad de Regantes de Montesusín.
+\item Entrada de larvas constante.
+\item Tiempo medio de pegado $\approx$ 4 días.
+\item Velocidad máxima de pegado 1.2 m/s.
+\item Tasa de muerte de larvas: a los 14 días sobrevive el 10\%.
+\item Tasa de muerte de adultos: a los 4 años sobrevive el 10\%.
+\end{itemize}
+
+\FIGIIB{2021-mussel-constant.pdf}{$+0\%$, R=$1$}
+{2021-mussel-death.pdf}{$-9.8\%$, R=$0.997$}
+{Infestación sin muerte
+de larvas (izquierda) y con muerte (derecha). Año 2021}{Fig2021MusselDeath}
+
+\FIGIIB{2022-mussel-constant.pdf}{$+0\%$, R=$1$}
+{2022-mussel-death.pdf}{$-16.4\%$, R=$0.999$}
+{Infestación sin muerte
+de larvas (izquierda) y con muerte (derecha). Año 2022}{Fig2022MusselDeath}
+
+\clearpage
+\section{Efectos debidos a los venenos}
+
+\subsection{Propagación de cloro en la red de Montesusín}
+
+Hipótesis:
+\begin{itemize}
+\item Red de la Comunidad de Regantes de Montesusín.
+\item Tasa de decaimiento del cloro: 0.36 día$^{-1}$.
+\end{itemize}
+
+\FIGIV{24-0.36-2021-chlorine-constant-0.eps}{24-0.36-2021-chlorine-constant-2.eps}
+{24-0.36-2021-chlorine-constant-6665.eps}{24-0.36-2021-chlorine-constant-172.eps}
+{Concentración de cloro en distintos nodos con entrada constante. Año 2021}
+{Fig0362021ChlorineConstant}
+
+\FIGIV{24-0.36-2022-chlorine-constant-0.eps}{24-0.36-2022-chlorine-constant-2.eps}
+{24-0.36-2022-chlorine-constant-68.eps}{24-0.36-2022-chlorine-constant-172.eps}
+{Concentración de cloro en distintos nodos con entrada constante. Año 2022}
+{Fig0362022ChlorineConstant}
+
+\FIGV{24-0.36-2021-chlorine-day-0.eps}{24-0.36-2021-chlorine-day-2.eps}
+{24-0.36-2021-chlorine-day-65.eps}{24-0.36-2021-chlorine-day-6665.eps}
+{24-0.36-2021-chlorine-day-172.eps}
+{Concentración de cloro en distintos nodos con entrada con una ventana horaria
+diaria. Año 2021}{Fig0362021ChlorineDay}
+
+\FIGV{24-0.36-2022-chlorine-day-0.eps}{24-0.36-2022-chlorine-day-2.eps}
+{24-0.36-2022-chlorine-day-6634.eps}{24-0.36-2022-chlorine-day-68.eps}
+{24-0.36-2022-chlorine-day-172.eps}
+{Concentración de cloro en distintos nodos con entrada con una ventana horaria
+diaria. Año 2022}{Fig0362022ChlorineDay}
+
+\FIGV{24-0.36-2021-chlorine-week-0.eps}{24-0.36-2021-chlorine-week-2.eps}
+{24-0.36-2021-chlorine-week-68.eps}{24-0.36-2021-chlorine-week-123.eps}
+{24-0.36-2021-chlorine-week-172.eps}
+{Concentración de cloro en distintos nodos con entrada con una ventana horaria
+semanal. Año 2021}{Fig0362021ChlorineWeek}
+
+\FIGV{24-0.36-2022-chlorine-week-0.eps}{24-0.36-2022-chlorine-week-2.eps}
+{24-0.36-2022-chlorine-week-6634.eps}{24-0.36-2022-chlorine-week-139.eps}
+{24-0.36-2022-chlorine-week-172.eps}
+{Concentración de cloro en distintos nodos con entrada con una ventana horaria
+semanal. Año 2022}{Fig0362022ChlorineWeek}
+
+\clearpage
+Hipótesis:
+\begin{itemize}
+\item Red de la Comunidad de Regantes de Montesusín.
+\item Tasa de decaimiento del cloro: 24 día$^{-1}$.
+\end{itemize}
+
+\FIGIV{24-2021-chlorine-constant-0.eps}{24-2021-chlorine-constant-2.eps}
+{24-2021-chlorine-constant-6665.eps}{24-2021-chlorine-constant-172.eps}
+{Concentración de cloro en distintos nodos con entrada constante. Año 2021}
+{Fig242021ChlorineConstant}
+
+\FIGIV{24-2022-chlorine-constant-0.eps}{24-2022-chlorine-constant-2.eps}
+{24-2022-chlorine-constant-68.eps}{24-2022-chlorine-constant-172.eps}
+{Concentración de cloro en distintos nodos con entrada constante. Año 2022}
+{Fig242022ChlorineConstant}
+
+\FIGV{24-2021-chlorine-day-0.eps}{24-2021-chlorine-day-2.eps}
+{24-2021-chlorine-day-65.eps}{24-2021-chlorine-day-6665.eps}
+{24-2021-chlorine-day-172.eps}
+{Concentración de cloro en distintos nodos con entrada con una ventana horaria
+diaria. Año 2021}{Fig242021ChlorineDay}
+
+\FIGV{24-2022-chlorine-day-0.eps}{24-2022-chlorine-day-2.eps}
+{24-2022-chlorine-day-6634.eps}{24-2022-chlorine-day-68.eps}
+{24-2022-chlorine-day-172.eps}
+{Concentración de cloro en distintos nodos con entrada con una ventana horaria
+diaria. Año 2022}{Fig242022ChlorineDay}
+
+\FIGV{24-2021-chlorine-week-0.eps}{24-2021-chlorine-week-2.eps}
+{24-2021-chlorine-week-68.eps}{24-2021-chlorine-week-123.eps}
+{24-2021-chlorine-week-172.eps}
+{Concentración de cloro en distintos nodos con entrada con una ventana horaria
+semanal. Año 2021}{Fig242021ChlorineWeek}
+
+\FIGV{24-2022-chlorine-week-0.eps}{24-2022-chlorine-week-2.eps}
+{24-2022-chlorine-week-6634.eps}{24-2022-chlorine-week-139.eps}
+{24-2022-chlorine-week-172.eps}
+{Concentración de cloro en distintos nodos con entrada con una ventana horaria
+semanal. Año 2022}{Fig242022ChlorineWeek}
+
+\clearpage
+\subsection{Efecto de los venenos}
+
+\FIGIIC{2022-mussel-constant.pdf}{Sin tratamiento}
+{24-2021-chlorine-day.pdf}
+{Tratamiento de 8 a 20}{$\approx$ -70\% Cl, -97,1\% M}
+
+\FIGIIC{2022-mussel-constant.pdf}{Sin tratamiento}
+{24-2021-chlorine-dayb.pdf}
+{Tratamiento de 20 a 8}{$\approx$ -30\% Cl, -99,3\% M}
+
+\FIGIIC{2022-mussel-constant.pdf}{Sin tratamiento}
+{24-2021-chlorine-hour.pdf}
+{Tratamiento hora sí hora no}{$\approx$ -50\% Cl, -98,9\% M}
+
+\clearpage
+\section{Modelo de crecimiento de adultos}
+
+Hipótesis:
+\begin{itemize}
+\item Las larvas tardan un tiempo en convertirse en adultos una vez pegadas
+(¿1 semana?)
+\item El crecimiento viene a ser $\approx$ 1 cm / año.
+\item La tasa de crecimiento está modulada por la temperatura.
+\item El crecimiento se paraliza si la velocidad de flujo es muy alta.
+\end{itemize}
 
 \section{Conclusions}
 
