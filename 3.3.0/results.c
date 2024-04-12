@@ -541,6 +541,72 @@ results_open_xml (Results *results,
             }
         }
 
+      // map
+      else if (!xmlStrcmp (node->name, XML_MAP))
+        {
+          t = xml_node_get_time (node, XML_TIME, &e);
+          if (!e || t < header->initial_time || t > header->final_time)
+            {
+              m = _("Bad pipe time");
+              goto exit_on_error;
+            }
+          buffer = xmlGetProp (node, XML_FILE);
+          if (!buffer)
+            {
+              m = _("No pipe file");
+              goto exit_on_error;
+            }
+          snprintf (name, BUFFER_SIZE, "%s/%s", directory, (char *) buffer);
+          xmlFree (buffer);
+          file = fopen (name, "w");
+          if (!file)
+            {
+              m = _("Bad pipe file");
+              goto exit_on_error;
+            }
+          j = ceil ((t - header->initial_time) / header->saving_step);
+          fseek (results->file, j * results->nvariables * sizeof (double),
+                 SEEK_CUR);
+          ncells = results->pipe_cell[header->npipes];
+          variable
+            = (double *) realloc (variable, ncells * n * sizeof (double));
+          if (fread (variable, n * sizeof (double), ncells, results->file)
+              != ncells)
+            {
+              m = _("Bad data base");
+              goto exit_on_error;
+            }
+          x0 = results->point_x[j];
+          y0 = results->point_y[j];
+          z0 = results->point_z[j];
+          strncpy (id, results->pipe_outlet_id + i * MAX_LABEL_LENGTH,
+                   MAX_LABEL_LENGTH * sizeof (char));
+          for (j = 0; j < header->npoints; ++j)
+            if (!strcmp (id, results->point_id + j * MAX_LABEL_LENGTH))
+              {
+                dx = (results->point_x[j] - x0) / (ncells - 1);
+                dy = (results->point_y[j] - y0) / (ncells - 1);
+                dz = (results->point_z[j] - z0) / (ncells - 1);
+                break;
+              }
+          if (j == header->npoints)
+            {
+              fprintf (stderr, "ID=%s\n", id);
+              m = _("Bad point identifier");
+              goto exit_on_error;
+            }
+          for (j = l = 0; j < ncells; ++j)
+            {
+              x = x0 + j * dx;
+              y = y0 + j * dy;
+              z = z0 + j * dz;
+              fprintf (file, "%.3lf %.3lf %.3lf", x, y, z);
+              for (k = 0; k < n; ++k, ++l)
+                fprintf (file, " %.9lg", variable[l]);
+              fprintf (file, "\n");
+            }
+        }
+
       // error
       else
         {

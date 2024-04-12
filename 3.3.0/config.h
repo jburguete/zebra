@@ -157,6 +157,8 @@
 ///< larva-minimum-hydrogen-peroxide XML label.
 #define XML_LENGTH              (const xmlChar *) "length"
 ///< length XML label.
+#define XML_MAP                 (const xmlChar *) "map"
+///< map XML label.
 #define XML_MAXIMUM_TEMPERATURE (const xmlChar *) "maximum-temperature"
 ///< maximum-temperature XML label.
 #define XML_MAXIMUM_VELOCITY    (const xmlChar *) "maximum-velocity"
