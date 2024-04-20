@@ -4,7 +4,7 @@
 		<solute name="oxygen" file="oxygen.in"/>
 		<solute name="organic-matter" file="organic-matter.in"/>
 		<solute name="chlorine" file="chlorine-2021-day.in"/>
-		<species name="zebra-mussel" file="zebra-mussel-2021-constant.in"/>
+		<species name="zebra-mussel" file="zebra-mussel-2021-uniform.in"/>
 	</inlet>
   <discharges time="2021 5 13 2 0 0" file="rpt_files_2021/Montesusin_R1_0.rpt"/>
   <discharges time="2021 5 13 3 0 0" file="rpt_files_2021/Montesusin_R1_1.rpt"/>

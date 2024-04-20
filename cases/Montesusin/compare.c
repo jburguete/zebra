@@ -5,8 +5,8 @@
 #include <math.h>
 
 #define BUFFER_SIZE 512
-#define FMT1 "%*s%*s%*s%*s%s%*f%*f%*f%*f%*f%*f%lf%*f"
-#define FMT2 "%*s%*s%*s%*s%s%*f%*f%*f%*f%*f%*f%*f%lf"
+#define FMT1 "%*s%*s%*s%*s%s%*f%*f%*f%*f%*f%*f%*f%lf%*f"
+#define FMT2 "%*s%*s%*s%*s%s%*f%*f%*f%*f%*f%*f%*f%*f%lf"
 
 int
 main (int argn, char **argc)

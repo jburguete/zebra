@@ -144,7 +144,7 @@ results_init (Results *results,
       results->pipe_length[i] = pipe[i].length;
       results->pipe_cell[i + 1] = j += pipe[i].ncells;
     }
-  results->nvariables = j *= MAX_SOLUTES + 3 * MAX_SPECIES;
+  results->nvariables = j *= 1 + MAX_SOLUTES + 3 * MAX_SPECIES;
   results->variable = (double *) malloc (j * sizeof (double));
 #if DEBUG_RESULTS
   fprintf (stderr, "results_init: nvariables=%u nsolutes=%u nspecies=%u\n",

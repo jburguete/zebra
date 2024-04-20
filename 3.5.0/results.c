@@ -105,6 +105,7 @@ results_set (Results *results,
       ncells = pipe->ncells;
       for (j = 0; j < ncells; ++j, ++cell)
         {
+          variable[k++] = cell->discharge;
 #if DEBUG_RESULTS
           fprintf (stderr, "results_set: pipe=%u cell=%u\n", i, j);
           for (l = 0; l < MAX_SOLUTES; ++l)
@@ -289,7 +290,7 @@ results_open_bin (Results *results,
   // check identifiers
 
   // saving data
-  results->nvariables = (header->nsolutes + 3 * header->nspecies)
+  results->nvariables = (1 + header->nsolutes + 3 * header->nspecies)
     * results->pipe_cell[header->npipes];
   results->header_position = ftell (file);
   results->file = file;
@@ -369,7 +370,7 @@ results_open_xml (Results *results,
     }
 
   header = results->header;
-  n = header->nsolutes + 3 * header->nspecies;
+  n = 1 + header->nsolutes + 3 * header->nspecies;
 
   for (node = node->children; node; node = node->next)
     {

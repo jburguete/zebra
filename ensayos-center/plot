@@ -306,13 +306,36 @@ plot [0:][0:1.5] 'dn250pn10-3.txt' u ($7>5000?$7/9810:1/0):15\
 	0.51 t'Máximo teórico' w l lt 1,\
 	ctcw t'Ajuste (c_t=0.48)' w l lt 2
 
+set key right bottom
 unset title
-set key left
+set xlabel 'log(L_t/D)'
+set ylabel 'log(f/({/Symbol s}_tD_tL_t))'
+fit e250+h250*x 'dn250pn10-3.txt' u (log($5/$1)):(log($13/($3*$4*$5)))\
+	via e250,h250
+fit e300+h300*x 'dn300pn10-3.txt' u (log($5/$1)):(log($13/($3*$4*$5)))\
+	via e300,h300
+e=(e250+e300)/2
+h=(h250+h300)/2
+m=log(2**(1./3.)*(91./36.)**2*0.51*0.75)
+set out 'f-sdl.eps'
+plot\
+	'dn250pn10-3.txt' u (log($5/$1)):(log($13/($3*$4*$5))) t'DN250PN10'\
+		w p ps 2 pt 6,\
+	'dn300pn10-3.txt' u (log($5/$1)):(log($13/($3*$4*$5))) t'DN300PN10'\
+		w p ps 2 pt 8,\
+	e250+h250*x t'Ajuste (DN250PN10)' w l lt 1,\
+	e300+h300*x t'Ajuste (DN300PN10)' w l lt 2,\
+	m+x/3 t'Gauckler-Manning' w l lt 3
+
+
+set term png enh 16
+unset title
+set key left top
 set xlabel 'U (m/s)'
 set ylabel 'h_f (m)'
 
 set title 'DN250PN10'
-set out 'dp-u-250.eps'
+set out 'dp-u-250.png'
 fit a2502530*x**2 'dn250pn10-3.txt' u ($3<200?$5==0.03?$6:1/0:1/0):7\
 	via a2502530
 fit a2505030*x**2 'dn250pn10-3.txt' u ($3>200?$3<400?$5==0.03?$6:1/0:1/0:1/0):7\
@@ -325,7 +348,7 @@ fit a2505040*x**2 'dn250pn10-3.txt' u ($3>200?$3<400?$5==0.04?$6:1/0:1/0:1/0):7\
 	via a2505040
 fit a2507540*x**2 'dn250pn10-3.txt' u ($3>400?$5==0.04?$6:1/0:1/0):7\
 	via a2507540
-plot [0:10][0:50] 'dn250pn10-3.txt' u ($3<200?$5==0.03?$6:1/0:1/0):($7/9810)\
+plot [0:10][0:5] 'dn250pn10-3.txt' u ($3<200?$5==0.03?$6:1/0:1/0):($7/9810)\
 	t'25% 30mm' w p ps 2 pt 1,\
 	'' u ($3>200?$3<400?$5==0.03?$6:1/0:1/0:1/0):($7/9810)\
 		t'50% 30mm' w p ps 2 pt 2,\
@@ -341,7 +364,7 @@ plot [0:10][0:50] 'dn250pn10-3.txt' u ($3<200?$5==0.03?$6:1/0:1/0):($7/9810)\
 	a2505040*x**2/9810 not w l lt 5,\
 	a2507540*x**2/9810 not w l lt 6
 
-set out 'dp-u-250b.eps'
+set out 'dp-u-250b.png'
 fit b2502530+c2502530*x**2 'dn250pn10-3.txt' u ($3<200?$5==0.03?$6:1/0:1/0):7\
 	via b2502530,c2502530
 fit b2505030+c2505030*x**2 'dn250pn10-3.txt'\
@@ -368,7 +391,7 @@ fit b250+c2505040*x**2 'dn250pn10-3.txt'\
 	u ($3>200?$3<400?$5==0.04?$6:1/0:1/0:1/0):7 via c2505040
 fit b250+c2507540*x**2 'dn250pn10-3.txt' u ($3>400?$5==0.04?$6:1/0:1/0):7\
 	via c2507540
-plot [0:10][0:50] 'dn250pn10-3.txt' u ($3<200?$5==0.03?$6:1/0:1/0):($7/9810)\
+plot [0:10][0:5] 'dn250pn10-3.txt' u ($3<200?$5==0.03?$6:1/0:1/0):($7/9810)\
 	t'25% 30mm' w p ps 2 pt 1,\
 	'' u ($3>200?$3<400?$5==0.03?$6:1/0:1/0:1/0):($7/9810)\
 		t'50% 30mm' w p ps 2 pt 2,\
@@ -385,7 +408,7 @@ plot [0:10][0:50] 'dn250pn10-3.txt' u ($3<200?$5==0.03?$6:1/0:1/0):($7/9810)\
 	(b2507540+c2507540*x**2)/9810 not w l lt 6
 
 set title 'DN300PN10'
-set out 'dp-u-300.eps'
+set out 'dp-u-300.png'
 fit a3002530*x**2 'dn300pn10-3.txt' u ($3<200?$5==0.03?$6:1/0:1/0):7\
 	via a3002530
 fit a3005030*x**2 'dn300pn10-3.txt' u ($3>200?$3<400?$5==0.03?$6:1/0:1/0:1/0):7\
@@ -398,7 +421,7 @@ fit a3005040*x**2 'dn300pn10-3.txt' u ($3>200?$3<400?$5==0.04?$6:1/0:1/0:1/0):7\
 	via a3005040
 fit a3007540*x**2 'dn300pn10-3.txt' u ($3>400?$5==0.04?$6:1/0:1/0):7\
 	via a3007540
-plot [0:10][0:50] 'dn300pn10-3.txt' u ($3<200?$5==0.03?$6:1/0:1/0):($7/9810)\
+plot [0:10][0:5] 'dn300pn10-3.txt' u ($3<200?$5==0.03?$6:1/0:1/0):($7/9810)\
 	t'25% 30mm' w p ps 2 pt 1,\
 	'' u ($3>200?$3<400?$5==0.03?$6:1/0:1/0:1/0):($7/9810)\
 		t'50% 30mm' w p ps 2 pt 2,\
@@ -414,7 +437,7 @@ plot [0:10][0:50] 'dn300pn10-3.txt' u ($3<200?$5==0.03?$6:1/0:1/0):($7/9810)\
 	a3005040*x**2/9810 not w l lt 5,\
 	a3007540*x**2/9810 not w l lt 6
 
-set out 'dp-u-300b.eps'
+set out 'dp-u-300b.png'
 fit b3002530+c3002530*x**2 'dn300pn10-3.txt' u ($3<200?$5==0.03?$6:1/0:1/0):7\
 	via b3002530,c3002530
 fit b3005030+c3005030*x**2 'dn300pn10-3.txt'\
@@ -442,7 +465,7 @@ fit b300+c3005040*x**2 'dn300pn10-3.txt'\
 	u ($3>200?$3<400?$5==0.04?$6:1/0:1/0:1/0):7 via c3005040
 fit b300+c3007540*x**2 'dn300pn10-3.txt' u ($3>400?$5==0.04?$6:1/0:1/0):7\
 	via c3007540
-plot [0:10][0:50] 'dn300pn10-3.txt' u ($3<200?$5==0.03?$6:1/0:1/0):($7/9810)\
+plot [0:10][0:5] 'dn300pn10-3.txt' u ($3<200?$5==0.03?$6:1/0:1/0):($7/9810)\
 	t'25% 30mm' w p ps 2 pt 1,\
 	'' u ($3>200?$3<400?$5==0.03?$6:1/0:1/0:1/0):($7/9810) t'50% 30mm'\
 		w p ps 2 pt 2,\
@@ -458,36 +481,15 @@ plot [0:10][0:50] 'dn300pn10-3.txt' u ($3<200?$5==0.03?$6:1/0:1/0):($7/9810)\
 	(b3005040+c3005040*x**2)/9810 not w l lt 5,\
 	(b3007540+c3007540*x**2)/9810 not w l lt 6
 
-set key right bottom
-unset title
-set xlabel 'log(L_t/D)'
-set ylabel 'log(f/({/Symbol s}_tD_tL_t))'
-fit e250+h250*x 'dn250pn10-3.txt' u (log($5/$1)):(log($13/($3*$4*$5)))\
-	via e250,h250
-fit e300+h300*x 'dn300pn10-3.txt' u (log($5/$1)):(log($13/($3*$4*$5)))\
-	via e300,h300
-e=(e250+e300)/2
-h=(h250+h300)/2
-m=log(2**(1./3.)*(91./36.)**2*0.51*0.75)
-set out 'f-sdl.eps'
-plot\
-	'dn250pn10-3.txt' u (log($5/$1)):(log($13/($3*$4*$5))) t'DN250PN10'\
-		w p ps 2 pt 6,\
-	'dn300pn10-3.txt' u (log($5/$1)):(log($13/($3*$4*$5))) t'DN300PN10'\
-		w p ps 2 pt 8,\
-	e250+h250*x t'Ajuste (DN250PN10)' w l lt 1,\
-	e300+h300*x t'Ajuste (DN300PN10)' w l lt 2,\
-	m+x/3 t'Gauckler-Manning' w l lt 3
-
 set size ratio 1
 set key left top
-set xlabel 'h_f measured (kPa)'
-set ylabel 'h_f predicted (kPa)'
+set xlabel 'h_f measured (m)'
+set ylabel 'h_f predicted (m)'
 dp(u,l,d,st,lt,dt)=\
 	2.**(1./3.)*(91./36.)**2*0.5*997*u**2*l/d*0.38*st*dt*lt*(lt/d)**(1./3.)
 b=(b250+b300)/2
-set out 'dp-dp-1.eps'
-plot [0:50][0:50]\
+set out 'dp-dp-1.png'
+plot [0:5][0:5]\
 	'dn250pn10-3.txt' u ($7/9810):((b+dp($6,$2,$1,$3,$5,$4))/9810)\
 		t'DN250PN10' w p ps 2 pt 6,\
 	'dn300pn10-3.txt' u ($7/9810):((b+dp($6,$2,$1,$3,$5,$4))/9810)\
