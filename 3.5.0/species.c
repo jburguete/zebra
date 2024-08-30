@@ -162,10 +162,11 @@ species_open_xml (char *file_name)      ///< input file name.
           m = _("Bad maximum velocity");
           goto exit_on_error;
         }
-      s->cling = xml_node_get_float_with_default (node, XML_CLING, &k, 0.);
-      if (!k || s->cling < 0.)
+      s->settlement
+        = xml_node_get_float_with_default (node, XML_SETTLEMENT, &k, 0.);
+      if (!k || s->settlement < 0.)
         {
-          m = _("Bad cling coefficient");
+          m = _("Bad settlement coefficient");
           goto exit_on_error;
         }
       s->minimum_oxygen
@@ -270,7 +271,7 @@ species_open_xml (char *file_name)      ///< input file name.
                                            XML_LARVA_MAXIMUM_HYDROGEN_PEROXIDE,
                                            &k, 0.);
       if (!k || s->larva_maximum_hydrogen_peroxide
-                < s->larva_minimum_hydrogen_peroxide)
+          < s->larva_minimum_hydrogen_peroxide)
         {
           m = _("Bad larva maximum hydrogen peroxide");
           goto exit_on_error;
@@ -322,7 +323,7 @@ species_open_xml (char *file_name)      ///< input file name.
                                            XML_ADULT_MAXIMUM_HYDROGEN_PEROXIDE,
                                            &k, 0.);
       if (!k || s->adult_maximum_hydrogen_peroxide
-                < s->adult_minimum_hydrogen_peroxide)
+          < s->adult_minimum_hydrogen_peroxide)
         {
           m = _("Bad adult maximum hydrogen peroxide");
           goto exit_on_error;
@@ -350,6 +351,7 @@ species_open_xml (char *file_name)      ///< input file name.
 
   // exit on success
 #if DEBUG_SPECIES
+  species_print (s, stderr);
   fprintf (stderr, "species_open_xml: end\n");
 #endif
   return 1;

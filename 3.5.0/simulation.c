@@ -91,6 +91,13 @@ simulation_open_xml (Simulation *simulation,
     }
 
   // reading properties
+  simulation->random_seed
+    = xml_node_get_uint_with_default (node, XML_SEED, &e, DEFAULT_SEED);
+  if (!e)
+    {
+      m = _("Bad random number seed");
+      goto exit_on_error;
+    }
   simulation->initial_time = xml_node_get_time (node, XML_INITIAL_TIME, &e);
   if (!e)
     {
@@ -122,6 +129,13 @@ simulation_open_xml (Simulation *simulation,
   if (!e || network->cell_size <= 0.)
     {
       m = _("Bad cell size");
+      goto exit_on_error;
+    }
+  simulation->biological_step
+    = xml_node_get_float_with_default (node, XML_BIOLOGICAL_STEP, &e, 0.);
+  if (!e || simulation->saving_step < 0.)
+    {
+      m = _("Bad biological time step size");
       goto exit_on_error;
     }
   simulation->saving_step = xml_node_get_float (node, XML_SAVING_STEP, &e);
@@ -201,6 +215,7 @@ simulation_open_xml (Simulation *simulation,
       m = error_msg;
       goto exit_on_error;
     }
+  species_init ();
 
   // open network
 #if DEBUG_SIMULATION

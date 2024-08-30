@@ -17,7 +17,7 @@ plot 'zebra-mussel-2021-measured.in' u (h21($1,$2,$3,$4)):7 t'Measured' w l lt 1
 set out '2021-mussel-input-random.eps'
 plot 'zebra-mussel-2021-random.in' u (h21($1,$2,$3,$4)):7 t'Random' w l lt 1
 set out '2021-mussel-input-uniform.eps'
-plot 1.251340659 t'Uniform' w l lt 1
+plot 130.8989497 t'Uniform' w l lt 1
 set out '2022-mussel-input-constant.eps'
 plot 'zebra-mussel-2022-constant.in' u (h22($1,$2,$3,$4)):7 t'Constant' w l lt 1
 set out '2022-mussel-input-measured.eps'
@@ -25,7 +25,7 @@ plot 'zebra-mussel-2022-measured.in' u (h22($1,$2,$3,$4)):7 t'Measured' w l lt 1
 set out '2022-mussel-input-random.eps'
 plot 'zebra-mussel-2022-random.in' u (h22($1,$2,$3,$4)):7 t'Random' w l lt 1
 set out '2022-mussel-input-uniform.eps'
-plot 1.508920085 t'Uniform' w l lt 1
+plot 265.6139909 t'Uniform' w l lt 1
 
 set xlabel 'Time (days)'
 set ylabel 'Chlorine concentration (%)'

@@ -245,7 +245,7 @@ main (int argn, char **argc)
       fprintf (file, "%u %u %u %u %u %u 0\n", final_year, final_month,
                final_day, final_hour, final_minute, final_second);
       fclose (file);
-  }
+    }
 
   // 8 hours
   for (hour = 0; hour < 24; ++hour)
@@ -295,7 +295,7 @@ main (int argn, char **argc)
       fprintf (file, "%u %u %u %u %u %u 0\n", final_year, final_month,
                final_day, final_hour, final_minute, final_second);
       fclose (file);
-  }
+    }
 
   // 6 hours
   for (hour = 0; hour < 24; ++hour)
@@ -345,7 +345,7 @@ main (int argn, char **argc)
       fprintf (file, "%u %u %u %u %u %u 0\n", final_year, final_month,
                final_day, final_hour, final_minute, final_second);
       fclose (file);
-  }
+    }
 
   // 4 hours
   for (hour = 0; hour < 24; ++hour)
@@ -395,7 +395,7 @@ main (int argn, char **argc)
       fprintf (file, "%u %u %u %u %u %u 0\n", final_year, final_month,
                final_day, final_hour, final_minute, final_second);
       fclose (file);
-  }
+    }
 
   // 3 hours
   for (hour = 0; hour < 24; ++hour)
@@ -445,7 +445,7 @@ main (int argn, char **argc)
       fprintf (file, "%u %u %u %u %u %u 0\n", final_year, final_month,
                final_day, final_hour, final_minute, final_second);
       fclose (file);
-  }
+    }
 
   // 2 hours
   for (hour = 0; hour < 24; ++hour)
@@ -495,7 +495,7 @@ main (int argn, char **argc)
       fprintf (file, "%u %u %u %u %u %u 0\n", final_year, final_month,
                final_day, final_hour, final_minute, final_second);
       fclose (file);
-  }
+    }
 
   // 1 hour
   for (hour = 0; hour < 24; ++hour)
@@ -545,7 +545,7 @@ main (int argn, char **argc)
       fprintf (file, "%u %u %u %u %u %u 0\n", final_year, final_month,
                final_day, final_hour, final_minute, final_second);
       fclose (file);
-  }
+    }
 
   // 1 day every week
   year = initial_year;

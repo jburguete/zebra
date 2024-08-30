@@ -341,24 +341,21 @@ network_step (Network *network, ///< pointer to the network struct data.
  * function to write the summary.
  */
 static inline void
-network_summary(Network *network,       ///< pointer to the network struct data.
-                char *summary)  ///< summary file name.
+network_summary (Network *network,      ///< pointer to the network struct data.
+                 FILE *file)    ///< summary file.
 {
   Inlet *inlet;
   Junction *junction;
-  FILE *file;
   unsigned int i;
 #if DEBUG_NETWORK
   fprintf (stderr, "network_summary: start\n");
 #endif
-  file = fopen (summary, "w");
   inlet = network->inlet;
   for (i = 0; i < network->ninlets; ++i)
     inlet_summary (inlet + i, file);
   junction = network->junction;
   for (i = 0; i < network->njunctions; ++i)
     junction_summary (junction + i, file);
-  fclose (file);
 #if DEBUG_NETWORK
   fprintf (stderr, "network_summary: end\n");
 #endif

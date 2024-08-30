@@ -23,7 +23,11 @@ move = move@EXE@
 search_point = search-point@EXE@
 results_pipes = results-pipes@EXE@
 results_points = results-points@EXE@
+compare = compare@EXE@
+scale_inlet = scale-inlet@EXE@
+graphic = graphic@EXE@
 Violada = ../cases/Violada/
+Montesusin = ../cases/Montesusin/
 
 CC = @CC@ @ARCH@ @LTO@ -g
 COPT = -O3
@@ -69,7 +73,7 @@ maindep = main.c $(sim)
 endif
 
 all: $(zebra) $(locales) $(translate) $(move) $(search_point) $(results_pipes) \
-	$(results_points)
+	$(results_points) $(compare) $(scale_inlet) $(graphic)
 
 $(zebrapgo): $(objpgo)
 	$(CC) $(objpgo) $(pgogen) -o $(zebrapgo) $(LDFLAGS)
@@ -195,11 +199,21 @@ $(results_pipes): results-pipes.c Makefile
 $(results_points): results-points.c Makefile
 	$(CC) $(CFLAGS2) results-points.c -o $(results_points)
 
+$(compare): compare.c Makefile
+	$(CC) $(CFLAGS2) compare.c -lm -o compare
+
+$(scale_inlet): scale-inlet.c Makefile
+	$(CC) $(CFLAGS2) scale-inlet.c -o scale-inlet
+
+$(graphic): graphic.c Makefile
+	$(CC) $(CFLAGS2) graphic.c -lm -o graphic
+
 clean:
 	rm $(zebra) $(obj) $(locales) $(zebrapgo) $(objpgo) $(translate) \
-		$(move) $(search_point) $(results_pipes) $(results_points) *.gcda
+		$(move) $(search_point) $(results_pipes) $(results_points) \
+		$(compare) $(scale_inlet) $(graphic) *.gcda
 
 strip:
 	@MAKE@
 	strip $(zebra) $(translate) $(move) $(search_point) $(results_pipes) \
-		$(results_points)
+		$(results_points) $(compare) $(scale_inlet) $(graphic)

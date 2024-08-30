@@ -3,8 +3,8 @@
 CC = gcc -g -flto
 FLAGS = -Wall -Wextra -Os -march=native
 
-ALL = results-pipes results-points graphic-pipes compare discharges \
-	random-input chlorine-input
+ALL = results-pipes results-points graphic-pipes discharges \
+	random-input chlorine-input average-hour map
 
 all: $(ALL)
 
@@ -17,9 +17,6 @@ results-points: results-points.c Makefile
 graphic-pipes: graphic-pipes.c Makefile
 	$(CC) $(FLAGS) graphic-pipes.c -o graphic-pipes
 
-compare: compare.c Makefile
-	$(CC) $(FLAGS) compare.c -lm -o compare
-
 discharges: discharges.c Makefile
 	$(CC) $(FLAGS) discharges.c -o discharges
 
@@ -29,6 +26,11 @@ random-input: random-input.c Makefile
 chlorine-input: chlorine-input.c Makefile
 	$(CC) $(FLAGS) chlorine-input.c -o chlorine-input
 
+average-hour: average-hour.c Makefile
+	$(CC) $(FLAGS) average-hour.c -o average-hour
+
+map: map.c Makefile
+	$(CC) $(FLAGS) map.c -lm -o map
 
 strip:
 	make

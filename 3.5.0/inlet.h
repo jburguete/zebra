@@ -225,8 +225,7 @@ inlet_summary (Inlet *inlet,    ///< pointer to the inlet struct data.
 #if DEBUG_INLET
   fprintf (stderr, "inlet_summary: start\n");
 #endif
-  fprintf (file, "Inlet ID: %s input: %lg\n",
-           inlet->id, inlet->input);
+  fprintf (file, "Inlet ID: %s input: %lg\n", inlet->id, inlet->input);
   for (i = 0; i < MAX_SOLUTES; ++i)
     fprintf (file, "solute: %s input: %lg\n",
              (char *) solute[i].name, inlet->solute_input[i]);

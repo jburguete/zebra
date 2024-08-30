@@ -63,34 +63,34 @@ cell_set_flow (Cell *cell,      ///< pointer to the cell struct data.
 }
 
 /**
- * function to cling the larvae in a cell.
+ * function to settlement the larvae in a cell.
  */
 static inline void
-cell_cling (Cell *cell,         ///< pointer to the cell struct data.
+cell_settlement (Cell *cell,         ///< pointer to the cell struct data.
             gsl_rng *rng,       ///< GSL random numbers generator.
             double step)        ///< time step size.
 {
   unsigned int i;
 #if DEBUG_CELL
-  fprintf (stderr, "cell_cling: start\n");
+  fprintf (stderr, "cell_settlement: start\n");
 #endif
   for (i = 0; i < MAX_SPECIES; ++i)
     {
 #if DEBUG_CELL
-      fprintf (stderr, "cell_cling: species=%u specimen-list=%lu\n",
+      fprintf (stderr, "cell_settlement: species=%u specimen-list=%lu\n",
                i, (size_t) cell->list_specimens[i]);
 #endif
-      specimen_cling (cell->list_specimens + i, species + i, rng,
+      specimen_settlement (cell->list_specimens + i, species + i, rng,
                       cell->species_concentration + i, cell->volume,
                       cell->lateral_area, cell->velocity, step,
                       cell->recirculation);
 #if DEBUG_CELL
-      fprintf (stderr, "cell_cling: species=%u specimen-list=%lu\n",
+      fprintf (stderr, "cell_settlement: species=%u specimen-list=%lu\n",
                i, (size_t) cell->list_specimens[i]);
 #endif
     }
 #if DEBUG_CELL
-  fprintf (stderr, "cell_cling: end\n");
+  fprintf (stderr, "cell_settlement: end\n");
 #endif
 }
 
@@ -131,8 +131,9 @@ cell_death (Cell *cell,         ///< pointer to the cell struct data.
 #endif
   for (i = 0; i < MAX_SPECIES; ++i)
     {
-      decay = species_larva_decay (species + i, cell->solute_concentration);
-      cell->species_concentration[i] *= fmax (0., 1. - decay * step);
+      decay = species_larva_decay (species + i, cell->solute_concentration,
+                                   step);
+      cell->species_concentration[i] *= decay;
 #if DEBUG_CELL
       fprintf (stderr, "cell_death: species=%u specimen-list=%lu\n",
                i, (size_t) cell->list_specimens[i]);

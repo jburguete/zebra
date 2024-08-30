@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: 3.5.0\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-04-20 05:55+0200\n"
+"POT-Creation-Date: 2024-07-17 09:52+0200\n"
 "PO-Revision-Date: 2021-06-15 01:12+0200\n"
 "Last-Translator: Automatically generated\n"
 "Language-Team: none\n"
@@ -89,95 +89,95 @@ msgstr "Edad juvenil incorrecta"
 msgid "Bad maximum velocity"
 msgstr "Velocidad máxima incorrecta"
 
-#: species.c:168
-msgid "Bad cling coefficient"
-msgstr "Coeficiente de anclaje incorrecto"
+#: species.c:169
+msgid "Bad settlement coefficient"
+msgstr "Coeficiente de fijación incorrecto"
 
-#: species.c:175
+#: species.c:176
 msgid "Bad minimum oxygen"
 msgstr "Mínimo oxígeno disuelto incorrecto"
 
-#: species.c:182
+#: species.c:183
 msgid "Bad respiration coefficient"
 msgstr "Coeficiente de respiración incorrecto"
 
-#: species.c:188
+#: species.c:189
 msgid "Bad eat coefficient"
 msgstr "Coeficiente de comida incorrecto"
 
-#: species.c:194
+#: species.c:195
 msgid "Bad grow coefficient"
 msgstr "Coeficiente de crecimiento incorrecto"
 
-#: species.c:201
+#: species.c:202
 msgid "Bad adult decay coefficient"
 msgstr "Coeficiente de decaimiento de adultos incorrecto"
 
-#: species.c:208
+#: species.c:209
 msgid "Bad larva decay coefficient"
 msgstr "Coeficiente de decaimiento de larvas incorrecto"
 
-#: species.c:216
+#: species.c:217
 msgid "Bad minimum temperature"
 msgstr "Temperatura mínima incorrecto"
 
-#: species.c:224
+#: species.c:225
 msgid "Bad optimal temperature"
 msgstr "Temperatura óptima incorrecto"
 
-#: species.c:232
+#: species.c:233
 msgid "Bad maximum temperature"
 msgstr "Temperatura máxima incorrecto"
 
-#: species.c:240
+#: species.c:241
 msgid "Bad larva minimum chlorine"
 msgstr "Cloro mínimo de larva incorrecto"
 
-#: species.c:248
+#: species.c:249
 msgid "Bad larva maximum chlorine"
 msgstr "Cloro máximo de larva incorrecto"
 
-#: species.c:256
+#: species.c:257
 msgid "Bad larva chlorine decay"
 msgstr "Decaimiento de cloro de larva incorrecto"
 
-#: species.c:265
+#: species.c:266
 msgid "Bad larva minimum hydrogen peroxide"
 msgstr "Peróxido de hidógeno de larva mínimo incorrecto"
 
-#: species.c:275
+#: species.c:276
 msgid "Bad larva maximum hydrogen peroxide"
 msgstr "Peróxido de hidrógeno máximo de larva incorrecto"
 
-#: species.c:284
+#: species.c:285
 msgid "Bad larva hydrogen peroxide decay"
 msgstr "Decaimiento de peróxido de hidrógeno de larva incorrecto"
 
-#: species.c:292
+#: species.c:293
 msgid "Bad adult minimum chlorine"
 msgstr "Cloro mínimo de adulto incorrecto"
 
-#: species.c:300
+#: species.c:301
 msgid "Bad adult maximum chlorine"
 msgstr "Cloro máximo de adulto incorrecto"
 
-#: species.c:308
+#: species.c:309
 msgid "Bad adult chlorine decay"
 msgstr "Decaimiento de cloro de adulto incorrecto"
 
-#: species.c:317
+#: species.c:318
 msgid "Bad adult minimum hydrogen peroxide"
 msgstr "Peróxido de hidógeno mínimo de adulto incorrecto"
 
-#: species.c:327
+#: species.c:328
 msgid "Bad adult maximum hydrogen peroxide"
 msgstr "Peróxido de hidrógeno máximo de adulto incorrecto"
 
-#: species.c:336
+#: species.c:337
 msgid "Bad adult hydrogen peroxide decay"
 msgstr "Decaimiento de peróxido de hidrógeno de adulto incorrecto"
 
-#: species.c:343
+#: species.c:344
 msgid "No species"
 msgstr "Faltan especies"
 
@@ -225,7 +225,7 @@ msgstr "Falta el nombre de la especie"
 msgid "Unknown species"
 msgstr "Especie desconocida"
 
-#: inlet.c:220 simulation.c:195
+#: inlet.c:220 simulation.c:209
 msgid "No species file"
 msgstr "Falta el fichero de especie"
 
@@ -361,15 +361,15 @@ msgstr "Resultados"
 msgid "Unable to open the results data base file"
 msgstr "No se pudo abrir el fichero de la base de datos de resultados"
 
-#: results.c:187 simulation.c:103
+#: results.c:187 simulation.c:110
 msgid "Bad final time"
 msgstr "Tiempo final incorrecto"
 
-#: results.c:192 simulation.c:130
+#: results.c:192 simulation.c:144
 msgid "Bad saving time step size"
-msgstr "Tamaño de paso de tiemp de guardado incorrecto"
+msgstr "Tamaño de paso de tiempo de guardado incorrecto"
 
-#: results.c:197 simulation.c:124
+#: results.c:197 simulation.c:131
 msgid "Bad cell size"
 msgstr "Tamaño de celda incorrecto"
 
@@ -477,39 +477,47 @@ msgstr "Base de datos incorrecta"
 msgid "Simulation"
 msgstr "Simulación"
 
-#: simulation.c:97
+#: simulation.c:98
+msgid "Bad random number seed"
+msgstr "Semilla de números aleatorios incorrecta"
+
+#: simulation.c:104
 msgid "Bad initial time"
 msgstr "Tiempo inicial incorrecto"
 
-#: simulation.c:110
+#: simulation.c:117
 msgid "Bad CFL number"
 msgstr "Número CFL incorrecto"
 
-#: simulation.c:118
+#: simulation.c:125
 msgid "Bad dispersion CFL number"
 msgstr "Número CFL de dispersión incorrecto"
 
-#: simulation.c:136
+#: simulation.c:138
+msgid "Bad biological time step size"
+msgstr "Tamaño de paso de tiempo biológico incorrecto"
+
+#: simulation.c:150
 msgid "No results file"
 msgstr "Falta fichero de resultados"
 
-#: simulation.c:145
+#: simulation.c:159
 msgid "No summary file"
 msgstr "Falta fichero de sumario"
 
-#: simulation.c:154
+#: simulation.c:168
 msgid "Bad numerical order"
 msgstr "Orden del método numérico incorrecto"
 
-#: simulation.c:165
+#: simulation.c:179
 msgid "Unknown dispersion model"
 msgstr "Modelo de dispersión desconocido"
 
-#: simulation.c:177
+#: simulation.c:191
 msgid "No solutes file"
 msgstr "Falta fichero de solutos"
 
-#: simulation.c:213
+#: simulation.c:228
 msgid "No network file"
 msgstr "Falta fichero de red"
 
@@ -528,6 +536,9 @@ msgstr ""
 #: main.c:142
 msgid "ERROR!"
 msgstr "¡ERROR!"
+
+#~ msgid "Bad cling coefficient"
+#~ msgstr "Coeficiente de anclaje incorrecto"
 
 #~ msgid "No temperature file"
 #~ msgstr "Falta fichero de temperatura"

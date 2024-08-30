@@ -64,7 +64,7 @@ junction_add_inlet (Junction *junction,
   fprintf (stderr, "junction_add_inlet: start\n");
   fprintf (stderr, "junction_add_inlet: ID=%s\n", pipe->inlet_id);
 #endif
-  if (!junction->ninlets && !junction->noutlets) 
+  if (!junction->ninlets && !junction->noutlets)
     memcpy (junction->id, pipe->inlet_id, MAX_LABEL_LENGTH);
   n = junction->ninlets++;
   junction->inlet
@@ -89,7 +89,7 @@ junction_add_outlet (Junction *junction,
   fprintf (stderr, "junction_add_outlet: start\n");
   fprintf (stderr, "junction_add_outlet: ID=%s\n", pipe->outlet_id);
 #endif
-  if (!junction->ninlets && !junction->noutlets) 
+  if (!junction->ninlets && !junction->noutlets)
     memcpy (junction->id, pipe->outlet_id, MAX_LABEL_LENGTH);
   n = junction->noutlets++;
   junction->outlet
@@ -297,7 +297,7 @@ junction_set_with_outputs (Junction *junction,
  * function to write the junction data in a summary file.
  */
 static inline void
-junction_summary (Junction *junction, 
+junction_summary (Junction *junction,
                   ///< pointer to the junction struct data.
                   FILE *file)   ///< summary file.
 {

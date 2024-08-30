@@ -27,10 +27,10 @@ enum OutputType
 int
 main (int argn, char **argc)
 {
-  const char fmtin[] = "%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf";
+  const char fmtin[] = "%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf%lf";
   const char fmtcsv[] = "LINESTRING(%.3lf %.3lf,%.3lf %.3lf)\t%s-%u\t%s\t%.3lf"
-    "\t%.9lg\t%.9lg\t%.9lg\t%.9lg\t%.9lg\t%.9lg\t%.9lg\n";
-  double x[10], y[10];
+    "\t%.9lg\t%.9lg\t%.9lg\t%.9lg\t%.9lg\t%.9lg\t%.9lg\t%.9lg\n";
+  double x[11], y[11];
   double xmin, xmax, ymin, ymax, zmin, zmax, d, x0, y0, x1, y1, z;
   char id[6];
   FILE *fin, *fout;
@@ -73,17 +73,17 @@ main (int argn, char **argc)
       id[i] = 0;
       printf ("ID=%s\n", id);
       if (fscanf (fin, fmtin, x, x + 1, x + 2, x + 3, x + 4, x + 5, x + 6,
-                  x + 7, x + 8, x + 9) != 10)
+                  x + 7, x + 8, x + 9, x + 10) != 11)
         {
           puts ("Bad input file");
           return ERROR_CODE_BAD_INPUT;
         }
       for (i = 0; fscanf (fin, fmtin, y, y + 1, y + 2, y + 3, y + 4, y + 5,
-                          y + 6, y + 7, y + 8, y + 9) == 10; ++i)
+                          y + 6, y + 7, y + 8, y + 9, y + 10) == 11; ++i)
         {
           fprintf (fout, fmtcsv, x[0], x[1], y[0], y[1], id, i, id, y[2], y[3],
-                   y[4], y[5], y[6], y[7], y[8], y[9]);
-          memcpy (x, y, 10 * sizeof (double));
+                   y[4], y[5], y[6], y[7], y[8], y[9], y[10]);
+          memcpy (x, y, 11 * sizeof (double));
         }
     }
   else if (!strcmp (argc[1], "tex"))
@@ -98,7 +98,7 @@ main (int argn, char **argc)
       zmin = atof (argc[5]);
       zmax = atof (argc[6]);
       if (fscanf (fin, fmtin, x, x + 1, x + 2, x + 3, x + 4, x + 5, x + 6,
-                  x + 7, x + 8, x + 9) != 10)
+                  x + 7, x + 8, x + 9, x + 10) != 11)
         {
           puts ("Bad input file");
           return ERROR_CODE_BAD_INPUT;
@@ -106,7 +106,7 @@ main (int argn, char **argc)
       xmin = xmax = x[0];
       ymin = ymax = y[0];
       while (fscanf (fin, fmtin, x, x + 1, x + 2, x + 3, x + 4, x + 5,
-                     x + 6, x + 7, x + 8, x + 9) == 10)
+                     x + 6, x + 7, x + 8, x + 9, x + 10) == 11)
         {
           xmin = fmin (xmin, x[0]);
           xmax = fmax (xmax, x[0]);
@@ -116,13 +116,13 @@ main (int argn, char **argc)
       d = SIZE / fmax (xmax - xmin, ymax - ymin);
       rewind (fin);
       fscanf (fin, fmtin, x, x + 1, x + 2, x + 3, x + 4, x + 5, x + 6,
-              x + 7, x + 8, x + 9);
+              x + 7, x + 8, x + 9, x + 10);
       x0 = (x[0] - xmin) * d;
       y0 = (x[1] - ymin) * d;
       fprintf (fout, "\\begin{pspicture}(0,0)(%lg,%lg)\n",
                (xmax - xmin) * d, (ymax - ymin) * d);
       while (fscanf (fin, fmtin, y, y + 1, y + 2, y + 3, y + 4, y + 5,
-                     y + 6, y + 7, y + 8, y + 9) == 10)
+                     y + 6, y + 7, y + 8, y + 9, y + 10) == 11)
         {
           x1 = (x[0] - xmin) * d;
           y1 = (x[1] - ymin) * d;

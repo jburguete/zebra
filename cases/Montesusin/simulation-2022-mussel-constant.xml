@@ -1,2 +1,2 @@
 <?xml version="1.0"?>
-<simulation solutes="solutes.xml" species="species.xml" network="network-2022-mussel-constant.xml" initial-time="2022 5 13 2 0 0" final-time="2022 10 1 15 0 0" cell-size="10" saving-step="3600" numerical-order="2" cfl="0.9" results="results-2022-mussel-constant.bin"/>
+<simulation solutes="solutes.xml" species="zebra-mussel.xml" network="network-2022-mussel-constant.xml" initial-time="2022 5 13 2 0 0" final-time="2022 8 13 2 0 0" cell-size="10" saving-step="3600" numerical-order="2" cfl="0.9" results="results-2022-mussel-constant.bin" summary="summary-2022-mussel-constant"/>

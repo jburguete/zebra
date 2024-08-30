@@ -30,14 +30,15 @@ specimen_init (Specimen *specimen,
 {
   specimen->species = species;
   specimen->size = specimen->age = 0.;
+  ++species->nsettled;
 }
 
 /**
- * function to calculate specimen cling.
+ * function to calculate specimen settlement.
  *
  */
 static inline void
-specimen_cling (GList **list_specimens,
+specimen_settlement (GList **list_specimens,
                 ///< pointer ot the list of specimens.
                 Species *species,       ///< pointer to the species struct data.
                 gsl_rng *rng,   ///< GSL random number generator.
@@ -49,40 +50,42 @@ specimen_cling (GList **list_specimens,
                 unsigned int recirculation)     ///< flow recirculation zone.
 {
   Specimen *specimen;
-  double r, cling;
+  double r, settlement;
   unsigned int n;
 
 #if DEBUG_SPECIMEN
-  fprintf (stderr, "specimen_cling: start\n");
+  fprintf (stderr, "specimen_settlement: start\n");
 #endif
 
   // check maximum velocity of flow
   if (velocity > species->maximum_velocity && !recirculation)
-    goto no_cling;
+    goto no_settlement;
 
-  // clinging probability
-  cling = species->cling * (*concentration) * lateral_area * step;
-  for (n = 0; (r = gsl_rng_uniform (rng)) < cling; ++n)
+  // settlement probability
+  settlement = species->settlement * (*concentration) * lateral_area * step;
+//printf ("settlement=%lg %lg %lg %lg %lg\n", settlement, species->settlement,
+//*concentration, lateral_area, step);
+  for (n = 0; (r = gsl_rng_uniform (rng)) < settlement; ++n)
     {
 #if DEBUG_SPECIMEN
-      fprintf (stderr, "specimen_cling: specimen-list=%lu\n",
+      fprintf (stderr, "specimen_settlement: specimen-list=%lu\n",
                (size_t) *list_specimens);
 #endif
       specimen = (Specimen *) malloc (sizeof (Specimen));
       specimen_init (specimen, species);
       *list_specimens = g_list_prepend (*list_specimens, specimen);
-      cling -= r;
+      settlement -= 1.;
 #if DEBUG_SPECIMEN
-      fprintf (stderr, "specimen_cling: specimen-list=%lu\n",
+      fprintf (stderr, "specimen_settlement: specimen-list=%lu\n",
                (size_t) *list_specimens);
 #endif
     }
   *concentration = fmax (0., *concentration - n / volume);
 
-no_cling:
+no_settlement:
 
 #if DEBUG_SPECIMEN
-  fprintf (stderr, "specimen_cling: end\n");
+  fprintf (stderr, "specimen_settlement: end\n");
 #endif
 
   return;
@@ -107,6 +110,9 @@ specimen_grow (Specimen *specimen,
 #if DEBUG_SPECIMEN
   fprintf (stderr, "specimen_grow: start\n");
 #endif
+
+  // age
+  specimen->age += step;
 
   // get solute concentrations
   organic_matter = solute + SOLUTE_TYPE_ORGANIC_MATTER;
@@ -152,8 +158,7 @@ specimen_death (Specimen *specimen,
                 double *solute) ///< array of solute concentrations.
 {
   Species *species;
-  double *chlorine, *hydrogen_peroxide, *oxygen;
-  double decay;
+  double oxygen, chlorine, hydrogen_peroxide, decay;
 
 #if DEBUG_SPECIMEN
   fprintf (stderr, "specimen_death: start\n");
@@ -162,17 +167,39 @@ specimen_death (Specimen *specimen,
   // get species and solutes
   species = specimen->species;
 
+  // anoxy
+  oxygen = solute[SOLUTE_TYPE_OXYGEN];
+#if DEBUG_SPECIMEN
+  fprintf (stderr, "specimen_death: oxygen=%lg minimum=%lg\n",
+           oxygen, species->minimum_oxygen);
+#endif
+  if (oxygen < species->minimum_oxygen)
+    goto death;
+
   // check juvenile age
   if (specimen->age < species->juvenile_age)
     {
-      // decay
-      decay = species_larva_decay (species, solute); 
+
+      // larva decay
+      decay = species->larva_decay;
+      chlorine = solute[SOLUTE_TYPE_CHLORINE] - species->larva_minimum_chlorine;
+      if (chlorine > species->larva_minimum_chlorine)
+        decay += species->larva_decay_chlorine * chlorine
+                 / (species->larva_maximum_chlorine
+                    - species->larva_minimum_chlorine);
+      hydrogen_peroxide = solute[SOLUTE_TYPE_HYDROGEN_PEROXIDE]
+                          - species->larva_minimum_hydrogen_peroxide;
+      if (hydrogen_peroxide > species->larva_minimum_hydrogen_peroxide)
+        decay += species->larva_decay_hydrogen_peroxide * hydrogen_peroxide
+                 / (species->larva_maximum_hydrogen_peroxide
+                    - species->larva_minimum_hydrogen_peroxide);
 #if DEBUG_SPECIMEN
       fprintf (stderr, "specimen_death: larva_decay=%lg step=%lg\n",
                decay, step);
 #endif
-      if (gsl_rng_uniform (rng) < decay * step)
-        goto death;
+     if (gsl_rng_uniform (rng) < decay * step)
+       goto death;
+
       // exit
 #if DEBUG_SPECIMEN
       fprintf (stderr, "specimen_death: alive\n");
@@ -181,35 +208,24 @@ specimen_death (Specimen *specimen,
       return 0;
     }
 
-  // check solute limitants 
-  chlorine = solute + SOLUTE_TYPE_CHLORINE;
-#if DEBUG_SPECIMEN
-  fprintf (stderr, "specimen_death: chlorine=%lg adult-maximum=%lg\n",
-           *chlorine, species->adult_maximum_chlorine);
-#endif
-  if (*chlorine > species->adult_maximum_chlorine)
-    goto death;
-  hydrogen_peroxide = solute + SOLUTE_TYPE_HYDROGEN_PEROXIDE;
-#if DEBUG_SPECIMEN
-  fprintf (stderr, "specimen_death: hydrogen-peroxide=%lg adult-maximum=%lg\n",
-           *hydrogen_peroxide, species->adult_maximum_hydrogen_peroxide);
-#endif
-  if (*hydrogen_peroxide > species->adult_maximum_hydrogen_peroxide)
-    goto death;
-  oxygen = solute + SOLUTE_TYPE_OXYGEN;
-#if DEBUG_SPECIMEN
-  fprintf (stderr, "specimen_death: oxygen=%lg minimum=%lg\n",
-           *oxygen, species->minimum_oxygen);
-#endif
-  if (*oxygen < species->minimum_oxygen)
-    goto death;
-
-  // decay
+  // adult decay
 #if DEBUG_SPECIMEN
   fprintf (stderr, "specimen_death: adult_decay=%lg step=%lg\n",
            species->adult_decay, step);
 #endif
-  if (gsl_rng_uniform (rng) < species->adult_decay * step)
+  decay = species->adult_decay;
+  chlorine = solute[SOLUTE_TYPE_CHLORINE] - species->adult_minimum_chlorine;
+  if (chlorine > species->adult_minimum_chlorine)
+    decay += species->adult_decay_chlorine * chlorine
+             / (species->adult_maximum_chlorine
+                - species->adult_minimum_chlorine);
+  hydrogen_peroxide = solute[SOLUTE_TYPE_HYDROGEN_PEROXIDE]
+                      - species->adult_minimum_hydrogen_peroxide;
+  if (hydrogen_peroxide > species->adult_minimum_hydrogen_peroxide)
+    decay += species->adult_decay_hydrogen_peroxide * hydrogen_peroxide
+             / (species->adult_maximum_hydrogen_peroxide
+                - species->adult_minimum_hydrogen_peroxide);
+  if (gsl_rng_uniform (rng) < decay * step)
     goto death;
 
   // exit
@@ -220,6 +236,7 @@ specimen_death (Specimen *specimen,
   return 0;
 
 death:
+  ++species->ndeath;
 #if DEBUG_SPECIMEN
   fprintf (stderr, "specimen_death: death\n");
   fprintf (stderr, "specimen_death: end\n");

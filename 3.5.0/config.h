@@ -28,6 +28,8 @@
 #define BUFFER_SIZE 512         ///< size of string buffers.
 #define DEFAULT_CFL 0.9         ///< default CFL value.
 #define DEFAULT_DISPERSION_CFL 10.      ///< default dispersion CFL value.
+#define DEFAULT_SEED 7
+///< default sed of the pseudo-random numbers generator.
 #define DEFAULT_TEMPERATURE 20. ///< default temperature.
 #define FLUX_LIMITER 3
 ///< flux limiter (0:null, 1:upwind, 2:centred, 3:monotonized central)
@@ -48,7 +50,6 @@
 #define PIPE_LENGTHS_FILE "pipe-lengths.log"
 ///< name of the pipe lengths log file.
 #define PROGRAM_NAME "zebra"    ///< program name.
-#define RANDOM_SEED 7           ///< sed of the random numbers generator.
 #define RECIRCULATION_LENGTH 8. ///< length of the recirculation zone.
 #define WATER_VISCOSITY 1.0e-3  ///< water viscosity.
 
@@ -89,14 +90,16 @@
 #define XML_ADULT_MINIMUM_HYDROGEN_PEROXIDE \
   (const xmlChar *) "adult_minimum-hydrogen-peroxide"
 ///< adult-minimum-hydrogen-peroxide XML label.
+#define XML_BIOLOGICAL_STEP     (const xmlChar *) "biological-step"
+///< biological-step XML label.
 #define XML_CELL_SIZE           (const xmlChar *) "cell-size"
 ///< cell-size XML label.
 #define XML_CFL                 (const xmlChar *) "cfl"
 ///< cfl XML label.
 #define XML_CHLORINE            (const xmlChar *) "chlorine"
 ///< chlorine XML label.
-#define XML_CLING               (const xmlChar *) "cling"
-///< cling XML label.
+#define XML_SETTLEMENT               (const xmlChar *) "settlement"
+///< settlement XML label.
 #define XML_CONCENTRATION       (const xmlChar *) "concentration"
 ///< concentration XML label.
 #define XML_COORDINATES         (const xmlChar *) "coordinates"
@@ -177,6 +180,8 @@
 ///< numerical-order XML label.
 #define XML_OPTIMAL_TEMPERATURE (const xmlChar *) "optimal-temperature"
 ///< optimal-temperature XML label.
+#define XML_SEED                (const xmlChar *) "seed"
+///< seed XML label.
 #define XML_SOLUTE              (const xmlChar *) "solute"
 ///< solute XML label.
 #define XML_SOLUTES             (const xmlChar *) "solutes"

@@ -2,5 +2,5 @@
 <solute>
 	<solute name="oxygen"/>
 	<solute name="organic-matter"/>
-	<solute name="chlorine" decay-time="3e-4" decay-surface="0e-8"/>
+	<solute name="chlorine" decay-time="3e-4" decay-surface="1e-6"/>
 </solute>

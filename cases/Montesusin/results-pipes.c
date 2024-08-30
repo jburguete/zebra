@@ -258,7 +258,7 @@ main (int argn, char **argc)
             "do ./translate csv $i $i.csv; done", argc[1], name);
   system (buffer);
   printf ("Doing final .csv file\n");
-  snprintf (buffer, BUFFER_SIZE, "echo \"Line\tID\tpatternID\tz\tCl\tH2O2\t"
+  snprintf (buffer, BUFFER_SIZE, "echo \"Line\tID\tpatternID\tz\tQ\tCl\tH2O2\t"
             "OrganicMatter\tO2\tlarvae\tadults\tmass\" > %s-%s.csv",
             argc[1], name);
   system (buffer);

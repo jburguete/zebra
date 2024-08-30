@@ -20,7 +20,10 @@ typedef struct
   double final_time;            ///< final time in seconds since 1970.
   double cfl;                   ///< CFL number.
   double dispersion_cfl;        ///< dispersion CFL number.
+  double biological_step;       ///< biological time step size.
   double saving_step;           ///< time step size to save results.
+  unsigned int random_seed;
+  ///< seed for the pseudo-random numbers generator. 
 } Simulation;
 
 int simulation_open_xml (Simulation * simulation, char *file_name);
@@ -52,7 +55,7 @@ simulation_run (Simulation *simulation)
   Results results[1];
   Network *network;
   gsl_rng *rng;
-  FILE *file;
+  FILE *file, *summary;
   double initial_time, final_time, cfl, dispersion_cfl, saving_time,
     saving_step;
 #if DEBUG_SIMULATION
@@ -61,13 +64,17 @@ simulation_run (Simulation *simulation)
 
   // init GSL random numbers generator
   rng = gsl_rng_alloc (gsl_rng_taus2);
-  gsl_rng_set (rng, RANDOM_SEED);
+  gsl_rng_set (rng, simulation->random_seed);
 
   // initial conditions
   network = simulation->network;
   initial_time = simulation->initial_time;
   final_time = simulation->final_time;
-  biological_step = saving_step = simulation->saving_step;
+  saving_step = simulation->saving_step;
+  if (simulation->biological_step < FLT_EPSILON)
+    biological_step = saving_step;
+  else
+    biological_step = simulation->biological_step; 
   cfl = simulation->cfl;
   dispersion_cfl = simulation->dispersion_cfl;
   network_set_flow (network);
@@ -121,7 +128,10 @@ simulation_run (Simulation *simulation)
     }
 
   // saving summary
-  network_summary (network, simulation->summary);
+  summary = fopen (simulation->summary, "w");
+  network_summary (network, summary);
+  species_summary (summary);
+  fclose (summary);
 
   // freeing
   fclose (file);

@@ -397,9 +397,8 @@ pipe_solute_decay_step (Pipe *pipe,     ///< pointer to the pipe struct data.
     if (fmax (solute[j].decay_time, solute[j].decay_surface) > FLT_EPSILON)
       for (i = 0; i < ncells; ++i)
         cell[i].solute_concentration[j] *=
-          fmax (0., 1. - step * (solute[j].decay_time
-                                 + solute[j].decay_surface
-                                 / pipe->hydraulic_radious));
+          exp (- step * (solute[j].decay_time
+                         + solute[j].decay_surface / pipe->hydraulic_radious));
 #if DEBUG_PIPE
   fprintf (stderr, "pipe_solute_decay_step: end\n");
 #endif
@@ -422,7 +421,7 @@ pipe_biological_step (Pipe *pipe,       ///< pointer to the pipe struct data.
   n = pipe->ncells;
   for (i = 0; i < n; ++i)
     {
-      cell_cling (cell + i, rng, step);
+      cell_settlement (cell + i, rng, step);
       cell_grow (cell + i, step);
       cell_death (cell + i, rng, step);
     }

@@ -15,10 +15,13 @@ main (int argn, char **argc)
   char buffer1[BUFFER_SIZE], buffer2[BUFFER_SIZE], buffer3[BUFFER_SIZE];
   FILE *file1, *file2;
   char *header;
-  double x, xx, yy, xa1, xa2, xb1, xb2, xc1, xc2, dx, dy, dxy;
+  double x, xx, xxx, yy, yyy, xa1, xa2, xb1, xb2, xc1, xc2, dx, dy, dxy, ddx,
+    ddy, ddxy;
   size_t n;
   int error_code;
   unsigned int na1, na2, nb1, nb2, nc1, nc2;
+
+  // check arguments
   if (argn != 4)
     {
       printf ("The syntax is:\n./compare type file1 file2\n");
@@ -37,6 +40,8 @@ main (int argn, char **argc)
       printf ("Bad type\n");
       return 7;
     }
+
+  // open input files
   file1 = fopen (argc[2], "r");
   if (!file1)
     {
@@ -44,12 +49,14 @@ main (int argn, char **argc)
       return 2;
     }
   file2 = fopen (argc[3], "r");
-  if (!file1)
+  if (!file2)
     {
-      fclose (file1);
+      fclose (file2);
       printf ("Unable to open the 2nd input file\n");
       return 3;
     }
+
+  // read headers
   header = NULL;
   if (getline (&header, &n, file1) == -1)
     {
@@ -63,6 +70,8 @@ main (int argn, char **argc)
       error_code = 5;
       goto exit1;
     }
+
+  // calculating averages
   nb1 = nb2 = 0;
   xb1 = xb2 = 0.;
   if (fscanf (file1, fmt, buffer1, &x) != 2)
@@ -154,14 +163,18 @@ main (int argn, char **argc)
   error_code = 0;
   xa1 /= na1;
   xa2 /= na2;
-  fclose (file2);
-  fclose (file1);
-  file1 = fopen (argc[2], "r");
-  file2 = fopen (argc[3], "r");
+
+  // reopen the files
+  rewind (file1);
+  rewind (file2);
+
+  // reading headers
   getline (&header, &n, file1);
   getline (&header, &n, file2);
+
+  // calculating coefficients
   nb1 = nb2 = 0;
-  xb1 = xb2 = dx = dy = dxy = 0.;
+  xx = xb1 = xb2 = dx = dy = dxy = ddx = ddy = ddxy = 0.;
   fscanf (file1, fmt, buffer1, &x);
   nc1 = 1;
   xc1 = x;
@@ -172,6 +185,8 @@ main (int argn, char **argc)
     {
       if (fscanf (file1, fmt, buffer3, &x) != 2)
         break;
+      xxx = x - xa1;
+      ddx += xxx * xxx;
       if (strcmp (buffer1, buffer3))
         {
           memcpy (buffer1, buffer3, strlen (buffer3) + 1);
@@ -188,6 +203,9 @@ main (int argn, char **argc)
         }
       if (fscanf (file2, fmt, buffer3, &x) != 2)
         break;
+      yyy = x - xa2;
+      ddy += yyy * yyy;
+      ddxy += xxx * yyy;
       if (strcmp (buffer2, buffer3))
         {
           memcpy (buffer2, buffer3, strlen (buffer3) + 1);
@@ -212,8 +230,8 @@ main (int argn, char **argc)
   yy = xc2 - xa2;
   dy += yy * yy;
   dxy += xx * yy;
-  printf ("I1=%.14lg%% I2=%.14lg\n",
-          100. * (xa2 - xa1) / xa1, dxy / sqrt (dx * dy));
+  printf ("I1=%.14lg%% I2=%.14lg I3=%.14lg\n", 100. * (xa2 - xa1) / xa1,
+          ddxy / sqrt (ddx * ddy), dxy / sqrt (dx * dy));
 
 exit1:
   free (header);
