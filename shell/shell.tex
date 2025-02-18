@@ -1,0 +1,219 @@
+\documentclass[a4paper]{article}
+
+\usepackage{graphicx}
+\usepackage[spanish]{babel}
+
+\author{Javier Burguete}
+\date{\today}
+\title{Experimento de arrastre de conchas}
+
+\begin{document}
+
+\maketitle
+
+\section{Análisis adimensional}
+
+El transporte de sólidos en un fluido turbulento viene gobernado por la relación
+entre 3 fuerzas:
+\begin{itemize}
+\item la fuerza de sustención $F_s$ que tiende a elevar el sólido,
+\item la fuerza de la gravedad $F_g$ que tiende a hundirlo,
+\item y la fuerza de flotación $F_b$ que tiende a hacerlo flotar.
+\end{itemize}
+
+Podemos establecer una relación adimensional que gobernará el tipo de transporte
+con la fracción:
+\begin{equation}\label{EqForces}
+\frac{F_s}{F_g-F_b}
+\end{equation}
+
+Para un fluido turbulento de velocidad característica $U_f$ y densidad $\rho_f$,
+y para un sólido de densidad $\rho_s$ y tamaño característico $L_s$, la fuerza
+de sustentación es proporcional a la presión de ariete por la sección eficaz al
+flujo:
+\begin{equation}
+F_s\;\alpha\;\rho_f\,U_f^2\,L_s^2.
+\end{equation}
+El peso del sólido será su volumen por su densidad, de modo que:
+\begin{equation}
+F_g\;\alpha\;\rho_s\,L_s^3\,g.
+\end{equation}
+Mientras que la fuerza de flotación sera el peso del fluido desalojado, es
+decir que:
+\begin{equation}
+F_b\;\alpha\;\rho_f\,L_s^3\,g.
+\end{equation}
+Sustituyendo en la ecuación que relaciona las fuerzas (\ref{EqForces}) el tipo
+de tranporte se regirá por el número adimensional T:
+\begin{equation}
+\mathrm{T}\;\alpha\;\frac{F_s}{F_g-F_b}
+\;\alpha\;\frac{\rho_f\,U_f^2\,L_s^2}{\rho_s\,L_s^3\,g-\rho_f\,L_s^3\,g}
+=\frac{U_f^2}{\left(\frac{\rho_s}{\rho_f}-1\right)\,L_s\,g}.
+\end{equation}
+
+\section{Ecuación de transporte}
+
+La ecuaciones que representa el transporte unidimensional promediado en la
+sección de solutos y de conchas en una tubería prismática de sección circular se
+expresan como ecuaciones típicas de convección-difusión:
+\[
+\frac{\partial c}{\partial t}+U\,\frac{\partial c}{\partial x}=
+K_x\,\frac{\partial c}{\partial x^2},
+\]
+\begin{equation}
+\frac{\partial s}{\partial t}+a\,U\,\frac{\partial s}{\partial x}=
+\Gamma\,\frac{\partial s}{\partial x^2},
+\end{equation}
+con:
+\begin{description}
+\item[$c$] la densidad volúmetrica de soluto,
+\item[$s$] la densidad volumétrica de conchas,
+\item[$U$] la velocidad del fluido promediada en la sección,
+\item[$a$] un factor adimensional que indica la relación entre la velocidad
+media de las conchas frente a la velocidad del fluido,
+\item[$K_x$] el coeficiente longitudinal de dispersión del soluto y
+\item[$\Gamma$] el coeficiente longitudinal de dispersión de las conchas.
+\end{description}
+
+Esta ecuación se resuelve con un esquema numérico explícito de segundo orden TVD
+para el término de convección y con un esquema implícito de segundo orden
+centrado para el término de difusión.
+
+Para el coeficiente de dispersión de solutos estamos usando una ley basada en
+los trabajos de Rutherford:
+\begin{equation}
+K_x=10\,P\,U\,\sqrt{\frac{f}{2}}
+\end{equation}
+con $P$ el perímetro de la tubería y $f$ el factor de fricción de
+Darcy-Weissbach. Teniendo en cuenta que en flujo turbulento $f\in[0.006,0.06]$ y
+que la tubería es $\approx0.1$ m de diámetro y la velocidad de flujo
+$U\approx1$~m/s $\Rightarrow$ $K_x\approx0.4$~m$^2$/s.
+
+\section{Resultados de la simulación}
+
+\subsection{Calibración con la cámara cenital final}
+
+Se ha normalizado tanto las densidades medidas con todas las cámaras. La
+densidad normalizada de la cámara de inyección es usada como entrada del modelo
+de simulación. El tubo se ha simulado con 400 celdas. Las densidades
+normalizadas de la cámara cenital final se han usado para calibrar los
+coeficientes $a$ y $\Gamma$ minimizando el error cuadrático medio. Los
+resultados se presentan en el cuadro~\ref{TabCalibration}.
+
+\begin{table}[ht!]
+\centering
+\caption{Valores calibrados de los coeficientes $a$ y $\Gamma$.
+\label{TabCalibration}}
+\begin{tabular}{ccc}
+$U$ (m/s) & $a$ (-) & $\Gamma$ (m$^2$/s) \\
+\hline
+$0.6$ & $0.37$ & $0.11$ \\
+$1.8$ & $0.73$ & $0.016$
+\end{tabular}
+\end{table}
+
+\newpage
+\subsection{Resultados de las cámaras cenitales}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.8\textwidth]{v0,6-1/r0,6-1.pdf}
+\caption{Medidas normalizadas de densidad larvaria en la cámara frontal en el
+punto de inyección, en la cámara cenital final y simuladas en la posición final
+para el experimento de velocidad $0.6$~m/s.}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.8\textwidth]{v1,8-1/r1,8-1.pdf}
+\caption{Medidas normalizadas de densidad larvaria en la cámara frontal en el
+punto de inyección, en la cámara cenital final y simuladas en la posición final
+para el experimento de velocidad $1.8$~m/s.}
+\end{figure}
+
+\newpage
+\subsection{Resultados de las cámaras frontales}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.8\textwidth]{v0,6-1/f0,6-1.pdf}
+\caption{Medidas normalizadas de densidad larvaria en la cámara frontal en el
+punto de inyección, en la cámara frontal final y simuladas en la posición final
+para el experimento de velocidad $0.6$~m/s.}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.8\textwidth]{v1,8-1/f1,8-1.pdf}
+\caption{Medidas normalizadas de densidad larvaria en la cámara frontal en el
+punto de inyección, en la cámara frontal final y simuladas en la posición final
+para el experimento de velocidad $1.8$~m/s.}
+\end{figure}
+
+\newpage
+\subsection{Resultados de los micros más próximos}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.8\textwidth]{v0,6-1/m0,6-1-10.pdf}
+\caption{Medidas normalizadas de densidad larvaria en la cámara frontal en el
+punto de inyección, en el micro más cercano al final y simuladas en la posición
+final para el experimento de velocidad $0.6$~m/s.}
+\end{figure}
+
+\begin{figure}[ht!]
+\centering
+\includegraphics[width=0.8\textwidth]{v1,8-1/m1,8-1-10.pdf}
+\caption{Medidas normalizadas de densidad larvaria en la cámara frontal en el
+punto de inyección, en el micro más cercano al final y simuladas en la posición
+final para el experimento de velocidad $1.8$~m/s.}
+\end{figure}
+
+\newpage
+\section{Tareas}
+
+\begin{itemize}
+\item Calibrar factores $a$ y $\Gamma$ para toda la batería de experimentos.
+\item Obtener relaciones $a=a(T)$, $\Gamma=b(T)\,K_x$.
+\item Comprobar si se obtienen parecidos valores de $a$ y $b$ con los micros y
+	con las cámaras.
+\item Obtener alguna ley de distribución vertical de conchas.
+\end{itemize}
+
+Es esperable teóricamente:
+\begin{figure}[ht!]
+\begin{tabular}{cc}
+\begin{picture}(160,160)
+	\thicklines
+	\put(10,10){\line(1,0){50}}
+	\put(60,10){\line(0,1){10}}
+	\qbezier(60,20)(105,80)(150,80)
+	\thinlines
+	\put(10,10){\vector(1,0){140}}
+	\put(10,10){\vector(0,1){140}}
+	\put(10,80){\line(1,0){140}}
+	\put(150,0){$U$}
+	\put(55,0){$U_c$}
+	\put(0,150){$a$}
+	\put(0,76){1}
+\end{picture}
+&
+\begin{picture}(160,160)
+	\thicklines
+	\put(10,10){\line(1,0){50}}
+	\put(60,10){\line(0,1){140}}
+	\qbezier(60,150)(70,40)(80,40)
+	\qbezier(80,40)(125,80)(150,80)
+	\thinlines
+	\put(10,10){\vector(1,0){140}}
+	\put(10,10){\vector(0,1){140}}
+	\put(10,80){\line(1,0){140}}
+	\put(150,0){$U$}
+	\put(55,0){$U_c$}
+	\put(0,150){$b$}
+	\put(0,77){1}
+\end{picture}
+\end{tabular}
+\end{figure}
+
+\end{document}

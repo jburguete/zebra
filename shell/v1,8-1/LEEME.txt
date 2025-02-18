@@ -1,0 +1,8 @@
+set xlabel 'Time from beep (s)'
+set ylabel 'Pixels (%)'
+set title 'v=1.8ms rep=1'
+set xrange [0:60]
+set yrange [0:0.065]
+
+plot 'spect-low-avg.txt' u 1:($2*0.0001316+0.1238) w l lc rgb 'gray' t 'Audio', 'cenital_v1.8ms_1.txt' u 4:2 w lp t 'Camara cenital', 'frontal_v1.8ms_1.txt' u 4:2 w lp t 'Camara frontal', 'inyeccion_v1.8ms_1.txt' u 4:2 w lp t 'Camara inyeccion'
+

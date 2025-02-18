@@ -1,0 +1,34 @@
+set term pos enh eps 20
+set encoding utf8
+set xlabel 'Time (s)'
+set ylabel 'Normalized shell density (-)'
+set title 'Velocity=0.6 m/s, Factor=0.37, Dispersion=0.11 m^2/s'
+
+set out 'r0,6-1.eps'
+plot 'out-0,6-1' w l lt 1 lw 2 t'Simulated',\
+	'c0,6-1' u 1:($2*0.229158) w l lt 2 lw 2 t'Cenital',\
+	'i0,6-1' u 1:($2*2.75982) w l lt 4 lw 2 t'Injection'
+
+set out 'f0,6-1.eps'
+plot 'out-0,6-1' w l lt 1 lw 2 t'Simulated',\
+	'f0,6-1' u 1:($2*2.26984) w l lt 2 lw 2 t'Frontal',\
+	'i0,6-1' u 1:($2*2.75982) w l lt 4 lw 2 t'Injection'
+
+set out 'm0,6-1-10.eps'
+plot 'out-0,6-1' w l lt 1 lw 2 t'Simulated',\
+	'm0,6-1-10' u 1:($2*0.257549) w l lt 2 lw 2 t'Microphone',\
+	'i0,6-1' u 1:($2*2.75982) w l lt 4 lw 2 t'Injection'
+
+set term pos enh eps 28
+set xlabel 'Tiempo (s)'
+set ylabel 'Densidad de cáscaras (-)'
+set title 'V=0.6 m/s, a=0.37, K=0.11 m^2/s'
+set key left
+
+set out 'camara-0,6.eps'
+plot 'out-0,6-1' w l lt 1 lw 2 t'Simulado',\
+	'c0,6-1' u 1:($2*0.229158) w l lt 2 lw 2 t'Cámara'
+
+set out 'micro-0,6.eps'
+plot [][0:0.04] 'out-0,6-1' w l lt 1 lw 2 t'Simulado',\
+	'm0,6-1-10' u 1:($2*0.257549) w l lt 2 lw 2 t'Micrófono'
