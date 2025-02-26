@@ -7,6 +7,7 @@
 \usepackage{multirow}
 \usepackage[gen]{eurosym}
 \usepackage{orcidlink}
+\usepackage[textsize=scriptsize,textwidth=3.5cm]{todonotes}
 
 \begin{document}
 
@@ -47,52 +48,52 @@
 
 \begin{abstract}
 Zebra mussel infestation has become a serious problem affecting pressurized
-collective irrigation networks. Mussel larvae settle in pipeline walls and
-create relevant obstructions to flow as they grow and develop a shell. Chemical
-treatments are commonly used to control the infestation, injecting oxidants
-(frequently chlorine) in the irrigation stream. A model is proposed for
-simulating the transportation, settlement and death of zebra mussels in
-pressurized irrigation networks. This model is coupled to a solute transport,
-diffusion, and decay model of oxidant chemicals used to control this invasive
-species. During the analyzed irrigation campaigns, the entry of zebra mussel
-larvae into a collective pressurized network was monitored at various intervals.
-These data, showing high variability, were used as input to the model using
-different scenarios averaging and modifying the time distribution of larvae
-concentration. Model simulations consistently predicted similar mussel
+networks. Larvae settle in pipeline walls creating relevant obstructions to flow
+as they grow and develop shells. Oxidant injections in the stream are commonly
+used to control the infestation. A model is proposed for simulating the
+transportation, settlement and death of mussels in pressurized networks. This
+model is coupled to a solute transport, diffusion, and decay model of oxidant
+chemicals. During the analyzed irrigation campaigns, the larvae entry was
+monitored at various intervals. These data, showing high variability, were used
+as input to the model using different scenarios averaging and modifying the time
+distribution of larvae concentration. Simulations predicted similar mussel
 settlement patterns across all scenarios, suggesting that network morphology and
 total larval abundance primarily influence settlement distribution. We compared
-the effectiveness of continuous and intermittent oxidant applications for mussel
-control. Continuous treatments were the most effective (up to 99\%), but
-required up to 3.5~kg$\cdot$ha$^{-1}$ of chlorine. Reasonable control could also
-be attained with intermittent treatments, particularly with short injections (1
-to 3 hours) just before the peak irrigation service discharge. Such treatments
-led to up to 93\% of chlorine savings and reached mussel mortality rates close
-to those of the continuous treatment. The model was also used to estimate the
-larvae and chlorine export to on-farm irrigation systems through hydrants and to
-evaluate strategies for mitigating the risks of on-farm infestation and
-environmental impact. The protection of on-farm irrigation systems required
-additional chlorine input. The proposed model can be parametrized to simulate
-similar invasive species in different types of pressurized networks, using
-different chemicals for treatment.
+the effectiveness of continuous and intermittent oxidant applications.
+Continuous treatments were the most effective (up to 99\%), but required up to
+3.5~kg$\cdot$ha$^{-1}$ of chlorine. Reasonable control could also be attained
+with short injections (1 to 3 hours) just before the peak irrigation service
+discharge, leading to up to 93\% of chlorine savings and reaching similar
+mortality rates. The model was also used to estimate the larvae and chlorine
+export to on-farm irrigation systems through hydrants and to evaluate strategies
+for mitigating the risks of on-farm infestation and environmental impact. The
+protection of on-farm irrigation systems required additional chlorine input. The
+model can be parametrized to simulate similar species in different types of
+pressurized networks, using different chemicals for treatment.
 \end{abstract}
 
 \begin{highlights}
 \item
-We introduced a model for zebra mussel dispersion, settlement and death by oxidants
+We introduced a model for zebra mussel dispersion, settlement and death by
+oxidants
 \item
-The distribution of settled mussels depends more on hydraulics than on larval input
+The distribution of settled mussels depends more on hydraulics than on larval
+input
 \item
 Short treatments are more effective when applied before the peak daily discharge
 \item
-On-farm protection needs more chlorine concentration than at the collective network
+On-farm protection needs more chlorine concentration than at the collective
+network
 \end{highlights}
 
 \begin{keyword}
-zebra mussel, veligers, chlorine, solute transport, pressurized networks,
-irrigation
+invasive, species, larva, veliger, shell, oxidant, pipeline
 \end{keyword}
 
 \end{frontmatter}
+\todo{Comment R1-1: The keywords have been revised to avoid using terms already
+present in the title}
+\todo{Comment R3-1: The abstract has been shortened to less than 250 words}
 
 \include{macro}
 
@@ -100,7 +101,7 @@ irrigation
 
 \section*{Nomenclature}
 
-{\scriptsize
+{\tiny
 \begin{tabular}{lcl}
 $\Delta$ & = & temporal differences (s),\\
 $\delta$ & = & spatial differences (m),\\
@@ -111,18 +112,23 @@ $\tau$ & = & coefficient of mussel mortality (s$^{-1}$),\\
 $\mathbf{\Psi}^\pm$ & = & upwind flux limiter matrices (-),\\
 $\psi$ & = & flux limiter function (-),\\
 $A$ & = & cross-sectional area (m$^2$),\\
+$Ad$ & = & advection-diffusion substep (-),\\
 $C$ & = & mussel larvae sources (larvae$\cdot$m$^2\cdot$s$^{-1}$),\\
 $c$ & = & mussel larvae concentration (larvae$\cdot$m$^{-3}$),\\
 $C_0$ & = & histogram of chlorine concentration at inlet (kg$\cdot$m$^{-3}$),\\
 $c_0$ & = & initial mussel larvae concentration (larvae$\cdot$m$^{-3}$),\\
+$D$ & = & solute decay substep (-),\\
 $d$ & = & death probability (-),\\
 DOY & = & Day Of Year (days),\\
 $\vec{F}$ & = & advection flux vector,\\
 $f$ & = & friction factor of Darcy-Weissbach (-),\\
+$I$ & = & inputs substep (-),\\
+$J$ & = & junctions substep (-),\\
 $k$ & = & constant of larval concentration (larvae$\cdot$m$^{-3}$),\\
 $K_b$ & = & base solute decay coefficient (s$^{-1}$),\\
 $K_w$ & = & wall solute decay coefficient, (m$\cdot$s$^{-1}$)\\
 $K_x$ & = & longitudinal dispersion coefficient (m$^2\cdot$s$^{-1}$),\\
+$M$ & = & mussel mortality substep (-),\\
 $M_e$ & = & total mass of free chlorine exported by the network (kg),\\
 $N_e$ & = & number of mussel larvae exported by the network (larvae),\\
 $N_i$ & = & number of settled mussels at the $i$-cell (mussels),\\
@@ -137,6 +143,7 @@ $S$ & = & solute sources (kg$\cdot$m$^{-1}\cdot$s$^{-1}$),\\
 $s$ & = & solute concentration (kg$\cdot$m$^{-3}$),\\
 $S_0$ & = & histogram of larval concentration at inlet (larvae$\cdot$m$^{-3}$),
 	\\
+$Se$ & = & larvae settlement substep (-),\\
 $s_m$ & = & lethal solute concentration (kg$\cdot$m$^{-3}$),\\
 $t$ & = & time (s),\\
 TVD & = & Total Variation Dimishing,\\
@@ -158,25 +165,25 @@ for the dispersion of the species and the colonization of new areas
 \citep{Araujo06}. Zebra mussel spread was already documented in the 19th Century
 \citep{Aldridge04}, but has become very intense in the 21st century.
 
-The biology of zebra mussels was summarized by \citet{Cohen09}. Four larval
-stages have been defined: embryonic, trochophore, veliger and pediveliger stage.
-The veliger phase can last for one or more weeks, while the other three phases
-may last for hours. The warmer and more productive the water, the shorter the
-larval period. These stages are planktonic, meaning that larvae drift in water.
-Larval capacity to swim in water is very limited, and can be considered
-negligible. Pediveligers settle by attaching themselves to a substrate with
-byssal threads, becoming juvenile mussels. Within a few months, mussels evolve
-to sexually mature adults. Females can lay between forty thousand and a million
-eggs annually \citep{CHE07}. Juveniles can drift in water currents, reaching
-long distances. In the conditions of northern Spain, juveniles appear at the
-beginning of summer, reaching high concentrations in water. A second peak has
-been observed at the end of summer \citep{Araujo06, URA14}. Adults can reach up
-to 1.5~cm in their first year of life, and a maximum size of 3~cm.
+Four larval stages have been defined for zebra mussels: embryonic, trochophore,
+veliger and pediveliger stage \citep{Cohen09}. The veliger phase can last for
+one or more weeks, while the other three phases may last for a few hours. The
+warmer and more productive the water, the shorter the larval period. These
+stages are planktonic, meaning that larvae can drift in water currents,
+potentially reaching long distances. However, larval capacity to swim in water
+is very limited, and can be considered negligible. Pediveligers settle by
+attaching themselves to a substrate with byssal threads, becoming juvenile
+mussels. After a few months, mussels evolve to sexually mature adults. Females
+can lay between forty thousand and a million eggs annually \citep{CHE07}. In the
+conditions of northern Spain, juveniles appear at the beginning of summer,
+reaching high concentrations in water. A second peak has been observed at the
+end of summer \citep{Araujo06, URA14}. Adults can reach up to 1.5~cm in their
+first year of life, and a maximum size of 3~cm.
 
 By attaching themselves to water structures, zebra mussels create many problems
 to water managers and users. The species can obstruct water conveyance in
 canals, gates, pipelines, valves and filters, challenging the continuity of
-operation. Adults form colonies on substrates, sometimes piling up in layers. By
+operation. By
 the end of the 20th century, in the United States, \citet{Khalanski97} estimated
 the cost of this species’ invasion of water systems at
 5~G\textdollar$\cdot$yr$^{-1}$. Costs have since increased in this and other
@@ -191,13 +198,11 @@ pressurized irrigation networks because water is not routinely treated (unlike
 in urban water systems) and because infestations remain undetected until
 advanced stages. \citet{MoralesHernandez18, MoralesHernandez22} presented the
 Normalized Pressure Method, oriented to the early detection and targeted
-chemical treatment of zebra mussel infestation. The comparison of observed head
-losses with those of the non-infested network has proven effective to identify
-hot spots where mussels obstruct water passage. The method also detects the
-presence of dead shells freely moving with water inside the pipes. Dead shells
-create very serious problems in irrigation networks, collapsing filters dozens
-of times a day. In severely infested areas, farmers have resorted to automate
-filters for self-cleaning.
+chemical treatment of zebra mussel infestation. 
+The method also detects the
+presence of dead shells freely moving with water inside the pipes, 
+collapsing filters dozens
+of times a day. 
 
 The control of zebra mussel infestation in collective pressurized networks can
 be based on several strategies. The modification of the environment can be made
@@ -207,8 +212,7 @@ oxidants such as chlorine or hydrogen peroxide have proven very effective to
 prevent the fixation of larvae (low concentration) or kill adults (high
 concentration). Chlorine water disinfection has long been known to produce
 byproducts toxic for the humans and the environment \citep{Hanigan17}.
-Chlorination is widely used to reduce the risk of human diseases when applying
-reclaimed irrigation water. Chlorination levels have also been assesed for
+Chlorination levels have also been assessed for
 impact on plant growth and for accumulation in the soil. The level of
 chlorination affecting plant growth is usually high (about
 $20\cdot10^{-3}$~kg$\cdot$m$^{-3}$) and depends on plant sensitivity and
@@ -248,6 +252,7 @@ Specific objectives include:
 	\item Evaluate the model's ability to analyze zebra mussel population
 		dynamics under chemical treatment.
 \end{enumerate}
+\todo{Comment R4-1: the introduction has been revised to be more concise}
 
 \section{Materials and methods}
 
@@ -332,10 +337,13 @@ to use arithmetic means for values that may vary by three orders of magnitude.
 
 The mortality of zebra mussels depends upon chlorine concentration, contact time
 with the oxidant and water temperature \citep{vanBenschoten95}.
-\citet{SprecherGetsinger00} reported that the relationship between concentration
-and exposure time was typically inversely linear, achieving 100\% larval
-mortality with a chlorine concentration of 0.5~kg$\cdot$m$^{-3}$ in 2 hours.
-However, for adults, a concentration of 2.0~kg$\cdot$m$^{-3}$ was required.
+\citet{MackieClaudi10} stated that chlorine concentrations between 1 and
+$3\cdot10^{-3}$~kg$\cdot$m$^{-3}$ are effective at immobilizing or killing
+incoming veligers.  \citet{SprecherGetsinger00} reported that the relationship
+between concentration and exposure time was typically inversely linear,
+achieving 100\% larval mortality with a chlorine concentration of
+$0.5\cdot10^{-3}$~kg$\cdot$m$^{-3}$ in 2 hours.However, for adults,
+a concentration of $2.0\cdot10^{-3}$~kg$\cdot$m$^{-3}$ was required.
 Based on these data, and considering that the water temperature in buried
 pressurized irrigation networks varies relatively little during the irrigation
 season (see Figure~\ref{FigMeasured}), we adopted the following model to
@@ -352,7 +360,7 @@ with $c_0$ the initial larvae concentration. To determine the value for $\tau$,
 we approximate in this work that in the experiments described in
 \cite{SprecherGetsinger00}, 99\% larval mortality rate was achieved. In this
 case:
-\EQ{\exp\PA{-7200\,\tau}=0.01\Rightarrow\;\tau=6.4\cdot10^{-4}}
+\EQ{\exp\PA{-7200\,\tau}=0.01\Rightarrow\;\tau=6.4\cdot10^{-4}\;\textrm{s}^{-1}}
 {EqMusselDecayTau}
 
 \subsection{The numerical model}
@@ -371,15 +379,18 @@ cell size of $\delta x_i=10$~m was used. A split-step approach was employed to
 address the various processes involved. We defined $\vec{u}_i^n$ as the vector
 of variable values in the $i$-th cell and in the $n$-th time step. In each time
 step, the variable increments $\Delta\vec{u}_i^n=\vec{u}_i^{n+1}-\vec{u}_i^n$
-are divided into advection-diffusion~(A), solute decay~(D),
-larvae settlement~(S), mussel mortality~(M), junctions~(J), and inputs~(I)
-substeps:
-\EQ{\Delta\vec{u}_i^n=\Delta\vec{u}_i^A+\Delta\vec{u}_i^D+\Delta\vec{u}_i^S
-	+\Delta\vec{u}_i^M+\Delta\vec{u}_i^J+\Delta\vec{u}_i^I}{EqSplit}
-where $\vec{u}_i^A=\vec{u}_i^n+\Delta\vec{u}_i^A$,
-$\vec{u}_i^D=\vec{u}_i^A+\Delta\vec{u}_i^D$,
-$\vec{u}_i^S=\vec{u}_i^D+\Delta\vec{u}_i^S$,
-$\vec{u}_i^M=\vec{u}_i^S+\Delta\vec{u}_i^M$,
+are divided into advection-diffusion~($Ad$), solute decay~($D$),
+larvae settlement~($Se$), mussel mortality~($M$), junctions~($J$), and
+inputs~($I$) substeps:
+\todo{Comment R1-2: $Ad$ is now used for advection-diffusion and $Se$ for larvae
+settlement to avoid confusion}
+\EQ{\Delta\vec{u}_i^n=\Delta\vec{u}_i^{Ad}+\Delta\vec{u}_i^D
+	+\Delta\vec{u}_i^{Se}+\Delta\vec{u}_i^M+\Delta\vec{u}_i^J
+	+\Delta\vec{u}_i^I}{EqSplit}
+where $\vec{u}_i^{Ad}=\vec{u}_i^n+\Delta\vec{u}_i^{Ad}$,
+$\vec{u}_i^D=\vec{u}_i^{Ad}+\Delta\vec{u}_i^D$,
+$\vec{u}_i^{Se}=\vec{u}_i^D+\Delta\vec{u}_i^{Se}$,
+$\vec{u}_i^M=\vec{u}_i^{Se}+\Delta\vec{u}_i^M$,
 $\vec{u}_i^J=\vec{u}_i^M+\Delta\vec{u}_i^J$, and
 $\vec{u}_i^{n+1}=\vec{u}_i^J+\Delta\vec{u}_i^I$ represent the variable values
 after the advection-diffusion, solute decay, larvae settlement, mussel
@@ -387,7 +398,10 @@ mortality, junctions, and inlet boundary conditions substeps, respectively.
 
 \subsubsection{Hydraulic model}
 
-The EPANET software \citep{Rossman94} was used to determine the pressure at the network nodes and the discharge at the network pipes to satisfy hydrant
+The EPANET software \citep{EPANET}
+\todo{Comment R1-3: The EPANET reference is now the github page of the project}
+was used to determine the pressure at the
+network nodes and the discharge at the network pipes to satisfy hydrant
 discharge demands for given head at the network inlet points. The EPANET output
 was used as input of ad hoc advection-diffusion models for the oxidant chemical
 and larvae.
@@ -411,10 +425,10 @@ of the advection-diffusion equations (\ref{EqTransportSolute}) and
 	{\PA{\delta\vec{F}_{i+\frac12}^\pm}_1}} & 0\\
 	0 & \psi\PA{\frac{\PA{\delta\vec{F}_{i+\frac12\pm1}^\pm}_2}
 	{\PA{\delta\vec{F}_{i+\frac12}^\pm}_2}}},\]
-\[-\theta\,K_x\,\frac{\Delta t}{\delta x}\,\Delta\vec{u}_{i-1}^A
+\[-\theta\,K_x\,\frac{\Delta t}{\delta x}\,\Delta\vec{u}_{i-1}^{Ad}
 	+\PA{\delta x+2\,\theta\,K_x\,\frac{\Delta t}{\delta x}}
-	\,\Delta\vec{u}_i^A
-	-\theta\,K_x\,\frac{\Delta t}{\delta x}\,\Delta\vec{u}_{i+1}^A\]
+	\,\Delta\vec{u}_i^{Ad}
+	-\theta\,K_x\,\frac{\Delta t}{\delta x}\,\Delta\vec{u}_{i+1}^{Ad}\]
 \[=(1-\theta)\,K_x\,\frac{\Delta t}{\delta x}\,\PA{\delta\vec{u}_{i+\frac12}^n
 	-\delta\vec{u}_{i-\frac12}^n}\]
 \[+\Delta t\,\left\{\frac12\,\PA{\mathbf{\Psi}^+\,\delta\vec{F}^+}_{i-\frac32}^n
@@ -427,7 +441,7 @@ with $\vec{F}$ the advection flux, $\PA{\delta\vec{F}^\pm}_k$ the $k$-th
 component of the vector $\delta\vec{F}^\pm$, $\theta\in[0,1]$ the implicit
 parameter, $\psi$ the monotonized central flux limiter function
 \citep{vanLeer77}, and $\delta$ for spatial differences. This scheme produces a
-tridiagonal system of equations in $\Delta\vec{u}_i^A$ that is solved by
+tridiagonal system of equations in $\Delta\vec{u}_i^{Ad}$ that is solved by
 Gaussian elimination.
 
 For $\theta=\frac12$ the diffusion scheme is second order in time. According to
@@ -436,18 +450,15 @@ conditions are met:
 \EQ{\Delta t\leq\min\PA{\frac{\delta x}{|v|}},\quad
 	1\geq\theta\geq1-\frac{2\,\delta x^2}{K_x\,\Delta t}}{EqCFL}
 being the first the well known Courant-Friedrichs-Lewy condition \citep{CFL} and
-the second a condition on the implicit parameter. To balance accuracy and
-computational efficiency while preserving TVD characteristics, the following
-parameter values were employed:
-\EQ{\Delta t=0.9\,\min\PA{\frac{\delta x}{|v|}},\quad
-	\theta=\max\PA{\frac12,\;1-\frac{\delta x^2}{2\,K_x\,\Delta t}}}
-{EqTheta}
+the second a condition on the implicit parameter.
+
+\todo{This is now better explained in subsection 2.2.9}
 
 \subsubsection{Model of solute decay}
 
 The solute decay equation (\ref{EqSoluteDecay}) can be solved analytically
 within a time step, resulting in:
-\EQ{s_i^J=s_i^A\,\exp\CO{-\PA{K_b-K_w\,\frac{P}{A}}\,\Delta t}}{EqStepDecay}
+\EQ{s_i^J=s_i^{Ad}\,\exp\CO{-\PA{K_b-K_w\,\frac{P}{A}}\,\Delta t}}{EqStepDecay}
 
 \subsubsection{Model of mussel larvae settlement to a pipe}
 
@@ -455,19 +466,19 @@ Since the settlement process of larvae is fundamentally stochastic, the model
 uses a random pattern to determine settlement. According to
 (\ref{EqMusselSettlement}), the probability of a larva settlement to a cell in
 the pipe during a time step is in first order:
-\EQ{p_i^S=-A\,\delta x\,\Delta c_i^S=V\,P\,c_i^J\,\Delta t\,\delta x}
+\EQ{p_i^{Se}=-A\,\delta x\,\Delta c_i^{Se}=V\,P\,c_i^J\,\Delta t\,\delta x}
 {EqMusselSettlementProbability}
-We generate a pseudo-random number $R\in[0,1)$ and if $R<p_i^S$, we add an
+We generate a pseudo-random number $R\in[0,1)$ and if $R<p_i^{Se}$, we add an
 element to the list of mussels associated with the cell. Each element stores the
 time at which settlement occurrs to determine the transition from larva to adult
 stages. To conserve the number of larvae, each time a new element is added, the
 larval concentration must be adjusted accordingly:
-\EQ{c_i^S=\max\PA{0,\;c_i^J-\frac1{A\,\delta x}}}
+\EQ{c_i^{Se}=\max\PA{0,\;c_i^J-\frac1{A\,\delta x}}}
 {EqMusselSettlementConcentration}
-Additionally, if $N_i^S$ is the number of mussels in the cell list, the surface
-density of mussels will be:
-\EQ{\sigma_i^S=\frac{N_i^S}{P\,\delta x}}{EqMusselSettlementDensity}
-This stochastic method only makes sense if $p_i^S<1$. This leads to the
+Additionally, if $N_i^{Se}$ is the number of mussels in the cell list, the
+surface density of mussels will be:
+\EQ{\sigma_i^{Se}=\frac{N_i^{Se}}{P\,\delta x}}{EqMusselSettlementDensity}
+This stochastic method only makes sense if $p_i^{Se}<1$. This leads to the
 following restriction on the time step:
 \EQ{\Delta t<\frac{1}{V\,P\,c_i^J\,\delta x}}{EqMusselSettlementTimeStep}
 
@@ -475,14 +486,15 @@ following restriction on the time step:
 
 Equation~(\ref{EqMusselDecayAnalytic}) offers an analytical solution for larval
 concentration evolution over a time step. Applying this to our model yields:
-\EQ{c_i^M=c_i^S\,\exp\PA{-\frac{\tau\,s\,\Delta t}{s_m}}}{EqStepDeath}
+\EQ{c_i^M=c_i^{Se}\,\exp\PA{-\frac{\tau\,s\,\Delta t}{s_m}}}{EqStepDeath}
 
 The numerical process of mussel mortality of settled mussels is also considered
 stochastic. According to (\ref{EqMusselDecay}), the probability of a mussel
 dying ($d_i^n$) in the presence of free chlorine during a time step is in first
 order:
-\EQ{d_i^M=\frac{\Delta\sigma_i^M}{\sigma_i^S}=\frac{\tau\,s_i^S\,\Delta t}{s_m}}
-{EqMusselDecayProbability}
+\EQ{d_i^M=\frac{\Delta\sigma_i^M}{\sigma_i^{Se}}
+	=\frac{\tau\,s_i^{Se}\,\Delta t}{s_m}
+}{EqMusselDecayProbability}
 where the value of $s_m$ depends on whether the mussel is in the larval or
 adult stage, as detailed in subsection~\ref{SecMusselDeath}. For each mussel in
 the list associated with each cell in the network's pipes, we generate a
@@ -490,7 +502,7 @@ pseudo-random number $R\in[0,1)$. If $R<d_i^M$, the mussel is removed from the
 list and $\sigma_i^M$ readjusted as in (\ref{EqMusselSettlementDensity}). As in
 (\ref{EqMusselSettlementTimeStep}) the probability $d_i^M$ has to be less than
 one, the following time step restriction applies:
-\EQ{\Delta t<\frac{s_m}{\tau\,s_i^S}}{EqMusselDeathTimeStep}
+\EQ{\Delta t<\frac{s_m}{\tau\,s_i^{Se}}}{EqMusselDeathTimeStep}
 
 \subsubsection{Model of junctions}
 
@@ -511,23 +523,39 @@ point, we impose:
 with $S_0$ and $C_0$ being the time-varying chlorine and larvae concentrations,
 respectively, at the entry point.
 
-\subsubsection{Initial conditions}
+\subsubsection{Initial conditions \label{SecInitialConditions}}
 
 Finally, to complete the numerical scheme, initial conditions are required for
 chlorine concentration, larvae concentration, and the number of settled mussels
 in each cell of the network pipes. In this study, it was assumed that there was
 no chlorine, larvae, or mussels present at the start of each campaign.
 
+\subsubsection{Time step size}
+
+Finally, from restrictions (\ref{EqCFL}), (\ref{EqMusselSettlementTimeStep}) and
+(\ref{EqMusselDeathTimeStep}), to balance accuracy and computational efficiency
+while preserving TVD characteristics, the following parameter values were
+employed:
+\EQ{\Delta t^n=0.9\,\min_i\PA{\frac{\delta x}{|v|},\;
+	\frac{1}{V\,P\,c\,\delta x},\;
+	\frac{s_m}{\tau\,s}}_i^n,\quad
+	\theta^n=\max_i\PA{\frac12,\;1-\frac{\delta x^2}{2\,K_x\,\Delta t}}_i^n}
+{EqTheta}
+
 \subsection{A case study: the CS-WUA \#1 irrigation network}
 
 The Collarada Segunda Water Users Association (CS-WUA), located in Montesusín
-(Huesca, Spain), was selected for this study. This WUA makes part of the Riegos
+(Huesca, Spain), was selected for this study (see location of the area in
+Figure~\ref{FigMap}). This WUA makes part of the Riegos
 del Alto Aragón project, which has been affected by zebra mussel since 2013
 \citep{MoralesHernandez18}. The transition from surface irrigation to sprinkler
 / drip irrigation, and consequently from canals and ditches to pressurized
 pipelines has made this project vulnerable to zebra mussel. Although the system
 reservoirs have long been infested with zebra mussel, the use or pipelines for
 irrigation has strongly increased the impact of zebra mussel in the area.
+\FIGB{0.7\textwidth}{Montesusin.png}{Map displaying the location of Montesusín
+in Spain (source: Wikipedia)}{FigMap}
+\todo{Comment R4-2: a map has been provided (Fig.~1)}
 
 The CS-WUA covers an irrigated area of 3,126~ha. The pressurized area is
 irrigated with two independent networks. Network \#1 was used for this study.
@@ -539,6 +567,90 @@ total pipe length of 46.6~km. The irrigation network operates in arranged demand
 mode \citep{Clemmens87} to ensure timely water delivery to farmers while
 minimizing electricity consumption for reservoir filling.
 
+Chemical control programs can be implemented continuously, periodically, or as
+end-of-season treatments. In this study, continuous and periodic chlorine-based
+control programs were assessed. These proactive approaches are designed to
+prevent zebra mussel attachment within the pipeline network. A dosing pump was
+used to inject the chemical, calibrated according to the flow rate of the
+network and the concentration of the chemical solution, to maintain a consistent
+chlorine level of $2\cdot10^{-3}$~kg$\cdot$m$^{-3}$.
+\todo{Comment R3-5: A brief information on application of chlorine has been
+included}
+
+The network is treated with high concentrations of oxidants every year at least
+once, at the end of the irrigation season. Further, the elevated reservoir is
+desiccated during winter to expose mussels to lethal dry and cold conditions.
+Consequently, the initial condition of the model
+(subsection~\ref{SecInitialConditions}) is valid for this case study.
+\todo{Comment R4-3: this paragraph has been added to clarify the initial
+conditions}
+
+Larvae intake measurements into the network were conducted at an accessible and
+representative point of the area most affected by zebra mussel colonization. An
+automatic sampling device connected to the network via an electro-valve was
+used. The sampling equipment consists of a programmer, a volumetric counter, and
+an internal hydraulic circuit that allows the collection of up to 10 independent
+samples. The programmer controls the opening and closing of the electro-valve
+according to the sampling schedule set by the user. Each time a sample is taken,
+100 liters of water are filtered throughone of the ten available filters. The
+filters fill sequentially. Samples were collected once per week and, when a
+sample is collected, a chemical fixative is applied to preserve it. During the
+2021 campaign, sampling began on July 25 and ended on August 19, with samples
+taken every 12 hours, specifically at 12:00 and 24:00 each day, except on
+weekends. In 2022, sampling began on June 14 and ended on July 4, with samples
+taken every 8 hours, specifically at 1:00, 9:00, and 17:00 each day. In 2023,
+sampling extended from May 12 to June 9, with samples taken every 12 hours at
+3:00 and 15:00 each day. The determination of larval concentration was
+outsourced to a specialized laboratory of the OX-CTA company
+(\url{https://grupoox.com}), which performed the analyses using the
+standardize method of cross-polarized light microscopy \citep{Frischer12}.
+\todo{Comments R3-3 \& R3-8: the methodology for monitoring the entry of zebra
+mussel larvae into the network has been described in much greater detail}
+
+In order to analyze the effect that the larval inputs could have on the
+CS-WUA~\#1 network infestation, we simulated four larval input scenarios during
+two irrigation campaigns, 2021 and 2022, keeping the total number of larvae in
+each campaign as measured:
+\begin{enumerate}[I.]
+\item larval input as measured (the concentration at each hour was temporally
+	interpolated between the measurements), 
+\item constant larval input during the time windows of measurement (from
+	mid-July to mid-August in 2021 and from mid-June to early-July in 2022),
+\item larval input with random hourly variation of up to three orders of
+	magnitude during the time windows of measurement, and
+\item uniform larval input throughout the entire treatment season (from mid-May
+	to mid-August).
+\end{enumerate}
+
+The total number of larvae $N_l$ entering the network was computed as:
+\EQ{N_l=\sum_iQ_i\,c_i\,\Delta t_i}{EqLarvaeNumber}
+where $Q_i$, $c_i$ y $\Delta t_i$ represent respectively the flow rates, larval
+concentrations, and hourly time intervals throughout the entire campaign. For
+random input scenarios, to achieve variations of three orders of magnitude while
+maintaining the number of larvae, concentrations were generated using the
+formula:
+\EQ{c_i=\frac{k}{0.001+R_i},\quad
+	k=\frac{N_l}{\sum_i\frac{Q_i\,\Delta t_i}{0.001+R_i}}}{EqLarvaeRandom}
+with $k$ being a constant and $R_i\in[0,1)$ pseudo-random numbers. For constant
+larval concentration scenarios:
+\EQ{c_i=\frac{N_l}{\sum_iQ_i\,\Delta t_i}}{EqLarvaeConstant}
+\todo{Comment R3-9: formulae 23 to 25 are moved from Results and discussion to
+Material and methods section}
+
+The effect of larval input scenarios and oxidant treatments in the network will
+be quantified using the following coefficients with respect to the reference
+case:
+\begin{description}
+	\item[$\Delta N_t$,] the increase in the total number of mussels
+		settled to the pipe walls expressed as a percentage,
+	\item[$r_1$,] the correlation coefficient comparing the surface density
+		of settled mussels in every cell, and
+	\item[$r_2$,] the correlation coefficient comparing the surface density
+		of settled mussels averaged per pipeline.
+\end{description}
+\todo{Comment R3-4: coefficients of the effectiveness of the oxidant
+application aproaches has been eplained in this section}
+
 \section{Results and discussion}
 
 In the following sections, experimental data is presented documenting the
@@ -546,9 +658,9 @@ boundary conditions of model simulation. Additionally, the model is applied to
 assess the relationship between the larvae input and zebra mussel infestation
 risk, to assess the effectiveness of chemical treatments in the control of
 this invasive species and to evaluate the export of larvae and chemicals through
-the network hydrants.
+the network hydrants in the CS-WUA \#1 network.
 
-\subsection{CS-WUA \#1 network: boundary conditions}
+\subsection{Boundary conditions}
 
 Figure~\ref{FigMeasured} depicts water temperature measurements taken at a
 network manhole in 2022 and 2023 and the daily evolution of concentration of
@@ -557,17 +669,7 @@ It is clear that temperatures in excess of 10$^\circ$C are reached early in the
 season, facilitating zebra mussel spawning. Moreover, daily temperature
 fluctuations are minimal. Throughout the irrigation season, spanning from early
 May to early October, water temperatures remained relatively stable, typically
-ranging between 20 and 25$^\circ$C. For each larval concentration measurement,
-100 liters of water were passed through a filter, and then the filter was
-analyzed to count the number of larvae. Larval counts were produced at the Zebra
-Mussel Laboratory of the OX-CTA company (\url{https://grupoox.com}). In each
-campaign, measurements were made at different times of the year. A strong random
-character is observed in this variable, with sudden, strong variations of up to
-three orders of magnitude. It was not possible to detect relationships with
-temperature or date of measurement which could have explained such variations.
-These results are consistent with other studies showing strong variability in
-larval presence, with low correlations between larvae density, adult population
-or temperature \citep{AlonzoMoya21}.
+ranging between 20 and 25$^\circ$C.
 
 \FIGIII{Figure_1a.pdf}{Figure_1b.pdf}{Figure_1c.pdf}
 {Water temperature measured at a manhole in the years 2022 and 2023 (top) and
@@ -598,36 +700,25 @@ fluctuations during the irrigation season and also within each irrigation day}
 \subsection{Effect of different larval input scenarios on risk of network
 	infestation}
 
-Next, we analyze the effect that the highly variable larval inputs could have on
-the CS-WUA \#1 network infestation. To do this, we simulated four larval input
-scenarios during two irrigation campaigns, 2021 and 2022, keeping the total
-number of larvae in each campaign as measured:
-\begin{enumerate}[I.]
-\item larval input as measured,
-\item constant larval input during the time windows of measurement (from
-	mid-July to mid-August in 2021 and from mid-June to early-July in 2022),
-\item larval input with random hourly variation of up to three orders of
-	magnitude during the time windows of measurement, and
-\item uniform larval input throughout the entire treatment season (from mid-May
-	to mid-August).
-\end{enumerate}
-The total number of larvae $N_l$ entering the network was computed as:
-\EQ{N_l=\sum_iQ_i\,c_i\,\Delta t_i}{EqLarvaeNumber}
-where $Q_i$, $c_i$ y $\Delta t_i$ represent respectively the flow rates, larval
-concentrations, and hourly time intervals throughout the entire campaign. In
-scenario I, the concentration at each hour was temporally interpolated between
-the measurements. In scenario III, to achieve variations of three orders of
-magnitude while maintaining the number of larvae, concentrations were generated
-using the formula:
-\EQ{c_i=\frac{k}{0.001+R_i},\quad
-	k=\frac{N_l}{\sum_i\frac{Q_i\,\Delta t_i}{0.001+R_i}}}{EqLarvaeRandom}
-with $k$ being a constant and $R_i\in[0,1)$ pseudo-random numbers. For
-the constant larval concentration scenarios, II and IV:
-\EQ{c_i=\frac{N_l}{\sum_iQ_i\,\Delta t_i}}{EqLarvaeConstant}
+Next, we analyze the effect that the variable larval inputs could have on
+the CS-WUA \#1 network infestation.
 The variables used in each scenario are detailed in Table~\ref{TabLarvaeInput}.
-In the 2022 campaign, the number of larvae input was roughly double than that of
-the 2021 campaign. Note the large number of estimated larvae entering the system
-in each campaign, on the order of one billion.
+Note the large number of estimated larvae entering the system
+in each campaign, on the order of one billion. Due to the lack of data, a zero
+larval input has been assumed for each irrigation campaign during periods
+outside the measurement window. Given that the measurement intervals during each
+campaign were brief, it is likely that the actual number of incoming larvae was
+higher, especially considering that each campaign measured during different
+times of the year yielded larval concentrations of the same order of magnitude.
+The average larval concentration measured in 2022 was nearly four times higher
+than that of 2021, as shown by the constants $c_i$ and $k$ for scenarios II and
+III in Table 1, respectively. However, no definitive conclusions can be drawn
+due to the significant variability in the data. Moreover, the total number of
+larvae was only about double, primarily because the measurement window in 2022
+was shorter and water demands during the 2021 measurement period were lower.
+\todo{Comment R3-7: The paragraph explaining Table 1 has been expanded to
+clarify the values of the constants presented in the table}
+
 \TABLE{cc|ccc}
 {
 	Year & Scenario & $N_l$ (larvae) & $c_i$ (larvae$\cdot$m$^{-3}$)
@@ -647,26 +738,23 @@ in each campaign, on the order of one billion.
 
 The measured and simulated larval inputs over time are presented in
 Figure~\ref{FigMusselInput2022}, for the four scenarios in the 2021 and 2022
-campaigns.
+campaigns. A strong random character is observed in this variable, with sudden,
+strong variations of up to three orders of magnitude.
 
 \FIGVIII{Figure_3a.pdf}{Figure_3b.pdf}{Figure_3c.pdf}{Figure_3d.pdf}
 {Figure_3e.pdf}{Figure_3f.pdf}{Figure_3g.pdf}{Figure_3h.pdf}
-{Measured and simulated larval density input at the network inlet over time
-(years 2021 and 2022). Each subfigure corresponds to a different scenario: I,
-larval input as measured; II, constant larval input during the time window of
-measurement; III, larval input with random hourly variation of up to three
-orders of magnitud; and IV, uniform larval input throughout the entire treatment
-season\label{FigMusselInput2022}}
+{Measured (I) and simulated (II-IV) larval density input at the network inlet
+over time (years 2021 and 2022). Each subfigure corresponds to a different
+scenario \label{FigMusselInput2022}}
 
 Maps of simulated infestation are shown for the four proposed scenarios of
 larval inputs in the year 2022 (Figure~\ref{Fig2022MusselInput}) and in the year
 2021 (Supplementary Figure~S.1). The thickness of the lines on the maps is
 proportional to the surface density of mussels. Above each map, terms of
-comparison are presented respect to the scenario IV results: the increase in
-total settled mussels in the network ($N_t$) is presented as a percentage, along
-with the correlation coefficients $r_1$, comparing the surface density of
-settled mussels cell by cell in the network, and $r_2$, comparing the surface
-density of settled mussels averaged for each pipe. Scenario IV exhibits the
+comparison are presented respect to the scenario IV results ($\Delta N_t$, $r_1$
+and $r_2$).
+\todo{Comment R3-4: these coefficients are explained in the M\&M subsection 2.3}
+Scenario IV exhibits the
 highest infestation and a more uniform distribution. This is because it
 introduces a relevant part of the larvae during weeks of low water demand. When
 the network demand is high, flow velocities increase, giving the larvae less
@@ -890,7 +978,7 @@ seasons}{FigMCl}
 
 \subsection{Risk of on-farm irrigation system infestation}
 
-In a third simulation analysis, we addressed the efect of the chlorine
+In a third simulation analysis, we addressed the effect of the chlorine
 treatments on the number of larvae and free chlorine mass discharged through 
 network hydrants to the on-farm irrigation systems. This process is an indicator
 of the capacity of the network to transfer the infestation risk and the chemical
@@ -977,7 +1065,13 @@ required major modifications to the model.
 
 The high observed variability in larval entry does not produce relevant changes
 in the amount and in the spatial distribution of settled mussels in the pipe
-network. Mussels settlement seems to be primarly associated to the hydraulic
+network. It was not possible to
+detect relationships with temperature or date of measurement which could have
+explained such variations. These results are consistent with other studies
+showing strong variability in larval presence, with low correlations between
+larvae density, adult population or temperature \citep{Alix16, AlonzoMoya21}.
+This confirms the usefulness of the simulations for scenario III.
+Mussels settlement seems to be primarly associated to the hydraulic
 network morphology. Thus, similar results are obtained in simulations with
 different seasonal entry patterns of the same number of larvae. However, both
 the total number of larvae and their settlement rate have proven to be
@@ -1051,8 +1145,17 @@ model helps evaluate treatment strategies to protect networks from colonization
 and larval export, which can pose problems for on-farm irrigation. Although most
 free chlorine is neutralized within the network, exported chlorine could impact
 the environment. Avoiding the opening of nearby hydrants during intermittent
-treatments can mitigate this issue. The model has many sources of uncertainty.
-Results should therefore be considered more qualitatively than quantitatively.
+treatments can mitigate this issue. Despite the many sources of uncertainty in
+the model application, we believe that it can support the control zebra mussel
+and similar invasive species in specific networks. Our recommendation is to
+consider simulation results more qualitatively than quantitatively. Intensive
+use of experimental data would be required to push the model one step further,
+calibrating and validating it in real conditions.
+\todo{Comment R2-1: Future recommendation has been added at end of conclusion
+remark}
+\todo{Comments R2-3, R3-6 and R4-5: We did not set out to extract general
+conclusions about the chlorine treatment, but to present a model and evaluate
+its capacity to analyze population dynamics under oxidant treatments}
 
 \section*{Aknowledgments}
 
