@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<network file="prueba_Collarada2_R1_TC2021_correcciones_con_MDT.inp" pipe-length="length">
+	<inlet node="0">
+		<solute name="oxygen" file="oxygen.in"/>
+		<solute name="organic-matter" file="organic-matter.in"/>
+		<solute name="hydrogen-peroxide" file="peroxide-2024-hour.in"/>
+		<species name="zebra-mussel" file="zebra-mussel-2022-uniform.in"/>
+	</inlet>
+  <discharges time="2024 7 31 8 0 0" file="rpt_files_2024/Montesusin_R1_0.rpt"/>
+  <discharges time="2024 7 31 9 0 0" file="rpt_files_2024/Montesusin_R1_1.rpt"/>
+  <discharges time="2024 7 31 10 0 0" file="rpt_files_2024/Montesusin_R1_2.rpt"/>
+  <discharges time="2024 7 31 11 0 0" file="rpt_files_2024/Montesusin_R1_3.rpt"/>
+  <discharges time="2024 7 31 12 0 0" file="rpt_files_2024/Montesusin_R1_4.rpt"/>
+</network>

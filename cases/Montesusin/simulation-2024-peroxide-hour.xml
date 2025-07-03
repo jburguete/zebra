@@ -1,0 +1,2 @@
+<?xml version="1.0"?>
+<simulation solutes="solutes.xml" species="species.xml" network="network-2024-peroxide-hour.xml" initial-time="2024 7 31 8 0 0" final-time="2024 7 31 12 0 0" cell-size="10" saving-step="60" numerical-order="2" cfl="0.9" biological-step="300" results="results-2024-peroxide-hour.bin" summary="summary-2024-peroxide-hour"/>

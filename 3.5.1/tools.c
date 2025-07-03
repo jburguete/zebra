@@ -77,7 +77,7 @@ read_time (FILE *file,          ///< XML node struct.
       t->tm_year -= 1900;
       --t->tm_mon;
       t->tm_sec = 0;
-      t->tm_isdst = 0;
+      t->tm_isdst = -1;
       tt = mktime (t);
       if (tt != -1)
         {
@@ -253,7 +253,7 @@ xml_node_get_time (xmlNode *node,       ///< XML node struct.
           t->tm_year -= 1900;
           --t->tm_mon;
           t->tm_sec = 0;
-          t->tm_isdst = 0;
+          t->tm_isdst = -1;
           tt = mktime (t);
           if (tt == -1)
             *error = 0;

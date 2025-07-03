@@ -1,4 +1,4 @@
-Zebra (3.5.0 english version)
+Zebra (3.5.1 english version)
 =============================
 
 :uk:[english](README.md) :es:[español](README.es.md)
@@ -15,7 +15,7 @@ FILES
 
 * README.md: basic help file
 * license.md: license file
-* 3.5.0/\*.h: header files
-* 3.5.0/\*.c: source files
-* 3.5.0/Makefile: configuration file to generate the executable
-* 3.5.0/Doxyfile: configuration file to generate doxygen documentation
+* 3.5.1/\*.h: header files
+* 3.5.1/\*.c: source files
+* 3.5.1/Makefile: configuration file to generate the executable
+* 3.5.1/Doxyfile: configuration file to generate doxygen documentation
