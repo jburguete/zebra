@@ -222,7 +222,7 @@ normalize (double *x,           ///< array of x-coordinate data.
   for (i = 0, integral = 0.; i < n1; ++i)
     integral += 0.5 * (f[i + 1] + f[i]) * (x[i + 1] - x[i]);
   integral = 1. / integral;
-printf ("integral=%lg\n", integral);
+printf ("integral: %lg\n", integral);
   for (i = 0; i < n; ++i)
     f[i] *= integral;
 }
@@ -1300,7 +1300,7 @@ main (int argn,                 ///< number of arguments.
         {
           simulation_init (&s);
           e = simulation_run (&s, 1);
-          printf ("error=%lg\n", e);
+          printf ("error: %lg\n", e);
           simulation_destroy (&s);
         }
       else

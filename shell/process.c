@@ -74,8 +74,8 @@ main (int argn,
   if (argn != 7)
     {
       error_print ("The syntax is:\n"
-		   "./process input_file output_file "
-		   "n_columns 1st_column 2nd_column probe_type\n");
+                   "./process input_file output_file "
+                   "n_columns 1st_column 2nd_column probe_type\n");
       return EXIT_CODE_ARGUMENTS;
     }
   n = (unsigned int) atoi (argc[3]);
@@ -131,16 +131,16 @@ main (int argn,
   while (1)
     {
       for (i = 0; i < n; ++i)
-	if (fscanf (fin, "%lf", x + i) != 1)
+        if (fscanf (fin, "%lf", x + i) != 1)
           goto end;
       switch (t)
         {
         case PROBE_TYPE_RESULT:
           fprintf (fout, "%lg %lg\n", x[c1], x[c2]);
-	  break;
+          break;
         case PROBE_TYPE_INPUT:
           fprintf (fout, "\"%lg\", \"%lg\",\n", x[c1], x[c2]);
-	}
+        }
     }
 end:
   free (x);

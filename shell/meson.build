@@ -60,6 +60,12 @@ process2_exe = executable('process2',
   link_args: link_args,
 )
 
+calibrate_exe = executable('calibrate',
+  sources: 'calibrate.c',
+  c_args: cflags,
+  link_args: link_args,
+)
+
 # Strip
 custom_target('strip',
   output: 'stripped',
@@ -68,6 +74,7 @@ custom_target('strip',
     shell_exe.full_path(),
     process_exe.full_path(),
     process2_exe.full_path(),
+    calibrate_exe.full_path(),
   ],
   build_by_default: false,
 )
