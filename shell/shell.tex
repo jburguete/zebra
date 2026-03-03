@@ -1,7 +1,9 @@
 \documentclass[a4paper]{article}
 
-\usepackage{graphicx}
 \usepackage[spanish]{babel}
+\usepackage{graphicx}
+\usepackage{pstricks}
+\usepackage{pst-grad}
 
 \author{Javier Burguete}
 \date{\today}
@@ -214,6 +216,30 @@ Es esperable teóricamente:
 	\put(0,77){1}
 \end{picture}
 \end{tabular}
+\end{figure}
+
+\begin{figure}[ht!]
+\begin{pspicture}(0,-0.5)(12,6)
+        \pscircle[linewidth=2pt, fillstyle=gradient,
+		gradbegin=white, gradend=darkgray, gradangle=0, gradmidpoint=1,
+		gradlines=2048](3.5,2.5){2.5}
+	\pscircle*(3.5,2.5){0.1}
+	\rput(3.5,2.8){$(0,R)$}
+	\pscircle*(3.5,0){0.1}
+	\rput(3.5,-0.3){$(0,0)$}
+	\pscircle*(5,0.5){0.1}
+	\rput(4.9,-0.1){$(x,y)$}
+	\pscircle*(11,3){0.1}
+	\psline(3.5,2.5)(5.6,-0.3)
+	\psarc(5,0.5){0.4}{-53.13}{22.62}
+	\rput(5.6,0.4){$\theta$}
+	\pscircle*(1.5,1){0.1}
+	\rput(0.8,1){$(x',y')$}
+	\psarc(5,0.5){0.4}{126.87}{171.87}
+	\rput(4.5,0.8){$\theta'$}
+	\psline(11,3)(5,0.5)(1.5,1)
+	\rput(11,3.3){$(x_0,y_0)$}
+\end{pspicture}
 \end{figure}
 
 \end{document}
